@@ -1,11 +1,18 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { UntypedFormBuilder, NgForm, Validators } from '@angular/forms';
+import {
+    UntypedFormBuilder,
+    NgForm,
+    Validators,
+    AsyncValidatorFn,
+    AbstractControl,
+    ValidationErrors,
+} from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { TranslocoService } from '@ngneat/transloco';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { ShareComponent } from '../../../shared/ShareComponent';
 import { FuseValidators } from '../../../../@fuse/validators';
+import { User } from '../../../models/User';
 
 @Component({
     selector: 'auth-sign-up',
@@ -15,11 +22,9 @@ import { FuseValidators } from '../../../../@fuse/validators';
 })
 export class AuthSignUpComponent extends ShareComponent implements OnInit {
     @ViewChild('signUpNgForm') signUpNgForm: NgForm;
-    regexInput = /^[a-zA-Z0-9]*$/;
     emailReqex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9_.+-]+\.[a-zA-Z]*$/;
     passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/;
     showAlert: boolean = false;
-    lastUsername: string = '';
     lastEmail: string = '';
 
     /**
@@ -43,10 +48,8 @@ export class AuthSignUpComponent extends ShareComponent implements OnInit {
     ngOnInit(): void {
         this.form = this._formBuilder.group(
             {
-                username: [
-                    '',
-                    [Validators.required, Validators.pattern(this.regexInput)],
-                ],
+                name: ['', [Validators.required]],
+                firstName: ['', Validators.required],
                 email: [
                     '',
                     [
@@ -54,6 +57,7 @@ export class AuthSignUpComponent extends ShareComponent implements OnInit {
                         Validators.email,
                         Validators.pattern(this.emailReqex),
                     ],
+                    [this.emailValidator()],
                 ],
                 password: [
                     '',
@@ -62,15 +66,60 @@ export class AuthSignUpComponent extends ShareComponent implements OnInit {
                         Validators.pattern(this.passwordRegex),
                     ],
                 ],
-                repassword: ['', [Validators.required]],
+                password2: ['', [Validators.required]],
             },
             {
-                validators: FuseValidators.mustMatch('password', 'repassword'),
+                validators: FuseValidators.mustMatch('password', 'password2'),
             },
         );
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
+    checkEmail(email: string) {
+        return new Promise((resolve, reject) => {
+            this._authService.checkEmail(email).subscribe((data) => {
+                resolve(data);
+            });
+        });
+    }
+
+    emailValidator(): AsyncValidatorFn {
+        return async (
+            control: AbstractControl,
+        ): Promise<ValidationErrors | null> => {
+            const value = control.value;
+            if (!value || this.lastEmail == value) {
+                this.lastEmail = value;
+                return null;
+            }
+            this.lastEmail = value;
+            const result: any = await this.checkEmail(value);
+
+            return result.state === 'error' ? { emailInvalid: true } : null;
+        };
+    }
+
+    signUp() {
+        if (this.form.invalid) return;
+        this.form.disable();
+        this.showAlert = false;
+
+        const { password2, ...formValues } = this.form.value;
+        const user: User = {
+            ...formValues,
+            userType: { userType: 'Customer' },
+        };
+
+        this._authService.signUp(user).subscribe((data) => {
+            if (data.state == 'error') this.alert.type = 'error';
+            else {
+                this.alert.type = 'success';
+                this.callback = () => {
+                    this.signUpNgForm.resetForm();
+                    this._router.navigate(['/sign-in']).then();
+                };
+            }
+            this.alert.message = data.message;
+            this.handleMessage();
+        });
+    }
 }

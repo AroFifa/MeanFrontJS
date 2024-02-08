@@ -19,6 +19,7 @@ const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
     scrollPositionRestoration: 'enabled',
 };
+import { AuthPresentationModule } from './modules/auth/auth-presentation/auth-presentation.module';
 
 @NgModule({
     declarations: [AppComponent],
