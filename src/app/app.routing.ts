@@ -32,11 +32,11 @@ export const appRoutes: Route[] = [
                     ),
             },
             {
-                path: 'forgot-password',
+                path: 'auth-confirmed',
                 loadChildren: () =>
                     import(
-                        'app/modules/auth/forgot-password/forgot-password.module'
-                    ).then((m) => m.AuthForgotPasswordModule),
+                        'app/modules/auth/confirmation-required/confirmation-required.module'
+                    ).then((m) => m.AuthConfirmationRequiredModule),
             },
         ],
     },

@@ -12,6 +12,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { AuthSignUpComponent } from 'app/modules/auth/sign-up/sign-up.component';
 import { authSignupRoutes } from 'app/modules/auth/sign-up/sign-up.routing';
 import { TranslocoModule } from '@ngneat/transloco';
+import { AuthPresentationModule } from '../auth-presentation/auth-presentation.module';
 
 @NgModule({
     declarations: [AuthSignUpComponent],
@@ -27,6 +28,7 @@ import { TranslocoModule } from '@ngneat/transloco';
         FuseAlertModule,
         SharedModule,
         TranslocoModule,
+        AuthPresentationModule,
     ],
 })
 export class AuthSignUpModule {}
