@@ -106,7 +106,7 @@ export class AuthSignUpComponent extends ShareComponent implements OnInit {
         const { password2, ...formValues } = this.form.value;
         const user: User = {
             ...formValues,
-            userType: { userType: 'Customer' },
+            userType: 'Customer',
         };
 
         this._authService.signUp(user).subscribe((data) => {
