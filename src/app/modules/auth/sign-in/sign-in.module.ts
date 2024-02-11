@@ -11,7 +11,6 @@ import { FuseAlertModule } from '@fuse/components/alert';
 import { SharedModule } from 'app/shared/shared.module';
 import { AuthSignInComponent } from 'app/modules/auth/sign-in/sign-in.component';
 import { authSignInRoutes } from 'app/modules/auth/sign-in/sign-in.routing';
-import { TranslocoModule } from '@ngneat/transloco';
 import { AuthPresentationModule } from '../auth-presentation/auth-presentation.module';
 
 @NgModule({
@@ -27,7 +26,6 @@ import { AuthPresentationModule } from '../auth-presentation/auth-presentation.m
         FuseCardModule,
         FuseAlertModule,
         SharedModule,
-        TranslocoModule,
         AuthPresentationModule,
     ],
 })

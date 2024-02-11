@@ -22,46 +22,37 @@
 </ng-container>
 
 <ng-container *ngIf="!isConnected">
-    <ng-container *transloco="let t">
-        <div class="flex w-full items-center">
-            <mat-icon
-                class="fuse-vertical-navigation-item-icon"
-                [svgIcon]="'heroicons_outline:chevron-right'"
-            ></mat-icon>
+    <div class="flex w-full items-center">
+        <mat-icon
+            class="fuse-vertical-navigation-item-icon"
+            [svgIcon]="'heroicons_outline:chevron-right'"
+        ></mat-icon>
 
-            <div class="fuse-vertical-navigation-item-title-wrapper ml-4">
-                <div class="fuse-vertical-navigation-item-title">
-                    <span> {{ t("account.sign-in") }} </span>
-                </div>
+        <div class="fuse-vertical-navigation-item-title-wrapper ml-4">
+            <div class="fuse-vertical-navigation-item-title">
+                <span> Se connecter</span>
             </div>
         </div>
-    </ng-container>
+    </div>
 </ng-container>
 
 <mat-menu [xPosition]="'before'" #userActions="matMenu">
-    <ng-container *transloco="let t">
-        <button mat-menu-item>
-            <span class="flex flex-col leading-none">
-                <span>{{ t("account.signed-as") }}</span>
-                <span class="mt-1.5 text-md font-medium">{{
-                    user?.username
-                }}</span>
-            </span>
-        </button>
-        <mat-divider class="my-2"></mat-divider>
-        <button mat-menu-item>
-            <mat-icon [svgIcon]="'heroicons_outline:archive'"></mat-icon>
-            <span>{{ t("account.clear-chat") }}</span>
-        </button>
-        <button mat-menu-item (click)="account()">
-            <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
-            <span>{{ t("account.my-account") }}</span>
-        </button>
+    <button mat-menu-item>
+        <span class="flex flex-col leading-none">
+            <span>Connecté en tant que</span>
+            <span class="mt-1.5 text-md font-medium">{{ user?.username }}</span>
+        </span>
+    </button>
+    <mat-divider class="my-2"></mat-divider>
 
-        <mat-divider class="my-2"></mat-divider>
-        <button mat-menu-item>
-            <mat-icon [svgIcon]="'heroicons_outline:logout'"></mat-icon>
-            <span>{{ t("account.sign-out") }}</span>
-        </button>
-    </ng-container>
+    <button mat-menu-item (click)="account()">
+        <mat-icon [svgIcon]="'heroicons_outline:user-circle'"></mat-icon>
+        <span>Commpte</span>
+    </button>
+
+    <mat-divider class="my-2"></mat-divider>
+    <button mat-menu-item>
+        <mat-icon [svgIcon]="'heroicons_outline:logout'"></mat-icon>
+        <span>Déconnexion</span>
+    </button>
 </mat-menu>

@@ -14,15 +14,19 @@ import { appRoutes } from 'app/app.routing';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
+import { ConfirmationComponent } from './modules/Common/confirmation/confirmation.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
     scrollPositionRestoration: 'enabled',
 };
-import { AuthPresentationModule } from './modules/auth/auth-presentation/auth-presentation.module';
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, ConfirmationComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -32,16 +36,17 @@ import { AuthPresentationModule } from './modules/auth/auth-presentation/auth-pr
         FuseModule,
         FuseConfigModule.forRoot(appConfig),
         FuseMockApiModule.forRoot(mockApiServices),
-
-        // Core module of your application
+        MatSelectModule, // Core module of your application
         CoreModule,
-
+        MatChipsModule,
         // Layout module of your application
         LayoutModule,
 
         FormsModule,
         HttpClientModule,
         MatDatepickerModule,
+        MatIconModule,
+        MatButtonModule,
     ],
     bootstrap: [AppComponent],
 })

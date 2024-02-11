@@ -50,10 +50,10 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
-                path: 'home',
+                path: '',
                 loadChildren: () =>
-                    import('app/modules/admin/home/home.module').then(
-                        (m) => m.HomeModule,
+                    import('app/modules/admin/admin.module').then(
+                        (m) => m.AdminModule,
                     ),
             },
         ],

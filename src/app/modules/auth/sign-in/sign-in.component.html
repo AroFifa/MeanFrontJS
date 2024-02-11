@@ -4,105 +4,99 @@
     <div
         class="flex md:w-full md:max-w-6xl sm:rounded-2xl sm:shadow overflow-hidden sm:bg-card"
     >
-        <ng-container *transloco="let t">
-            <div class="w-full sm:w-auto py-8 px-4 sm:p-12 md:p-16">
-                <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
-                    <!-- Title -->
-                    <div
-                        class="mt-4 text-4xl font-extrabold tracking-tight leading-tight"
-                    >
-                        Se connecter
-                    </div>
-                    <div class="flex items-baseline mt-0.5 font-medium">
-                        <div>Avez-vous déjà un compte ?</div>
-                        <a
-                            class="ml-1 text-primary-500 hover:underline"
-                            [routerLink]="['/sign-up']"
-                        >
-                            s'inscrire
-                        </a>
-                    </div>
-                    <!-- Alert -->
-                    <fuse-alert
-                        class="mt-8 -mb-4"
-                        *ngIf="showAlert"
-                        [appearance]="'outline'"
-                        [showIcon]="false"
-                        [type]="alert.type"
-                        [@shake]="alert.type === 'error'"
-                    >
-                        {{ alert.message }}
-                    </fuse-alert>
-
-                    <!-- Sign in form -->
-                    <form
-                        class="mt-8"
-                        [formGroup]="form"
-                        #signInNgForm="ngForm"
-                    >
-                        <!-- Email field -->
-                        <mat-form-field class="w-full">
-                            <mat-label>Email</mat-label>
-                            <input
-                                id="email"
-                                matInput
-                                [formControlName]="'email'"
-                            />
-                        </mat-form-field>
-
-                        <!-- Password field -->
-                        <mat-form-field class="w-full">
-                            <mat-label>Mot de passe</mat-label>
-                            <input
-                                id="password"
-                                matInput
-                                type="password"
-                                [formControlName]="'password'"
-                                #passwordField
-                            />
-                            <button
-                                mat-icon-button
-                                type="button"
-                                (click)="
-                                    passwordField.type === 'password'
-                                        ? (passwordField.type = 'text')
-                                        : (passwordField.type = 'password')
-                                "
-                                matSuffix
-                            >
-                                <mat-icon
-                                    class="icon-size-5"
-                                    *ngIf="passwordField.type === 'password'"
-                                    [svgIcon]="'heroicons_solid:eye'"
-                                ></mat-icon>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    *ngIf="passwordField.type === 'text'"
-                                    [svgIcon]="'heroicons_solid:eye-off'"
-                                ></mat-icon>
-                            </button>
-                        </mat-form-field>
-
-                        <!-- Submit button -->
-                        <button
-                            class="fuse-mat-button-large w-full mt-6"
-                            mat-flat-button
-                            [color]="'primary'"
-                            [disabled]="form.disabled"
-                            (click)="signIn()"
-                        >
-                            <span *ngIf="!form.disabled"> Se connecter </span>
-                            <mat-progress-spinner
-                                *ngIf="form.disabled"
-                                [diameter]="24"
-                                [mode]="'indeterminate'"
-                            ></mat-progress-spinner>
-                        </button>
-                    </form>
+        <div class="w-full sm:w-auto py-8 px-4 sm:p-12 md:p-16">
+            <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+                <!-- Title -->
+                <div
+                    class="mt-4 text-4xl font-extrabold tracking-tight leading-tight"
+                >
+                    Se connecter
                 </div>
-            </div>
+                <div class="flex items-baseline mt-0.5 font-medium">
+                    <div>Avez-vous déjà un compte ?</div>
+                    <a
+                        class="ml-1 text-primary-500 hover:underline"
+                        [routerLink]="['/sign-up']"
+                    >
+                        s'inscrire
+                    </a>
+                </div>
+                <!-- Alert -->
+                <fuse-alert
+                    class="mt-8 -mb-4"
+                    *ngIf="showAlert"
+                    [appearance]="'outline'"
+                    [showIcon]="false"
+                    [type]="alert.type"
+                    [@shake]="alert.type === 'error'"
+                >
+                    {{ alert.message }}
+                </fuse-alert>
 
-            <app-auth-presentation></app-auth-presentation>
-        </ng-container>
+                <!-- Sign in form -->
+                <form class="mt-8" [formGroup]="form" #signInNgForm="ngForm">
+                    <!-- Email field -->
+                    <mat-form-field class="w-full">
+                        <mat-label>Email</mat-label>
+                        <input
+                            id="email"
+                            matInput
+                            [formControlName]="'email'"
+                        />
+                    </mat-form-field>
+
+                    <!-- Password field -->
+                    <mat-form-field class="w-full">
+                        <mat-label>Mot de passe</mat-label>
+                        <input
+                            id="password"
+                            matInput
+                            type="password"
+                            [formControlName]="'password'"
+                            #passwordField
+                        />
+                        <button
+                            mat-icon-button
+                            type="button"
+                            (click)="
+                                passwordField.type === 'password'
+                                    ? (passwordField.type = 'text')
+                                    : (passwordField.type = 'password')
+                            "
+                            matSuffix
+                        >
+                            <mat-icon
+                                class="icon-size-5"
+                                *ngIf="passwordField.type === 'password'"
+                                [svgIcon]="'heroicons_solid:eye'"
+                            ></mat-icon>
+                            <mat-icon
+                                class="icon-size-5"
+                                *ngIf="passwordField.type === 'text'"
+                                [svgIcon]="'heroicons_solid:eye-off'"
+                            ></mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <!-- Submit button -->
+                    <button
+                        class="fuse-mat-button-large w-full mt-6"
+                        mat-flat-button
+                        [color]="'primary'"
+                        [disabled]="form.disabled"
+                        (click)="signIn()"
+                    >
+                        <span *ngIf="!form.disabled"> Se connecter </span>
+                        <mat-progress-spinner
+                            *ngIf="form.disabled"
+                            [diameter]="24"
+                            [mode]="'indeterminate'"
+                        ></mat-progress-spinner>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <app-auth-presentation></app-auth-presentation>
     </div>
 </div>
