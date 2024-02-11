@@ -1,11 +1,13 @@
 import { UserType } from './UserType';
 
 export interface User {
+    _id?: string;
     name?: string;
     firstName?: string;
-    userType?: UserType;
+    userType: UserType;
     pathImg?: string;
     email: string;
+    posts?: any[];
     information?: string;
     password?: string;
     emailVerified?: boolean;

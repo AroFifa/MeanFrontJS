@@ -4,6 +4,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { ShareComponent } from '../../../shared/ShareComponent';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { CommonService } from '../../../shared/common.service';
 
 @Component({
     selector: 'auth-sign-in',
@@ -20,6 +21,7 @@ export class AuthSignInComponent extends ShareComponent implements OnInit {
     constructor(
         private _formBuilder: UntypedFormBuilder,
         private _authService: AuthService,
+        private _commonService: CommonService,
         private _router: Router,
     ) {
         super();
@@ -34,14 +36,26 @@ export class AuthSignInComponent extends ShareComponent implements OnInit {
      */
     ngOnInit(): void {
         this.form = this._formBuilder.group({
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', Validators.required],
+            email: [
+                'beautysalon354@gmail.com',
+                [Validators.required, Validators.email],
+            ],
+            password: ['Admin007#', Validators.required],
         });
     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    handleRedirection() {
+        let userType = this._commonService.getValue_FromToken('userType');
+        let urlRedirection = '/admin/dashboard';
+        if (userType == 'Staff') urlRedirection = '/staff/home';
+        if (userType == 'Customer') urlRedirection = '/customer/home';
+
+        this._router.navigate([urlRedirection]).then();
+    }
 
     /**
      * Sign in
@@ -62,7 +76,7 @@ export class AuthSignInComponent extends ShareComponent implements OnInit {
                 this.form.enable();
                 this.signInNgForm.resetForm();
                 localStorage.setItem('accessToken', data.data);
-                this._router.navigate(['/home']).then();
+                this.handleRedirection();
             }
         });
     }
