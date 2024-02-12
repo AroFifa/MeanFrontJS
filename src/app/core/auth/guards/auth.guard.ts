@@ -33,20 +33,17 @@ export class AuthGuard implements CanActivate {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot,
     ): boolean {
-        if (this.isLoggedIn() && this.checkToken()) {
-            return true;
-        } else {
+        let token = localStorage.getItem('accessToken');
+        if (this._commonService.tokenExpired() || !token) {
             this._router.navigate(['sign-in']).then();
             return false;
         }
-    }
 
-    checkToken() {
-        let valideToken = this._commonService.getUserState();
-        if (!valideToken) this._commonService.signOut();
+        let userType = this._commonService.getValue_FromToken('userType');
+        if (state.url.split('/')[1] !== userType.toLowerCase())
+            this._router.navigate(['**']).then();
 
-        console.log(valideToken);
-        return valideToken;
+        return true;
     }
 
     // -----------------------------------------------------------------------------------------------------

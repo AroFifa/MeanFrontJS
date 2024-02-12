@@ -10,4 +10,12 @@ export class CommonService {
         let decoded = jwtDecode(token);
         return decoded[fieldName];
     }
+
+    tokenExpired() {
+        let token = localStorage.getItem('accessToken');
+        const decodedToken = jwtDecode(token);
+        const currentTime = Date.now().valueOf() / 1000;
+
+        return decodedToken.exp < currentTime;
+    }
 }

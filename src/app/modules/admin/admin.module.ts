@@ -5,7 +5,11 @@ import { Route, RouterModule } from '@angular/router';
 
 const adminRoutes: Route[] = [
     {
-        path: 'admin/dashboard',
+        path: 'dashboard',
+        component: HomeComponent,
+    },
+    {
+        path: '',
         component: HomeComponent,
     },
     {

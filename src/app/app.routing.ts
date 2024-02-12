@@ -2,12 +2,13 @@ import { Route } from '@angular/router';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { NoAuthGuard } from './core/auth/guards/noAuth.guard';
+import { AuthGuard } from './core/auth/guards/auth.guard';
 
 export const appRoutes: Route[] = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'sign-in',
+        redirectTo: 'admin',
     },
     {
         path: '',
@@ -40,22 +41,30 @@ export const appRoutes: Route[] = [
             },
         ],
     },
-
     {
         path: '',
-        canActivate: [NoAuthGuard],
+        canActivate: [AuthGuard],
         component: LayoutComponent,
         resolve: {
             initialData: InitialDataResolver,
         },
         children: [
             {
-                path: '',
+                path: 'admin',
                 loadChildren: () =>
                     import('app/modules/admin/admin.module').then(
                         (m) => m.AdminModule,
                     ),
             },
         ],
+    },
+
+    {
+        path: '**',
+        loadChildren: () =>
+            import('app/modules/error-404/error-404.module').then(
+                (module) => module.Error404Module,
+            ),
+        data: { title: 'Error', layout: 'compact' },
     },
 ];
