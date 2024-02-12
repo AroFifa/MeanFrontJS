@@ -20,7 +20,7 @@ function getAdminNavigations() {
                     title: 'Employés',
                     type: 'basic',
                     icon: 'heroicons_outline:user-group',
-                    link: '/management/staff',
+                    link: '/admin/management/staff',
                 },
             ],
         },
