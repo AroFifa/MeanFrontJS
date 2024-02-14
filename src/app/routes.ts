@@ -23,18 +23,18 @@ function getAdminNavigations() {
                     link: '/admin/management/staff',
                 },
                 {
-                    id: 'service-mgmt.service',
+                    id: 'management.service',
                     title: 'Services',
                     type: 'basic',
                     icon: 'heroicons_outline:service',
-                    link: '/admin/management/service',
+                    link: '/admin/management/service-mgmt/services',
                 },
                 {
-                    id: 'service-mgmt.commission',
+                    id: 'management.service.commission',
                     title: 'Commission',
                     type: 'basic',
                     icon: 'heroicons_outline:receipt-percent',
-                    link: '/admin/management/service/commission',
+                    link: '/admin/management/service-mgmt/commissions',
                 },
 
             ],
