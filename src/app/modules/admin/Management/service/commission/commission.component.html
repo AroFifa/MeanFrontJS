@@ -1,1 +1,90 @@
-<p>commission works!</p>
+<div class="flex flex-col flex-auto min-w-0">
+    <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+        <div class="w-full max-w-screen-xl mx-auto">
+            <div
+                class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden"
+            >
+                <div
+                    class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8"
+                >
+                    <div class="text-4xl font-medium tracking-tight">
+                        Commission sur les services
+                    </div>
+
+                    <!-- <div
+                        class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4"
+                    >
+                    
+
+                        Valeur actuelle de la commission + bouton de modification
+                     
+                    </div> -->
+                </div>
+                <div class="flex grid-cols-2">
+                    <!-- *INTERVALLE DE DATE -->
+                    <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                        <mat-form-field class="fuse-mat-rounded fuse-mat-dense w-full" [subscriptSizing]="'dynamic'">
+                            <mat-icon matPrefix class="icon-size-5" [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
+                            <input matInput [placeholder]="'Du'" type="date" />
+                            <span matPrefix class="label">Du </span>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                        <mat-form-field class="fuse-mat-rounded fuse-mat-dense w-full" [subscriptSizing]="'dynamic'">
+                            <mat-icon matPrefix class="icon-size-5" [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
+                            <input matInput [autocomplete]="'off'" [placeholder]="'Au'" type="date" />
+                            <span matPrefix class="label">Au </span>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
+                    <table
+                        mat-table
+                        [dataSource]="dataSource"
+                        class="mat-elevation-z8"
+                        matSort
+                    >
+                       
+                        <ng-container matColumnDef="commissionRate">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                                class="text-black uppercase"
+                                mat-sort-header
+                            >
+                                Taux de commission
+                            </th>
+                            <td mat-cell *matCellDef="let commission">
+                                {{ commission.commissionRate }} %
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="creationDate">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                                class="text-black uppercase"
+                                mat-sort-header
+                            >
+                                Date de modification
+                            </th>
+                            <td mat-cell *matCellDef="let commission">
+                                
+                                {{ commission.creationDate | date: 'EEE, dd MMM yyyy HH:mm:ss' }}
+                            </td>
+                        </ng-container>
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
