@@ -22,6 +22,44 @@ function getAdminNavigations() {
                     icon: 'heroicons_outline:user-group',
                     link: '/admin/management/staff',
                 },
+                {
+                    id: 'service-mgmt.service',
+                    title: 'Services',
+                    type: 'basic',
+                    icon: 'heroicons_outline:service',
+                    link: '/admin/management/service',
+                },
+                {
+                    id: 'service-mgmt.commission',
+                    title: 'Commission',
+                    type: 'basic',
+                    icon: 'heroicons_outline:receipt-percent',
+                    link: '/admin/management/service/commission',
+                },
+
+            ],
+        }, {
+            id: 'expense-mgmt',
+            title: 'Dépenses',
+            type: 'aside',
+            icon: 'heroicons_outline:credit-card',
+            link: '',
+            children: [
+                {
+                    id: 'expense-mgmt.salary',
+                    title: 'Salaire',
+                    type: 'basic',
+                    icon: 'heroicons_outline:worker-salary',
+                    link: '/admin/expense/salary',
+                },
+
+                {
+                    id: 'expense-mgmt.expense',
+                    title: 'Dépenses diverses',
+                    type: 'basic',
+                    icon: 'heroicons_outline:pay-day',
+                    link: '/admin/expense',
+                },
             ],
         },
     ];
