@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Route, RouterModule } from '@angular/router';
 import { ServiceComponent } from './service/service.component';
 import { CommissionComponent } from './commission/commission.component';
-import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FuseAlertModule } from '@fuse/components/alert';
 import { MatTableModule } from '@angular/material/table';
@@ -15,9 +15,12 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { ServiceResolver } from 'app/resolvers/ServiceResolver';
+import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
+
 
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { MatPaginatorIntlFrench } from 'app/shared/MatpaginatorIntlFrench';
 registerLocaleData(localeFr, 'fr');
 
 
@@ -57,9 +60,13 @@ const serviceRoutes: Route[] = [
     MatOptionModule,
     MatSelectModule,
     MatChipsModule,
+    MatPaginatorModule
+    
   ],
   providers: [
-    {provide: LOCALE_ID, useValue: 'fr'}
+    {provide: LOCALE_ID, useValue: 'fr'},
+    { provide: MatPaginatorIntl, useClass: MatPaginatorIntlFrench }
+
   ]
 })
 export class ServiceModule { }

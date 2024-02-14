@@ -17,14 +17,14 @@ export class CommissionService  {
             `${environment.URL_API}/${this.baseUrl}`,
         );
     }
-    getHistory() {
+    getHistory(page:number = 1,size:number = 10) {
         return this._http.get<any>(
-            `${environment.URL_API}/${this.baseUrl}/history`,
+            `${environment.URL_API}/${this.baseUrl}/history?page=${page}&size=${size}`,
         );
     }
 
     update(data: any) {
-        return this._http.put<any>(
+        return this._http.post<any>(
             `${environment.URL_API}/${this.baseUrl}`,
             data
         );

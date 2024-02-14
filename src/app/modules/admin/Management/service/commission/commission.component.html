@@ -10,19 +10,39 @@
                     <div class="text-4xl font-medium tracking-tight">
                         Commission sur les services
                     </div>
-
-                    <!-- <div
-                        class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4"
-                    >
+                    <div
+                    class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4"
+                >
                     
+                    <input
+                        matInput
+                        [placeholder]="'Taux de commission'"
+                        type="number"
+                        min="0"
+                        max="100"
+                        (blur)="updateCommission($event)"
+                        [value]="commission.commissionRate"
+                        *ngIf="!isDisabled"
+                    />
+                    <mat-icon style="cursor: pointer;" *ngIf="!isDisabled" svgIcon="mat_outline:cancel" (click)="cancelEditCommissionRate()">
 
-                        Valeur actuelle de la commission + bouton de modification
-                     
-                    </div> -->
+                    </mat-icon>
+
+                    <button
+                        class="ml-4"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="editCommissionRate()"
+                        *ngIf="isDisabled"
+                    >
+                        {{commission.commissionRate}}%
+                        <mat-icon svgIcon="mat_outline:edit"></mat-icon>
+                    </button>
+                </div>
                 </div>
                 <div class="flex grid-cols-2">
                     <!-- *INTERVALLE DE DATE -->
-                    <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                    <!-- <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
                         <mat-form-field class="fuse-mat-rounded fuse-mat-dense w-full" [subscriptSizing]="'dynamic'">
                             <mat-icon matPrefix class="icon-size-5" [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
                             <input matInput [placeholder]="'Du'" type="date" />
@@ -35,7 +55,7 @@
                             <input matInput [autocomplete]="'off'" [placeholder]="'Au'" type="date" />
                             <span matPrefix class="label">Au </span>
                         </mat-form-field>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
@@ -83,6 +103,8 @@
                             *matRowDef="let row; columns: displayedColumns"
                         ></tr>
                     </table>
+                    <mat-paginator aria-label="éléments par page" [length]="totalItems" [pageSize]="itemsPerPage" [pageSizeOptions]="[2, 10, 20]" showFirstLastButtons (page)="pageChanged($event)"></mat-paginator>
+
                 </div>
             </div>
         </div>
