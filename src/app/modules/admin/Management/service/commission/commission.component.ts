@@ -64,6 +64,8 @@ export class CommissionComponent extends ShareComponent {
           (data) =>{
             this.dataSource = new MatTableDataSource<any>(data.data.items);
             this.totalItems = data.data.pagination.totalItems;
+            this.dataSource.sort = this.sort;
+
             
           }
           
