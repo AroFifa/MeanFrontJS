@@ -1,5 +1,5 @@
 import { UntypedFormGroup } from '@angular/forms';
-import { FuseAlertType } from '../../@fuse/components/alert';
+import { FuseAlertType } from '../../../@fuse/components/alert';
 
 interface Alert {
     type: FuseAlertType;

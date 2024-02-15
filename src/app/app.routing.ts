@@ -56,6 +56,13 @@ export const appRoutes: Route[] = [
                         (m) => m.AdminModule,
                     ),
             },
+            {
+                path: 'staff',
+                loadChildren: () =>
+                    import('app/modules/staff/staff.module').then(
+                        (m) => m.StaffModule,
+                    ),
+            },
         ],
     },
 

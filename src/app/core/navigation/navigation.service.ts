@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject, tap } from 'rxjs';
 import { Navigation } from 'app/core/navigation/navigation.types';
 import { navigations } from '../../routes';
+import { CommonService } from '../../shared/service/common.service';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +15,10 @@ export class NavigationService {
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient) {}
+    constructor(
+        private _httpClient: HttpClient,
+        private _commonService: CommonService,
+    ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -37,7 +41,11 @@ export class NavigationService {
     get(): Observable<Navigation> {
         return this._httpClient.get<Navigation>('api/common/navigation').pipe(
             tap((navigation) => {
-                this._navigation.next(navigations());
+                this._navigation.next(
+                    navigations(
+                        this._commonService.getValue_FromToken('userType'),
+                    ),
+                );
             }),
         );
     }

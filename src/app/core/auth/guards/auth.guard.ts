@@ -10,7 +10,7 @@ import {
 import { Observable, of, switchMap } from 'rxjs';
 import { AuthService } from 'app/core/auth/auth.service';
 import { jwtDecode } from 'jwt-decode';
-import { CommonService } from '../../../shared/common.service';
+import { CommonService } from '../../../shared/service/common.service';
 
 @Injectable({
     providedIn: 'root',
@@ -34,14 +34,14 @@ export class AuthGuard implements CanActivate {
         state: RouterStateSnapshot,
     ): boolean {
         let token = localStorage.getItem('accessToken');
-        if (this._commonService.tokenExpired() || !token) {
+        if (!token || this._commonService.tokenExpired()) {
             this._router.navigate(['sign-in']).then();
             return false;
         }
 
         let userType = this._commonService.getValue_FromToken('userType');
         if (state.url.split('/')[1] !== userType.toLowerCase())
-            this._router.navigate(['**']).then();
+            this._commonService.handleRedirection();
 
         return true;
     }

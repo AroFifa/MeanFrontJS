@@ -7,15 +7,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FuseCardModule } from '@fuse/components/card';
 import { FuseAlertModule } from '@fuse/components/alert';
-import { SharedModule } from 'app/shared/shared.module';
+import { SharedModule } from 'app/shared/module/shared.module';
 import { AuthResetPasswordComponent } from 'app/modules/auth/reset-password/reset-password.component';
 import { authResetPasswordRoutes } from 'app/modules/auth/reset-password/reset-password.routing';
 
 @NgModule({
-    declarations: [
-        AuthResetPasswordComponent
-    ],
-    imports     : [
+    declarations: [AuthResetPasswordComponent],
+    imports: [
         RouterModule.forChild(authResetPasswordRoutes),
         MatButtonModule,
         MatFormFieldModule,
@@ -24,9 +22,7 @@ import { authResetPasswordRoutes } from 'app/modules/auth/reset-password/reset-p
         MatProgressSpinnerModule,
         FuseCardModule,
         FuseAlertModule,
-        SharedModule
-    ]
+        SharedModule,
+    ],
 })
-export class AuthResetPasswordModule
-{
-}
+export class AuthResetPasswordModule {}

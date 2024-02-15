@@ -9,7 +9,7 @@ import { FuseFullscreenModule } from '@fuse/components/fullscreen';
 import { FuseLoadingBarModule } from '@fuse/components/loading-bar';
 import { FuseNavigationModule } from '@fuse/components/navigation';
 import { UserModule } from 'app/layout/common/user/user.module';
-import { SharedModule } from 'app/shared/shared.module';
+import { SharedModule } from 'app/shared/module/shared.module';
 import { CompactLayoutComponent } from 'app/layout/layouts/vertical/compact/compact.component';
 import { NotificationsModule } from '../../../common/notifications/notifications.module';
 
