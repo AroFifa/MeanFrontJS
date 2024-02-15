@@ -14,7 +14,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { CommonService } from '../../../shared/common.service';
+import { CommonService } from '../../../shared/service/common.service';
 
 @Component({
     selector: 'user',

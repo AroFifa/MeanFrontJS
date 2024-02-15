@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, NgForm, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { ShareComponent } from '../../../shared/ShareComponent';
+import { ShareComponent } from '../../../shared/component/ShareComponent';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { CommonService } from '../../../shared/common.service';
+import { CommonService } from '../../../shared/service/common.service';
 
 @Component({
     selector: 'auth-sign-in',

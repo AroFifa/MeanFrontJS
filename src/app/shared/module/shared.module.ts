@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FuseAlertModule } from '../../@fuse/components/alert';
+import { FuseAlertModule } from '../../../@fuse/components/alert';
 
 @NgModule({
     imports: [CommonModule, FormsModule, ReactiveFormsModule, FuseAlertModule],

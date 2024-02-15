@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import {  MatDialogRef } from "@angular/material/dialog";
-import { ShareComponent } from "app/shared/ShareComponent";
+import { ShareComponent } from "app/shared/component/ShareComponent";
 import { ServiceService } from "../../service.service";
 
 @Component({

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CRUDService } from '../../../../shared/CRUDService';
+import { CRUDService } from '../../../../shared/service/CRUDService';
 
 @Injectable({
     providedIn: 'root',

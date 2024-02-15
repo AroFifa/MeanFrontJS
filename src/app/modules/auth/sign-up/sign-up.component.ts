@@ -10,7 +10,7 @@ import {
 import { fuseAnimations } from '@fuse/animations';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { ShareComponent } from '../../../shared/ShareComponent';
+import { ShareComponent } from '../../../shared/component/ShareComponent';
 import { FuseValidators } from '../../../../@fuse/validators';
 import { User } from '../../../models/User';
 

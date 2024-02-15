@@ -1,4 +1,4 @@
-import { CommonService } from './shared/common.service';
+import { CommonService } from './shared/service/common.service';
 
 const userTypeNavigationMap = {
     Admin: getAdminNavigations,
