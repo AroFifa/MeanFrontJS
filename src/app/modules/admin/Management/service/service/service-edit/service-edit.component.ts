@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { ShareComponent } from "app/shared/ShareComponent";
 import { ServiceService } from "../../service.service";
+import { StaffService } from "../../../staff/staff.service";
 
 @Component({
     selector: "app-service-edit",
@@ -53,11 +54,9 @@ export class ServiceEditComponent extends ShareComponent {
         this.form.disable();
 
 
-        let service = {
-            ...this.form.value,
-            _id: this.serviceData._id,
-        };
-        this._serviceService.update(this.serviceData._id,JSON.stringify(service)).subscribe((data) => {
+        this._serviceService
+            .update(this.serviceData._id,this.form.value)
+            .subscribe((data) => {
             if (data.state == 'error') this.alert.type = 'error';
             else {
                 this.alert.type = 'success';
@@ -68,7 +67,11 @@ export class ServiceEditComponent extends ShareComponent {
             }
             this.alert.message = data.message;
             this.handleMessage();
-        });
+        })
+        
+        ;
+
+
     }
 
 
