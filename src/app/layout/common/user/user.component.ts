@@ -11,10 +11,11 @@ import {
 import { Router } from '@angular/router';
 import { BooleanInput } from '@angular/cdk/coercion';
 import { Subject, takeUntil } from 'rxjs';
-import { User } from 'app/core/user/user.types';
-import { UserService } from 'app/core/user/user.service';
+import { UserService } from 'app/shared/service/user.service';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { CommonService } from '../../../shared/common.service';
+import { CommonService } from '../../../shared/service/common.service';
+import { User } from '../../../models/User';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'user',
@@ -28,9 +29,8 @@ export class UserComponent implements OnInit, OnDestroy {
     /* eslint-disable @typescript-eslint/naming-convention */
     static ngAcceptInputType_showAvatar: BooleanInput;
     /* eslint-enable @typescript-eslint/naming-convention */
-    isConnected: boolean;
-    @Input() showAvatar: boolean = true;
     user: User;
+    URL_API = environment.URL_API;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -52,17 +52,11 @@ export class UserComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        // Subscribe to user changes
-        /*  this._userService.user$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((user: User) => {
-                this.user = user;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });*/
         this.user = {
-            username: localStorage.getItem('username'),
+            email: this._commonService.getValue_FromToken('email'),
+            userType: this._commonService.getValue_FromToken('userType'),
+            pathImg: this._commonService.getValue_FromToken('pathImg'),
+            _id: this._commonService.getValue_FromToken('id'),
         };
     }
 
@@ -108,11 +102,11 @@ export class UserComponent implements OnInit, OnDestroy {
     /**
      * Sign out
      */
-    signIn(): void {
-        this._router.navigate(['/sign-in']);
+    signOut(): void {
+        this._commonService.signOut();
     }
 
     account() {
-        this._router.navigate(['/account']);
+        this._router.navigate(['/staff/account']);
     }
 }

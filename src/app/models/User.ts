@@ -7,6 +7,7 @@ export interface User {
     userType: UserType;
     pathImg?: string;
     email: string;
+    phoneNumber?: string;
     posts?: any[];
     information?: string;
     password?: string;

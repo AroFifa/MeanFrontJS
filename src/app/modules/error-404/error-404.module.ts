@@ -2,21 +2,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { SharedModule } from 'app/shared/shared.module';
+import { SharedModule } from 'app/shared/module/shared.module';
 import { Error404Component } from 'app/modules/error-404/error-404.component';
 import { error404Routes } from 'app/modules/error-404/error-404.routing';
 
 @NgModule({
-    declarations: [
-        Error404Component
-    ],
-    imports     : [
+    declarations: [Error404Component],
+    imports: [
         RouterModule.forChild(error404Routes),
         MatButtonModule,
         MatIconModule,
-        SharedModule
-    ]
+        SharedModule,
+    ],
 })
-export class Error404Module
-{
-}
+export class Error404Module {}

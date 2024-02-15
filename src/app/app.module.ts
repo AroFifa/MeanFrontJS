@@ -19,7 +19,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ConfirmationComponent } from './modules/Common/confirmation/confirmation.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { TokenInterceptor } from './shared/TokenInterceptor';
+import { TokenInterceptor } from './shared/utils/TokenInterceptor';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
