@@ -9,6 +9,13 @@ const userTypeNavigationMap = {
 function getAdminNavigations() {
     return [
         {
+            id: 'home',
+            title: 'Dashboard',
+            type: 'basic',
+            icon: 'heroicons_outline:chart-pie',
+            link: '/admin/dashboard',
+        },
+        {
             id: 'management',
             title: 'Gestion',
             type: 'aside',
@@ -70,11 +77,18 @@ function getCustomerNavigations() {
 }
 
 function getStaffNavigations() {
-    return [];
+    return [
+        {
+            id: 'home',
+            title: 'Accueil',
+            type: 'basic',
+            icon: 'heroicons_outline:home',
+            link: '/staff/home',
+        },
+    ];
 }
 
-export const navigations = () => {
-    let userType = new CommonService().getValue_FromToken('userType');
+export const navigations = (userType: string) => {
     let arrayMenu = [];
 
     let navigationFunction = userTypeNavigationMap[userType];

@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, NgForm, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { ShareComponent } from '../../../shared/component/ShareComponent';
+import { ShareComponent } from '../../../shared/Component/ShareComponent';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { CommonService } from '../../../shared/service/common.service';
+import { UserService } from '../../../shared/service/user.service';
 
 @Component({
     selector: 'auth-sign-in',
@@ -22,7 +23,6 @@ export class AuthSignInComponent extends ShareComponent implements OnInit {
         private _formBuilder: UntypedFormBuilder,
         private _authService: AuthService,
         private _commonService: CommonService,
-        private _router: Router,
     ) {
         super();
     }
@@ -48,15 +48,6 @@ export class AuthSignInComponent extends ShareComponent implements OnInit {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    handleRedirection() {
-        let userType = this._commonService.getValue_FromToken('userType');
-        let urlRedirection = '/admin/dashboard';
-        if (userType == 'Staff') urlRedirection = '/staff/home';
-        if (userType == 'Customer') urlRedirection = '/customer/home';
-
-        this._router.navigate([urlRedirection]).then();
-    }
-
     /**
      * Sign in
      */
@@ -75,8 +66,8 @@ export class AuthSignInComponent extends ShareComponent implements OnInit {
             } else {
                 this.form.enable();
                 this.signInNgForm.resetForm();
-                localStorage.setItem('accessToken', data.data);
-                this.handleRedirection();
+                localStorage.setItem('accessToken', data.data.accessToken);
+                this._commonService.handleRedirection();
             }
         });
     }

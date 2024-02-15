@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { ShareComponent } from '../../../../shared/component/ShareComponent';
+import { ShareComponent } from '../../../../shared/Component/ShareComponent';
 import { MatDialog } from '@angular/material/dialog';
 import { StaffCreationComponent } from './staff-creation/staff-creation.component';
 import { StaffService } from './staff.service';

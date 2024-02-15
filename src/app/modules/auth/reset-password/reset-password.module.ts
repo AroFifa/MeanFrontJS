@@ -12,10 +12,8 @@ import { AuthResetPasswordComponent } from 'app/modules/auth/reset-password/rese
 import { authResetPasswordRoutes } from 'app/modules/auth/reset-password/reset-password.routing';
 
 @NgModule({
-    declarations: [
-        AuthResetPasswordComponent
-    ],
-    imports     : [
+    declarations: [AuthResetPasswordComponent],
+    imports: [
         RouterModule.forChild(authResetPasswordRoutes),
         MatButtonModule,
         MatFormFieldModule,
@@ -24,9 +22,7 @@ import { authResetPasswordRoutes } from 'app/modules/auth/reset-password/reset-p
         MatProgressSpinnerModule,
         FuseCardModule,
         FuseAlertModule,
-        SharedModule
-    ]
+        SharedModule,
+    ],
 })
-export class AuthResetPasswordModule
-{
-}
+export class AuthResetPasswordModule {}

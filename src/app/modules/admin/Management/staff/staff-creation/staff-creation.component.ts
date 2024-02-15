@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ShareComponent } from '../../../../../shared/component/ShareComponent';
+import { ShareComponent } from '../../../../../shared/Component/ShareComponent';
 import { FormBuilder, Validators } from '@angular/forms';
 import { StaffService } from '../staff.service';
 import { MatSelectChange } from '@angular/material/select';
