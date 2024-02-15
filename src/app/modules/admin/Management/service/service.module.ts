@@ -20,7 +20,8 @@ import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator'
 
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
-import { MatPaginatorIntlFrench } from 'app/shared/MatpaginatorIntlFrench';
+import { MatPaginatorIntlFrench } from 'app/custom/intl/MatpaginatorIntlFrench';
+import { DurationPipe } from 'app/custom/pipe/DurationPipe';
 registerLocaleData(localeFr, 'fr');
 
 
@@ -44,7 +45,8 @@ const serviceRoutes: Route[] = [
 @NgModule({
   declarations: [
     ServiceComponent,
-    CommissionComponent
+    CommissionComponent,
+    DurationPipe
   ],
   imports: [
     CommonModule,

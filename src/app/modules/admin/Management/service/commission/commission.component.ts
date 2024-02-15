@@ -20,6 +20,7 @@ export class CommissionComponent extends ShareComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   totalItems = 0;
   itemsPerPage = 10;  
+  itemsPerPageOptions = [5, 10, 20, 50];
   page = 1;
 
   @ViewChild(MatSort) sort: MatSort;

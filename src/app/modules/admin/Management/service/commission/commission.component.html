@@ -76,7 +76,7 @@
                                 class="text-black uppercase"
                                 mat-sort-header
                             >
-                                Taux de commission
+                                Taux de commission 
                             </th>
                             <td mat-cell *matCellDef="let commission">
                                 {{ commission.commissionRate }} %
@@ -93,7 +93,6 @@
                                 Date de modification
                             </th>
                             <td mat-cell *matCellDef="let commission">
-                                
                                 {{ commission.creationDate | date: 'EEE, dd MMM yyyy HH\'h\'mm\'m\'ss\'s\'' }}
                             </td>
                         </ng-container>
@@ -106,7 +105,7 @@
                             *matRowDef="let row; columns: displayedColumns"
                         ></tr>
                     </table>
-                    <mat-paginator aria-label="éléments par page" [length]="totalItems" [pageSize]="itemsPerPage" [pageSizeOptions]="[2, 10, 20]" showFirstLastButtons (page)="pageChanged($event)"></mat-paginator>
+                    <mat-paginator aria-label="éléments par page" [length]="totalItems" [pageSize]="itemsPerPage" [pageSizeOptions]="itemsPerPageOptions" showFirstLastButtons (page)="pageChanged($event)"></mat-paginator>
 
                 </div>
             </div>
