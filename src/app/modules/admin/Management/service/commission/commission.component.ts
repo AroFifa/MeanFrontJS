@@ -53,13 +53,12 @@ export class CommissionComponent extends ShareComponent {
     this.commissionHistory = this.route.snapshot.data['initialData'][1].data;
     
     this.dataSource = new MatTableDataSource<any>(this.commissionHistory.items);
+    this.dataSource.sort = this.sort;
+
     this.totalItems = this.commissionHistory.pagination.totalItems;
     
   }
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-  }
   syncData (){
     this._commissionService
          .getHistory(this.page,this.itemsPerPage)

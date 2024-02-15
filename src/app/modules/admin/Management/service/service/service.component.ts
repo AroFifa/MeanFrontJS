@@ -58,13 +58,12 @@ export class ServiceComponent extends ShareComponent {
 
     
     this.dataSource = new MatTableDataSource<any>(this.services.services.items);
+
+    this.dataSource.sort = this.sort;
     this.totalItems = this.services.services.pagination.totalItems;
     
   }
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-  }
 
 
   syncData (){
