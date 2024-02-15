@@ -22,6 +22,7 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { MatPaginatorIntlFrench } from 'app/custom/intl/MatpaginatorIntlFrench';
 import { DurationPipe } from 'app/custom/pipe/DurationPipe';
+import { AriaryCurrencyPipe } from 'app/custom/pipe/AriaryCurrencyPipe';
 registerLocaleData(localeFr, 'fr');
 
 
@@ -46,7 +47,8 @@ const serviceRoutes: Route[] = [
   declarations: [
     ServiceComponent,
     CommissionComponent,
-    DurationPipe
+    DurationPipe,
+    AriaryCurrencyPipe
   ],
   imports: [
     CommonModule,

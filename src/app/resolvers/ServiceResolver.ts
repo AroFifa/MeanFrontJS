@@ -13,7 +13,7 @@ export class ServiceResolver implements Resolve<any>{
         return forkJoin([
             this.commissionService.get(),
             this.commissionService.getHistory(),
-            this.serviceService.getAll()
+            this.serviceService.getAll(1,10)
         ])    }
     
 }
