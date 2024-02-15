@@ -13,17 +13,20 @@
                     <div
                     class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4"
                 >
-                    
+                    <mat-form-field
+                        *ngIf="!isDisabled"
+                        class="fuse-mat-rounded fuse-mat-dense w-full"
+                        [subscriptSizing]="'dynamic'">
                     <input
                         matInput
                         [placeholder]="'Taux de commission'"
                         type="number"
-                        min="0"
-                        max="100"
                         (blur)="updateCommission($event)"
-                        [value]="commission.commissionRate"
-                        *ngIf="!isDisabled"
+                        [formControl]="commissionRateInput"
                     />
+                    <mat-error *ngIf="commissionRateInput.errors && !isDisabled">
+                        Valeur du taux de commission non valide
+                      </mat-error></mat-form-field>
                     <mat-icon style="cursor: pointer;" *ngIf="!isDisabled" svgIcon="mat_outline:cancel" (click)="cancelEditCommissionRate()">
 
                     </mat-icon>

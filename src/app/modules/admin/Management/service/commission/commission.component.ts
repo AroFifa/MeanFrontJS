@@ -8,6 +8,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationComponent } from 'app/modules/Common/confirmation/confirmation.component';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-commission',
@@ -22,7 +23,7 @@ export class CommissionComponent extends ShareComponent {
   page = 1;
 
   @ViewChild(MatSort) sort: MatSort;
-  // commission history 
+  commissionRateInput : FormControl;
   isDisabled:boolean = true;
   commissionHistory : any;
   dataSource: any;
@@ -47,6 +48,7 @@ export class CommissionComponent extends ShareComponent {
 
     
     this.commission = this.route.snapshot.data['initialData'][0].data;
+    this.commissionRateInput = new FormControl(this.commission.commissionRate, [Validators.required, Validators.min(0), Validators.max(100)]);
     this.commissionHistory = this.route.snapshot.data['initialData'][1].data;
     
     this.dataSource = new MatTableDataSource<any>(this.commissionHistory.items);
@@ -75,11 +77,11 @@ export class CommissionComponent extends ShareComponent {
          
 
     this._commissionService
-    .get()
-    .subscribe(
-     (item) =>
-       (this.commission = item.data)
-    )
+      .get()
+      .subscribe((item) => {
+        this.commission = item.data;
+        this.commissionRateInput.setValue(this.commission.commissionRate);
+      });
   }
 
 
@@ -95,23 +97,25 @@ export class CommissionComponent extends ShareComponent {
 
 
   updateCommission(event:any) {
-    this._matDialog
-        .open(ConfirmationComponent, {
-            data: {
-                type: 'info',
-                message: `Voulez vous modifier le taux de commission des services en ${event.target.value}% ?`,
-            },
-        })
-        .afterClosed()
-        .subscribe((response) => {
-            if (response) {
-                this._commissionService
-                    .update({commissionRate: event.target.value})
-                    .subscribe(() => {this.syncData()});
-            }            
-            this.isDisabled = true;
+    if(this.commissionRateInput.valid && event.target.value != this.commission.commissionRate){
+      this._matDialog
+          .open(ConfirmationComponent, {
+              data: {
+                  type: 'info',
+                  message: `Voulez vous modifier le taux de commission des services en ${event.target.value}% ?`,
+              },
+          })
+          .afterClosed()
+          .subscribe((response) => {
+              if (response) {
+                  this._commissionService
+                      .update({commissionRate: event.target.value})
+                      .subscribe(() => {this.syncData()});
+              }            
+              this.isDisabled = true;
 
-        });
+          });
+    }
   }
   pageChanged(event: PageEvent) {
     this.page = event.pageIndex + 1;
