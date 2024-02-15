@@ -27,7 +27,6 @@ export class CommonService {
 
         return decodedToken.exp < currentTime;
     }
-
     signOut() {
         localStorage.removeItem('accessToken');
         this.userService.user = null;

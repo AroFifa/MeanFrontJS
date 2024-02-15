@@ -22,8 +22,16 @@ export class CRUDService {
         );
     }
 
-    getAll() {
-        return this._http.get<any>(`${environment.URL_API}/${this.baseUrl}`);
+    getAll(page: number = null, itemsPerPage: number = null) {
+        let params = [
+            page ? `page=${page}` : '',
+            itemsPerPage ? `size=${itemsPerPage}` : ''
+          ].filter(Boolean).join('&');
+          
+          let url = `${environment.URL_API}/${this.baseUrl}${params ? '?' + params : ''}`;
+          
+          return this._http.get<any>(url);
+          
     }
 
     getOne(id: string) {

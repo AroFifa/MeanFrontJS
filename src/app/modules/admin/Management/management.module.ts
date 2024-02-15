@@ -25,6 +25,13 @@ const managementRoutes: Route[] = [
             initialData: StaffResolver,
         },
     },
+    {
+        path: 'service-mgmt',
+        loadChildren: () =>
+            import('app/modules/admin/Management/service/service.module').then(
+                (m) => m.ServiceModule,
+            ),
+    }
 ];
 
 @NgModule({
