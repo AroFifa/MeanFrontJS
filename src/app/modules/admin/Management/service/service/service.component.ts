@@ -127,19 +127,19 @@ updateService(service: any) {
         });
 }
 
-deleteStaff(id: string) {
+deleteService(service:any) {
     this._matDialog
         .open(ConfirmationComponent, {
             data: {
                 type: 'delete',
-                message: 'Voulez vous supprimez ce service ? ',
+                message: `Voulez vous supprimez ce service:  "${service.name}"? `,
             },
         })
         .afterClosed()
         .subscribe((response) => {
             if (response) {
                 this._serviceService
-                    .delete(id)
+                    .delete(service._id)
                     .subscribe(() => this.syncData());
             }
         });

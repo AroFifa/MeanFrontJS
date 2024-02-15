@@ -65,9 +65,9 @@
                             >
                                 Description
                             </th>
-                            <td mat-cell *matCellDef="let service">
+                            <td mat-cell *matCellDef="let service" [matTooltip]="service.description">
                                 
-                                {{ service.description}}
+                                {{ service.description | slice:0:50 }}{{service.description?.length > 50 ? '...' : ''}}
                             </td>
                         </ng-container>
                         <ng-container matColumnDef="price">
@@ -104,10 +104,11 @@
                                 class="text-base uppercase"
                                 *matHeaderCellDef
                             ></th>
-                            <td mat-cell *matCellDef="let user">
+                            <td mat-cell *matCellDef="let user" >
                                 <button
                                     class="ml-4"
                                     mat-button
+                                    matTooltip="modifier"
                                     (click)="updateService(service)"
                                 >
                                     <mat-icon
@@ -124,11 +125,12 @@
                                 class="text-base uppercase"
                                 *matHeaderCellDef
                             ></th>
-                            <td mat-cell *matCellDef="let service">
+                            <td mat-cell *matCellDef="let service" >
                                 <button
+                                matTooltip="supprimer"
                                     class="ml-4"
                                     mat-button
-                                    (click)="deleteService(service._id)"
+                                    (click)="deleteService(service)"
                                 >
                                     <mat-icon
                                         svgIcon="heroicons_outline:trash"

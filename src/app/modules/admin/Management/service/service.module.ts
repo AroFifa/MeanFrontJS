@@ -23,6 +23,7 @@ import localeFr from '@angular/common/locales/fr';
 import { MatPaginatorIntlFrench } from 'app/custom/intl/MatpaginatorIntlFrench';
 import { DurationPipe } from 'app/custom/pipe/DurationPipe';
 import { AriaryCurrencyPipe } from 'app/custom/pipe/AriaryCurrencyPipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 registerLocaleData(localeFr, 'fr');
 
 
@@ -57,6 +58,7 @@ const serviceRoutes: Route[] = [
     MatButtonModule,
     FuseAlertModule,
     MatTableModule,
+    MatTooltipModule,
     MatSortModule,
     MatIconModule,
     ReactiveFormsModule,
