@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'app/environments/environment';
-import { ShareComponent } from 'app/shared/component/ShareComponent';
+import { ShareComponent } from 'app/shared/Component/ShareComponent';
 import { CommissionService } from './commission.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';

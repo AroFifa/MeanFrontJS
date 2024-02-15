@@ -5,7 +5,7 @@ import { environment } from 'app/environments/environment';
 import { ServiceService } from '../service.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ShareComponent } from 'app/shared/component/ShareComponent';
+import { ShareComponent } from 'app/shared/Component/ShareComponent';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationComponent } from 'app/modules/Common/confirmation/confirmation.component';
 import { ServiceEditComponent } from './service-edit/service-edit.component';
