@@ -24,6 +24,8 @@ import { MatPaginatorIntlFrench } from 'app/custom/intl/MatpaginatorIntlFrench';
 import { DurationPipe } from 'app/custom/pipe/DurationPipe';
 import { AriaryCurrencyPipe } from 'app/custom/pipe/AriaryCurrencyPipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ServiceCreationComponent } from './service/service-creation/service-creation.component';
+import { ServiceEditComponent } from './service/service-edit/service-edit.component';
 registerLocaleData(localeFr, 'fr');
 
 
@@ -47,6 +49,8 @@ const serviceRoutes: Route[] = [
 @NgModule({
   declarations: [
     ServiceComponent,
+    ServiceCreationComponent,
+    ServiceEditComponent,
     CommissionComponent,
     DurationPipe,
     AriaryCurrencyPipe

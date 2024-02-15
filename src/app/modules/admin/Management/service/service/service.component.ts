@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ShareComponent } from 'app/shared/ShareComponent';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationComponent } from 'app/modules/Common/confirmation/confirmation.component';
+import { ServiceEditComponent } from './service-edit/service-edit.component';
+import { ServiceCreationComponent } from './service-creation/service-creation.component';
 
 @Component({
   selector: 'app-service',
@@ -97,13 +99,9 @@ export class ServiceComponent extends ShareComponent {
 
   addService() {
     this._matDialog
-        .open(ConfirmationComponent, {
+        .open(ServiceCreationComponent, {
             width: '900px',
-            // data: { services: this.services },
-            data: {
-              type: 'delete',
-              message: 'Voulez vous supprimez ce service ? ',
-          },
+            data: { services: this.services },
         })
         .afterClosed()
         .subscribe(() => {
@@ -113,13 +111,10 @@ export class ServiceComponent extends ShareComponent {
 
 updateService(service: any) {
     this._matDialog
-        .open(ConfirmationComponent, {
+        .open(ServiceEditComponent, {
             width: '900px',
-            // data: { service: service },
-            data: {
-                type: 'delete',
-                message: 'Voulez vous supprimez ce service ? ',
-            },
+            data: { service },
+            
         })
         .afterClosed()
         .subscribe(() => {
