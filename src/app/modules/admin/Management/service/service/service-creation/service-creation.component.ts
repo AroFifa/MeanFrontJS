@@ -1,6 +1,6 @@
-import { Component, Inject } from "@angular/core";
+import { Component } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import {  MatDialogRef } from "@angular/material/dialog";
 import { ShareComponent } from "app/shared/ShareComponent";
 import { ServiceService } from "../../service.service";
 
@@ -13,7 +13,6 @@ export class ServiceCreationComponent extends ShareComponent {
     constructor(
         public matDialogRef: MatDialogRef<ServiceCreationComponent>,
         private _formBuilder: FormBuilder,
-        @Inject(MAT_DIALOG_DATA) public data: any,
         private _serviceService: ServiceService,
     ) {
         super();
@@ -34,7 +33,7 @@ export class ServiceCreationComponent extends ShareComponent {
         })
     }
 
-    ngOnInit(): void {
+    ngOnInit() {
         this.initForm();
     }
 

@@ -98,10 +98,11 @@ export class ServiceComponent extends ShareComponent {
 
   addService() {
     this._matDialog
-        .open(ServiceCreationComponent, {
-            width: '900px',
-            data: { services: this.services },
-        })
+        .open(
+            ServiceCreationComponent, {
+              width: '900px',
+          }
+        )
         .afterClosed()
         .subscribe(() => {
             this.syncData();

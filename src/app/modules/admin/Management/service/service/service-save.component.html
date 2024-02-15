@@ -23,7 +23,7 @@
                 <mat-label>Nom du service </mat-label>
                 <mat-icon
                     class="icon-size-5"
-                    [svgIcon]="'heroicons_solid:service'"
+                    [svgIcon]="'heroicons_outline:service'"
                     matPrefix
                 ></mat-icon>
                 <input [formControlName]="'name'" matInput />
@@ -53,7 +53,7 @@
                 <mat-label>Prix (Ar) </mat-label>
                 <mat-icon
                     class="icon-size-5"
-                    [svgIcon]="'heroicons_solid:banknotes'"
+                    [svgIcon]="'heroicons_outline:banknotes-solid'"
                     matPrefix
                 ></mat-icon>
                 <input [formControlName]="'price'" min="0" type="number" matInput />
@@ -69,7 +69,7 @@
                 <mat-label>Durée (en min)</mat-label>
                 <mat-icon
                     class="icon-size-5"
-                    [svgIcon]="'heroicons_solid:clock'"
+                    [svgIcon]="'heroicons_outline:clock-solid'"
                     matPrefix
                 ></mat-icon>
                 <input [formControlName]="'duration'" type="number" min="0" [max]="24*60" matInput />
