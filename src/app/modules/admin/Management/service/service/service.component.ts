@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationComponent } from 'app/modules/Common/confirmation/confirmation.component';
 import { ServiceEditComponent } from './service-edit/service-edit.component';
 import { ServiceCreationComponent } from './service-creation/service-creation.component';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-service',
@@ -43,15 +44,23 @@ export class ServiceComponent extends ShareComponent {
   constructor(
     private route: ActivatedRoute,        
     private _matDialog: MatDialog,
+    private _formBuilder: FormBuilder,
     private _serviceService: ServiceService
 
   ){
     super();
   }
 
+
+  initForm(){
+    this.form = this._formBuilder.group({
+        name: [''],
+        price_interval: [''],
+        duration_interval: ['']
+    })
+}
   ngOnInit(){
 
-    
     this.services = this.route.snapshot.data['initialData'][2].data;
 
     this.serviceFilterOptions = this.services.options;
@@ -61,7 +70,8 @@ export class ServiceComponent extends ShareComponent {
 
     this.dataSource.sort = this.sort;
     this.totalItems = this.services.services.pagination.totalItems;
-    
+
+    this.initForm();    
   }
 
 

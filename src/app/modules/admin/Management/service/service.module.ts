@@ -26,7 +26,7 @@ import { AriaryCurrencyPipe } from 'app/custom/pipe/AriaryCurrencyPipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ServiceCreationComponent } from './service/service-creation/service-creation.component';
 import { ServiceEditComponent } from './service/service-edit/service-edit.component';
-import { NouisliderModule } from 'ng2-nouislider';
+import {MatSliderModule} from '@angular/material/slider';
 registerLocaleData(localeFr, 'fr');
 
 
@@ -72,7 +72,7 @@ const serviceRoutes: Route[] = [
     MatSelectModule,
     MatChipsModule,
     MatPaginatorModule,
-    NouisliderModule
+    MatSliderModule
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'fr'},
