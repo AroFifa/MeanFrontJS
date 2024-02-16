@@ -22,6 +22,8 @@ import localeFr from '@angular/common/locales/fr';
 import { SharedModule } from 'app/shared/module/shared.module';
 import { ExpenseCreationComponent } from './general-expense/expense-creation/expense-creation.component';
 import { ExpenseEditComponent } from './general-expense/expense-edit/expense-edit.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -61,6 +63,8 @@ const expenseRoutes: Route[] = [
     MatSelectModule,
     MatChipsModule,
     MatPaginatorModule,
+    MatDatepickerModule,
+    MatTooltipModule,
     SharedModule
   ],
   

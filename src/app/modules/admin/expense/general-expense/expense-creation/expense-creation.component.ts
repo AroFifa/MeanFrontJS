@@ -33,17 +33,22 @@ export class ExpenseCreationComponent extends ShareComponent {
         this.form = this._formBuilder.group({
             name: ['',Validators.required],
             description: [''],
+            date: [new Date(),Validators.required],
             amount: ['',Validators.min(0)],
-            expenseCategory: ['',Validators.required],
+            expenseCategory: [this.category._id,Validators.required],
             frequencyValue: [1],
-            frequency: [''],
+            frequency: [this.frequency._id],
         })
     }
 
     ngOnInit() {
-        this.initForm();
         this.categories = this.data.categories;
         this.frequencies = this.data.frequencies;
+
+        this.category = this.categories.find((ctg)=>ctg.categoryName.toLowerCase()==="dépenses ponctuelles");
+        this.frequency = this.frequencies.find((frq)=>frq.level===0);
+        this.initForm();
+
 
     }
 
@@ -52,19 +57,39 @@ export class ExpenseCreationComponent extends ShareComponent {
     }
 
     onSubmit() {
+
+        
         if (this.form.invalid) return;
         this.form.disable();
 
-        
         let expense : any = {
             ...this.form.value,
-            expenseCategory: this.category,
-            frequency: this.frequency,
-            date: new Date().toISOString()
-        }
+            expenseCategory: {
+                id: this.category._id,
+                categoryName: this.category.categoryName
+            },
+            frequency: {
+                id: this.frequency._id,
+                frequency: this.frequency.frequency,
+                level: this.frequency.level
+            },
+        };
+        
+        
         
         this._expenseService.create(expense).subscribe((data) => {
-            this.matDialogRef.close(data);
+            if (data.state == 'error') this.alert.type = 'error';
+            else {
+                this.alert.type = 'success';
+                this.callback = () => {
+                    this.form.reset();
+                    this.closeModal();
+                };
+            }
+            console.error(data.message);
+            
+            this.alert.message = data.message;
+            this.handleMessage();
         });
     }
 
@@ -78,7 +103,8 @@ export class ExpenseCreationComponent extends ShareComponent {
     }
 
     toggleFerquencyInput(categoryName: string) {
-        if (categoryName.toLowerCase() !== 'dépenses ponctuelles'){ this.displayFrequencyInput = true;
+        
+        if (categoryName.toLowerCase() === 'dépenses ponctuelles'){ this.displayFrequencyInput = false;
             this.form.get('frequency').clearValidators();
         }
         else{ this.displayFrequencyInput = true;

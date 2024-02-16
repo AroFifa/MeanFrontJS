@@ -18,12 +18,13 @@
     >
 
 
-        <div class="grid gap-6 w-full">
+    <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+        <div class="sm:col-span-2">
             <mat-form-field class="fuse-mat-dense flex-auto w-full">
                 <mat-label>Dépense </mat-label>
                 <mat-icon
                     class="icon-size-5"
-                    [svgIcon]="'heroicons_outline:service'"
+                    [svgIcon]="'heroicons_outline:income-wages'"
                     matPrefix
                 ></mat-icon>
                 <input [formControlName]="'name'" matInput />
@@ -33,6 +34,21 @@
                 </mat-error>
             </mat-form-field>
         </div>
+
+        <div class="sm:col-span-2">
+            <mat-form-field  class="fuse-mat-dense flex-auto w-full">
+                <mat-label>Date </mat-label>
+                <input matInput [matDatepicker]="datePicker" placeholder="Date" [formControlName]="'date'">
+                <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+                <mat-datepicker #datePicker></mat-datepicker>
+
+                <mat-error *ngIf="form.get('date').hasError('required')">
+                    La date est obligatoire
+                </mat-error>
+              </mat-form-field>
+        </div>
+    </div>
+    
 
 
     <div class="grid gap-6 w-full">
@@ -70,7 +86,7 @@
                 <mat-label>Catégorie</mat-label>
                 <mat-icon
                     class="icon-size-5"
-                    [svgIcon]="'heroicons_outline:identification'"
+                    [svgIcon]="'heroicons_outline:tag'"
                     matPrefix
                 ></mat-icon>
                 <mat-select
@@ -95,10 +111,10 @@
     <div *ngIf="displayFrequencyInput" class="grid sm:grid-cols-4 gap-6 w-full mt-8">
         <div class="sm:col-span-2">
             <mat-form-field class="fuse-mat-dense flex-auto w-full">
-                <!-- <mat-label> Fois </mat-label> -->
+                <mat-label> Tous les </mat-label>
                 <mat-icon
                     class="icon-size-5"
-                    [svgIcon]="'heroicons_outline:banknotes-solid'"
+                    [svgIcon]="'heroicons_outline:x'"
                     matPrefix
                 ></mat-icon>
                 <input [formControlName]="'frequencyValue'" min="1" placeholder="fois" type="number" matInput />
@@ -115,7 +131,7 @@
                 <mat-label>Fréquence</mat-label>
                 <mat-icon
                     class="icon-size-5"
-                    [svgIcon]="'heroicons_outline:identification'"
+                    [svgIcon]="'heroicons_outline:arrow-path-solid'"
                     matPrefix
                 ></mat-icon>
                 <mat-select
@@ -125,7 +141,7 @@
                 >
                     <ng-container *ngFor="let freq of frequencies">
                         <mat-option value="{{ freq._id }}">{{
-                            freq.name
+                            freq.frequency
                         }}</mat-option>
                     </ng-container>
                 </mat-select>
@@ -168,6 +184,7 @@
             </button>
         </div>
 
-    </form>
 
+    </form>
 </div>
+

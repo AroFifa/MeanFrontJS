@@ -18,7 +18,7 @@ export class ExpenseEditComponent extends ShareComponent {
     frequency: any;
     expenseData: any;
 
-    displayFrequencyInput = false;
+    displayFrequencyInput : boolean = false;
 
 
     constructor(
@@ -31,21 +31,27 @@ export class ExpenseEditComponent extends ShareComponent {
     }
 
     initForm(){
+
+        
         this.form = this._formBuilder.group({
             name: [this.expenseData.name,Validators.required],
             description: [this.expenseData.description],
+            date: [this.expenseData.date,Validators.required],
             amount: [this.expenseData.amount,Validators.min(0)],
-            expenseCategory: [this.expenseData.expenseCategory._id,Validators.required],
+            expenseCategory: [this.expenseData.expenseCategory.id,Validators.required],
             frequencyValue: [this.expenseData.frequencyValue],
-            frequency: [this.expenseData.frequency._id],
+            frequency: [this.expenseData.frequency.id],
         })
     }
 
     ngOnInit() {
         this.expenseData = this.data.expense;
-        this.initForm();
+
+        if(this.expenseData.expenseCategory.categoryName.toLowerCase() === 'dépenses ponctuelles') this.displayFrequencyInput = false;
         this.categories = this.data.categories;
         this.frequencies = this.data.frequencies;
+
+        this.initForm();
 
     }
 
@@ -54,23 +60,42 @@ export class ExpenseEditComponent extends ShareComponent {
     }
 
     onSubmit() {
+
+        
         if (this.form.invalid) return;
         this.form.disable();
 
-        
         let expense : any = {
             ...this.form.value,
-            expenseCategory: this.category,
-            frequency: this.frequency,
-            date: new Date().toISOString()
-        }
+            expenseCategory: {
+                id: this.category._id,
+                categoryName: this.category.categoryName
+            },
+            frequency: {
+                id: this.frequency._id,
+                frequency: this.frequency.frequency,
+                level: this.frequency.level
+            },
+        };
         
-        this._expenseService.create(expense).subscribe((data) => {
-            this.matDialogRef.close(data);
-        });
+        this._expenseService
+            .update(this.expenseData._id,expense)
+            .subscribe((data) => {
+                if (data.state == 'error') this.alert.type = 'error';
+                else {
+                    this.alert.type = 'success';
+                    this.callback = () => {
+                        this.form.reset();
+                        this.closeModal();
+                    };
+                }
+                this.alert.message = data.message;
+                this.handleMessage();
+            })
     }
 
     onFrequencyChange(event: MatSelectChange){
+        
         this.frequency = this.frequencies.find((frequency) => frequency._id === event.value);
     }
 
@@ -80,7 +105,8 @@ export class ExpenseEditComponent extends ShareComponent {
     }
 
     toggleFerquencyInput(categoryName: string) {
-        if (categoryName.toLowerCase() !== 'dépenses ponctuelles'){ this.displayFrequencyInput = true;
+        
+        if (categoryName.toLowerCase() === 'dépenses ponctuelles'){ this.displayFrequencyInput = false;
             this.form.get('frequency').clearValidators();
         }
         else{ this.displayFrequencyInput = true;
