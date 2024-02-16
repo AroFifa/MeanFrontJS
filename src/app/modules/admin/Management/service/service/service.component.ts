@@ -55,8 +55,10 @@ export class ServiceComponent extends ShareComponent {
   initForm(){
     this.form = this._formBuilder.group({
         name: [''],
-        price_interval: [''],
-        duration_interval: ['']
+        min_price: [this.serviceFilterOptions.price.min,[Validators.min(this.serviceFilterOptions.price.min),Validators.max(this.serviceFilterOptions.price.max)]],
+        max_price: [this.serviceFilterOptions.price.max,[Validators.min(this.serviceFilterOptions.price.min),Validators.max(this.serviceFilterOptions.price.max)]],
+        min_duration: [this.serviceFilterOptions.duration.min,[Validators.min(this.serviceFilterOptions.duration.min),Validators.max(this.serviceFilterOptions.duration.max)]],
+        max_duration: [this.serviceFilterOptions.duration.max,[Validators.min(this.serviceFilterOptions.duration.min),Validators.max(this.serviceFilterOptions.duration.max)]],
     })
 }
   ngOnInit(){
@@ -72,13 +74,29 @@ export class ServiceComponent extends ShareComponent {
     this.totalItems = this.services.services.pagination.totalItems;
 
     this.initForm();    
+    this.form.valueChanges.subscribe((formValues) => {
+      const name = formValues.name;
+      const min_price = formValues.min_price;
+      const max_price = formValues.max_price;
+    
+      const body = {
+        price_interval: {
+          min: min_price,
+          max: max_price
+        }
+      }
+      // Now you can call syncData with these values
+      this.syncData(`q=${name}`, body);
+    });
+    
   }
 
 
 
-  syncData (){
+  syncData (query = null,data={}){
+    
     this._serviceService
-         .getAll(this.page,this.itemsPerPage)
+         .search(this.page,this.itemsPerPage,query,data)
          .subscribe(
           (data) =>{
             this.dataSource = new MatTableDataSource<any>(data.data.services.items);
@@ -94,6 +112,8 @@ export class ServiceComponent extends ShareComponent {
          
 
   }
+// how to always check if the form.name is changed
+
 
 
   pageChanged(event: PageEvent) {

@@ -56,6 +56,19 @@
                                     [placeholder]="'Service'"
                                     [formControlName]="'name'"                            />
                             </mat-form-field>
+                            <div
+                            class="fuse-mat-rounded fuse-mat-dense w-full"
+                            >
+                                <mat-icon
+                                    matPrefix
+                                    class="icon-size-5"
+                                    [svgIcon]="'heroicons_outline:banknotes-solid'"
+                                ></mat-icon>
+                                <mat-slider [min]="serviceFilterOptions.price.min" [max]="serviceFilterOptions.price.max" discrete>
+                                    <input matInput [formControlName]="'min_price'" matSliderStartThumb />
+                                    <input matInput [formControlName]="'max_price'" matSliderEndThumb />
+                                </mat-slider>                 
+                            </div>
                         </div>
 
                     </form>
