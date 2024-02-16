@@ -67,7 +67,7 @@ export class AuthSignInComponent extends ShareComponent implements OnInit {
                 this.form.enable();
                 this.signInNgForm.resetForm();
                 
-                localStorage.setItem('accessToken', data.data);
+                localStorage.setItem('accessToken', data.data.accessToken);
                 this._commonService.handleRedirection();
             }
         });
