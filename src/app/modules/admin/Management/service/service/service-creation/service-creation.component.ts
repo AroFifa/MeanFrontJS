@@ -49,14 +49,6 @@ export class ServiceCreationComponent extends ShareComponent {
         this.form.disable();
 
 
-        let formData = new FormData();
-        
-        // append all form values to formData
-        for (let key in this.form.value) {
-            formData.set(key, this.form.value[key]);
-        }
-
-
         this._serviceService.create(this.form.value).subscribe((data) => {
             if (data.state == 'error') this.alert.type = 'error';
             else {

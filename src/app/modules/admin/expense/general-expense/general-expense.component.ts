@@ -9,6 +9,8 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationComponent } from 'app/modules/Common/confirmation/confirmation.component';
+import { ExpenseCreationComponent } from './expense-creation/expense-creation.component';
+import { ExpenseEditComponent } from './expense-edit/expense-edit.component';
 
 @Component({
   selector: 'app-general-expense',
@@ -23,6 +25,9 @@ export class GeneralExpenseComponent extends ShareComponent {
   dataSource: any;
   expenses: any;
   expensesFilterOptions: any;
+
+  categories : any[];
+  frequencies : any[];
 
   totalItems = 0;
   itemsPerPage = 10;
@@ -66,6 +71,9 @@ export class GeneralExpenseComponent extends ShareComponent {
   ngOnInit() {
     this.expenses = this.route.snapshot.data.initialData[0].data;
 
+    this.categories = this.route.snapshot.data.initialData[1].data;
+    this.frequencies = this.route.snapshot.data.initialData[2].data;
+
     this.expensesFilterOptions = this.expenses.options;
     this.dataSource = new MatTableDataSource<any>(this.expenses.expenses.items);
     this.dataSource.sort = this.sort; 
@@ -100,35 +108,39 @@ export class GeneralExpenseComponent extends ShareComponent {
   }
 
   addExpense() {
-    this._matDialog.open(ConfirmationComponent, {
-      // width: '600px',
-      // data: {
-      //   categories: this.expenses.categories,
-      //   frequencies: this.expenses.frequencies,
-      // },
-      data: {
-        type: 'delete',
-        message: `Voulez vous créer un nouveau dépense:  ? `,
-    
-      },
-    });
+    this._matDialog
+        .open(
+            ExpenseCreationComponent, {
+              width: '900px',
+              data: {
+                categories: this.categories,
+                frequencies: this.frequencies,
+              },
+          }
+        )
+        .afterClosed()
+        .subscribe(() => {
+            this.syncData();
+        });
   }
 
 
   updateExpense(expense:any) {
-    this._matDialog.open(ConfirmationComponent, {
-      // width: '600px',
-      // data: {
-      //   categories: this.expenses.categories,
-      //   frequencies: this.expenses.frequencies,
-      //   expense: expense
-      // },
-      data: {
-        type: 'delete',
-        message: `Voulez vous modifier ce dépense: "${expense.name}" ? `,
-    
-      },
-    });
+    this._matDialog
+        .open(
+            ExpenseEditComponent, {
+              width: '900px',
+              data: {
+                categories: this.categories,
+                frequencies: this.frequencies,
+                expense
+              },
+          }
+        )
+        .afterClosed()
+        .subscribe(() => {
+            this.syncData();
+        });
   }
 
   deleteExpense(expense:any) {

@@ -20,6 +20,8 @@ import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginato
 import { MatPaginatorIntlFrench } from 'app/custom/intl/MatpaginatorIntlFrench';
 import localeFr from '@angular/common/locales/fr';
 import { SharedModule } from 'app/shared/module/shared.module';
+import { ExpenseCreationComponent } from './general-expense/expense-creation/expense-creation.component';
+import { ExpenseEditComponent } from './general-expense/expense-edit/expense-edit.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -43,7 +45,7 @@ const expenseRoutes: Route[] = [
 
 
 @NgModule({
-  declarations: [ GeneralExpenseComponent, SalaryExpenseComponent],
+  declarations: [ GeneralExpenseComponent, SalaryExpenseComponent,ExpenseCreationComponent,ExpenseEditComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(expenseRoutes), 
