@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationComponent } from 'app/modules/Common/confirmation/confirmation.component';
 import { ServiceEditComponent } from './service-edit/service-edit.component';
 import { ServiceCreationComponent } from './service-creation/service-creation.component';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-service',
@@ -43,15 +44,25 @@ export class ServiceComponent extends ShareComponent {
   constructor(
     private route: ActivatedRoute,        
     private _matDialog: MatDialog,
+    private _formBuilder: FormBuilder,
     private _serviceService: ServiceService
 
   ){
     super();
   }
 
+
+  initForm(){
+    this.form = this._formBuilder.group({
+        name: [''],
+        min_price: [this.serviceFilterOptions.price.min,[Validators.min(this.serviceFilterOptions.price.min),Validators.max(this.serviceFilterOptions.price.max)]],
+        max_price: [this.serviceFilterOptions.price.max,[Validators.min(this.serviceFilterOptions.price.min),Validators.max(this.serviceFilterOptions.price.max)]],
+        min_duration: [this.serviceFilterOptions.duration.min,[Validators.min(this.serviceFilterOptions.duration.min),Validators.max(this.serviceFilterOptions.duration.max)]],
+        max_duration: [this.serviceFilterOptions.duration.max,[Validators.min(this.serviceFilterOptions.duration.min),Validators.max(this.serviceFilterOptions.duration.max)]],
+    })
+}
   ngOnInit(){
 
-    
     this.services = this.route.snapshot.data['initialData'][2].data;
 
     this.serviceFilterOptions = this.services.options;
@@ -61,14 +72,41 @@ export class ServiceComponent extends ShareComponent {
 
     this.dataSource.sort = this.sort;
     this.totalItems = this.services.services.pagination.totalItems;
+
+    this.initForm();    
+    
+    this.handleFilterChange();
     
   }
 
 
+  handleFilterChange(){
+    this.form.valueChanges.subscribe((formValues) => {
+      const name = formValues.name;
+      const min_price = formValues.min_price;
+      const max_price = formValues.max_price;
+      const min_duration = formValues.min_duration;
+      const max_duration = formValues.max_duration;
+    
+      const body = {
+        price_interval: {
+          min: min_price,
+          max: max_price
+        },
+        duration_interval:{
+          min: min_duration,
+          max: max_duration
+        }
+      }
+      this.syncData(`q=${name}`, body);
+    });
+  }
 
-  syncData (){
+
+  syncData (query = null,data={}){
+    
     this._serviceService
-         .getAll(this.page,this.itemsPerPage)
+         .search(this.page,this.itemsPerPage,query,data)
          .subscribe(
           (data) =>{
             this.dataSource = new MatTableDataSource<any>(data.data.services.items);
@@ -84,6 +122,8 @@ export class ServiceComponent extends ShareComponent {
          
 
   }
+// how to always check if the form.name is changed
+
 
 
   pageChanged(event: PageEvent) {
@@ -139,4 +179,15 @@ deleteService(service:any) {
             }
         });
 }
+
+  displayPrice(price: number) {
+    return price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  }
+
+  displayDuration(duration: number) {
+    const hours = Math.floor(duration / 60);
+    const minutes = duration % 60;
+
+    return `${hours?hours:"00"}:${minutes?minutes:"00"}`;
+  }
 }

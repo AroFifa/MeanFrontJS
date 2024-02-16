@@ -22,15 +22,32 @@ export class CRUDService {
         );
     }
 
-    getAll(page: number = null, itemsPerPage: number = null) {
+    getAll(page: number = null, itemsPerPage: number = null,query: string = null) {
         let params = [
             page ? `page=${page}` : '',
-            itemsPerPage ? `size=${itemsPerPage}` : ''
+            itemsPerPage ? `size=${itemsPerPage}` : '',
+            query 
           ].filter(Boolean).join('&');
+          
           
           let url = `${environment.URL_API}/${this.baseUrl}${params ? '?' + params : ''}`;
           
           return this._http.get<any>(url);
+          
+    }
+
+
+    search(page: number = null, itemsPerPage: number = null,query: string = null,data= {}) {
+        let params = [
+            page ? `page=${page}` : '',
+            itemsPerPage ? `size=${itemsPerPage}` : '',
+            query 
+          ].filter(Boolean).join('&');
+          
+          
+          let url = `${environment.URL_API}/${this.baseUrl}/search${params ? '?' + params : ''}`;
+          
+          return this._http.post<any>(url,data);
           
     }
 
