@@ -74,23 +74,33 @@ export class ServiceComponent extends ShareComponent {
     this.totalItems = this.services.services.pagination.totalItems;
 
     this.initForm();    
+    
+    this.handleFilterChange();
+    
+  }
+
+
+  handleFilterChange(){
     this.form.valueChanges.subscribe((formValues) => {
       const name = formValues.name;
       const min_price = formValues.min_price;
       const max_price = formValues.max_price;
+      const min_duration = formValues.min_duration;
+      const max_duration = formValues.max_duration;
     
       const body = {
         price_interval: {
           min: min_price,
           max: max_price
+        },
+        duration_interval:{
+          min: min_duration,
+          max: max_duration
         }
       }
-      // Now you can call syncData with these values
       this.syncData(`q=${name}`, body);
     });
-    
   }
-
 
 
   syncData (query = null,data={}){
@@ -169,4 +179,15 @@ deleteService(service:any) {
             }
         });
 }
+
+  displayPrice(price: number) {
+    return price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  }
+
+  displayDuration(duration: number) {
+    const hours = Math.floor(duration / 60);
+    const minutes = duration % 60;
+
+    return `${hours?hours:"00"}:${minutes?minutes:"00"}`;
+  }
 }
