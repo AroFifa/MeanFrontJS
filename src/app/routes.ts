@@ -65,7 +65,7 @@ function getAdminNavigations() {
                     title: 'Dépenses diverses',
                     type: 'basic',
                     icon: 'heroicons_outline:pay-day',
-                    link: '/admin/expense',
+                    link: '/admin/expense/general',
                 },
             ],
         },
