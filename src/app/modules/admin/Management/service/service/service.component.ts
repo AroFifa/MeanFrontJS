@@ -109,8 +109,9 @@ export class ServiceComponent extends ShareComponent {
          .search(this.page,this.itemsPerPage,query,data)
          .subscribe(
           (data) =>{
-            this.dataSource = new MatTableDataSource<any>(data.data.services.items);
-            this.totalItems = data.data.services.pagination.totalItems;
+            this.services = data.data;
+            this.dataSource = new MatTableDataSource<any>(this.services.services.items);
+            this.totalItems = this.services.services.pagination.totalItems;
             this.dataSource.sort = this.sort;
 
             
@@ -122,7 +123,6 @@ export class ServiceComponent extends ShareComponent {
          
 
   }
-// how to always check if the form.name is changed
 
 
 
