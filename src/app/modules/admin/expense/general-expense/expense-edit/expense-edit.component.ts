@@ -18,7 +18,7 @@ export class ExpenseEditComponent extends ShareComponent {
     frequency: any;
     expenseData: any;
 
-    displayFrequencyInput : boolean = false;
+    displayFrequencyInput : boolean = true;
 
 
     constructor(

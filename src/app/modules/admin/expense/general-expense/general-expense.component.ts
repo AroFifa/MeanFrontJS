@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationComponent } from 'app/modules/Common/confirmation/confirmation.component';
 import { ExpenseCreationComponent } from './expense-creation/expense-creation.component';
 import { ExpenseEditComponent } from './expense-edit/expense-edit.component';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-general-expense',
@@ -27,7 +28,9 @@ export class GeneralExpenseComponent extends ShareComponent {
   expensesFilterOptions: any;
 
   categories : any[];
+  categoryFilterData : any[] = [];
   frequencies : any[];
+  frequencyFilterData : any[] = [];
 
   totalItems = 0;
   itemsPerPage = 10;
@@ -56,7 +59,7 @@ export class GeneralExpenseComponent extends ShareComponent {
 
   initForm(){
     this.form = this._formBuilder.group({
-      name: [''],
+      // name: [''],
       min_amount: [this.expensesFilterOptions.amount.min],
       max_amount: [this.expensesFilterOptions.amount.max],
       min_date: [this.expensesFilterOptions.date.min],
@@ -184,5 +187,19 @@ export class GeneralExpenseComponent extends ShareComponent {
 
     return `Tous les ${frequencyValue===1?"":frequencyValue+" "}${frenchEquivalent}`;
 }
+
+
+
+  removeCategoryFilterList(ctg_id: string) {
+    
+    this.categoryFilterData=this.categoryFilterData.filter((c) => c._id !==ctg_id );
+    if (this.categoryFilterData.length == 0) this.form.get('categories').setValue('');
+  }
+
+  updateCategoryFilterList(event: MatSelectChange) {
+    
+    if (this.categoryFilterData.filter((ctg) => ctg._id == event.value).length != 0) return;
+    this.categoryFilterData = [...this.categoryFilterData, this.categories.find((ctg) => ctg._id === event.value)];
+  }
 
 }
