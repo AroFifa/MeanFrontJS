@@ -5,7 +5,7 @@ import { environment } from 'app/environments/environment';
 import { ShareComponent } from 'app/shared/Component/ShareComponent';
 import { ExpenseService } from '../expense.service';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatTableDataSource } from '@angular/material/table';
 import { ConfirmationComponent } from 'app/modules/Common/confirmation/confirmation.component';
@@ -26,6 +26,10 @@ export class GeneralExpenseComponent extends ShareComponent {
   dataSource: any;
   expenses: any;
   expensesFilterOptions: any;
+
+  searchForm = new FormControl('');
+  filterQuery = '';
+  filterBody = {};
 
   categories : any[];
   categoryFilterData : any[] = [];
@@ -58,16 +62,17 @@ export class GeneralExpenseComponent extends ShareComponent {
   }
 
   initForm(){
+    
+    
     this.form = this._formBuilder.group({
-      // name: [''],
       min_amount: [this.expensesFilterOptions.amount.min],
       max_amount: [this.expensesFilterOptions.amount.max],
-      min_date: [this.expensesFilterOptions.date.min],
-      max_date: [this.expensesFilterOptions.date.max],
+      min_date: [new Date(this.expensesFilterOptions.date.min)],
+      max_date: [new Date(this.expensesFilterOptions.date.max)],
       min_freq: [this.expensesFilterOptions.frequencyValue.min],
       max_freq: [this.expensesFilterOptions.frequencyValue.max],
-      categories: [''],
-      frequencies: [''],
+      categories_choice: [this.categoryFilterData],
+      frequencies_choice: [this.frequencyFilterData]
     });
   }
 
@@ -78,15 +83,43 @@ export class GeneralExpenseComponent extends ShareComponent {
     this.frequencies = this.route.snapshot.data.initialData[2].data;
 
     this.expensesFilterOptions = this.expenses.options;
+    
     this.dataSource = new MatTableDataSource<any>(this.expenses.expenses.items);
     this.dataSource.sort = this.sort; 
     this.totalItems = this.expenses.expenses.pagination.totalItems;
 
     this.initForm();
+
+    this.handleFilterChange();
   }
 
   handleFilterChange() {
+    this.searchForm.valueChanges.subscribe((value) => {
+      this.filterQuery = `q=${value}`;
+      this.syncData(this.filterQuery, this.filterBody);      
+    });
+    
     this.form.valueChanges.subscribe((value) => {
+
+      
+
+      this.filterBody = {
+        amount_interval: {
+          min: value.min_amount,
+          max: value.max_amount,
+        },
+        date_interval: {
+          min: value.min_date,
+          max: value.max_date,
+        },
+        frequency_interval: {
+          min: value.min_freq,
+          max: value.max_freq,
+        },
+        categories: value.categories_choice.map((c:any) => c._id),
+        frequencies: value.frequencies_choice.map((f:any) => f._id),
+      };
+      this.syncData(this.filterQuery, this.filterBody);
     });
   
   }
@@ -198,14 +231,16 @@ displayPrice(price: number) {
   removeFilterList(id: string, filterData: any[],formControlName: 'categories'|'frequencies') {
     
         const updatedFilterData = filterData.filter((c) => c._id !==id );
-        if (updatedFilterData.length == 0) this.form.get(formControlName).setValue('');
+        this.form.get(formControlName+"_choice").setValue(updatedFilterData);
         return updatedFilterData;
   }
   
 
-  updateFilterList(event: MatSelectChange, filterData: any[], data: any[]) {
+  updateFilterList(event: MatSelectChange, filterData: any[], data: any[],formControlName: 'categories'|'frequencies') {
     if (filterData.filter((item) => item._id == event.value).length != 0) return filterData;
     const updatedFilterData = [...filterData, data.find((item) => item._id === event.value)];
+    this.form.get(formControlName+"_choice").setValue(updatedFilterData);
+
     return updatedFilterData;
   }
 

@@ -79,8 +79,7 @@
                                             matPrefix
                                         ></mat-icon>
                                         <mat-select
-                                            [formControlName]="'categories'"
-                                            (selectionChange)="categoryFilterData = updateFilterList($event,categoryFilterData ,categories)"
+                                            (selectionChange)="categoryFilterData = updateFilterList($event,categoryFilterData ,categories,'categories')"
                                         >
                                             <ng-container *ngFor="let ctg of categories">
                                                 <mat-option value="{{ ctg._id }}">{{
@@ -124,8 +123,7 @@
                                             matPrefix
                                         ></mat-icon>
                                         <mat-select
-                                            [formControlName]="'frequencies'"
-                                            (selectionChange)="frequencyFilterData = updateFilterList($event,frequencyFilterData ,frequencies)"
+                                            (selectionChange)="frequencyFilterData = updateFilterList($event,frequencyFilterData ,frequencies,'frequencies')"
                                         >
                                             <ng-container *ngFor="let item of frequencies">
                                                 <mat-option value="{{ item._id }}">{{
@@ -224,6 +222,7 @@
                         ></mat-icon>
                         <input
                             matInput
+                            [formControl]="searchForm"
                             [autocomplete]="'on'"
                             [placeholder]="'Recherche'"                         />
                     </mat-form-field>
