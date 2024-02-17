@@ -19,6 +19,14 @@ const adminRoutes: Route[] = [
                 (m) => m.ManagementModule,
             ),
     },
+
+    {
+        path: 'expense',
+        loadChildren: () =>
+            import('app/modules/admin/expense/expense.module').then(
+                (m) => m.ExpenseModule,
+            ),
+    },
 ];
 
 @NgModule({

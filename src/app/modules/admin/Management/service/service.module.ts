@@ -22,11 +22,12 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { MatPaginatorIntlFrench } from 'app/custom/intl/MatpaginatorIntlFrench';
 import { DurationPipe } from 'app/custom/pipe/DurationPipe';
-import { AriaryCurrencyPipe } from 'app/custom/pipe/AriaryCurrencyPipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ServiceCreationComponent } from './service/service-creation/service-creation.component';
 import { ServiceEditComponent } from './service/service-edit/service-edit.component';
 import {MatSliderModule} from '@angular/material/slider';
+import { SharedModule } from 'app/shared/module/shared.module';
+import { MatCardModule } from '@angular/material/card';
 registerLocaleData(localeFr, 'fr');
 
 
@@ -53,9 +54,7 @@ const serviceRoutes: Route[] = [
     ServiceCreationComponent,
     ServiceEditComponent,
     CommissionComponent,
-    DurationPipe,
-    AriaryCurrencyPipe
-  ],
+    DurationPipe  ],
   imports: [
     CommonModule,
     RouterModule.forChild(serviceRoutes),
@@ -72,7 +71,9 @@ const serviceRoutes: Route[] = [
     MatSelectModule,
     MatChipsModule,
     MatPaginatorModule,
-    MatSliderModule
+    MatSliderModule,
+    MatCardModule,
+    SharedModule
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'fr'},

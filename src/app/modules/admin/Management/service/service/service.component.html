@@ -59,38 +59,50 @@
                     <div
                         class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4"
                     >   
-                        <div
-                            class="fuse-mat-rounded fuse-mat-dense w-full"
+                        <mat-card
+                        class="fuse-mat-rounded fuse-mat-dense w-full"
                         >
-                            <mat-icon
-                                matPrefix
-                                class="icon-size-5"
-                                [svgIcon]="'heroicons_outline:banknotes-solid'"
-                                matTooltip="Prix"
-                            ></mat-icon>
-                            <mat-slider [displayWith]="displayPrice" [min]="serviceFilterOptions.price.min" [max]="serviceFilterOptions.price.max" discrete>
-                                <input matInput [formControlName]="'min_price'" matSliderStartThumb />
-                                <input matInput [formControlName]="'max_price'" matSliderEndThumb />
-                            </mat-slider>                 
-                        </div>
+                            <mat-card-header>
+
+                                <mat-card-title>
+                                    <mat-label>Prix (Ar)</mat-label>
+                                </mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <mat-slider [displayWith]="displayPrice" [min]="serviceFilterOptions.price.min" [max]="serviceFilterOptions.price.max" discrete>
+                                    <input matInput [formControlName]="'min_price'" matSliderStartThumb />
+                                    <input matInput [formControlName]="'max_price'" matSliderEndThumb />
+                                </mat-slider>  
+                                        
+                            </mat-card-content>
+
+                        
+                        </mat-card>
+
                     </div>
                     <div
                         class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4"
                     >
-                        <div
+                        <mat-card
                         class="fuse-mat-rounded fuse-mat-dense w-full"
                         >
-                            <mat-icon
-                                matPrefix
-                                class="icon-size-5"
-                                [svgIcon]="'heroicons_outline:clock-solid'"
-                                matTooltip="Durée"
-                            ></mat-icon>
-                            <mat-slider [displayWith]="displayDuration" [min]="serviceFilterOptions.duration.min" [max]="serviceFilterOptions.duration.max" discrete>
-                                <input matInput [formControlName]="'min_duration'" matSliderStartThumb />
-                                <input matInput [formControlName]="'max_duration'" matSliderEndThumb />
-                            </mat-slider>                 
-                        </div>
+                            <mat-card-header>
+
+                                <mat-card-title>
+                                    <mat-label>Durée</mat-label>
+                                </mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <mat-slider [displayWith]="displayDuration" [min]="serviceFilterOptions.duration.min" [max]="serviceFilterOptions.duration.max" discrete>
+                                    <input matInput [formControlName]="'min_duration'" matSliderStartThumb />
+                                    <input matInput [formControlName]="'max_duration'" matSliderEndThumb />
+                                </mat-slider>  
+                                        
+                            </mat-card-content>
+
+                        
+                        </mat-card>
+
                     </div>
                 </form>
 
