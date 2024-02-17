@@ -8,7 +8,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ShareComponent } from 'app/shared/Component/ShareComponent';
 import { MatTableDataSource } from '@angular/material/table';
-import { ConfirmationComponent } from 'app/modules/Common/confirmation/confirmation.component';
+import { SelectionModel } from '@angular/cdk/collections';
+import { SalaryEditComponent } from './salary-edit/salary-edit.component';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-salary-expense',
@@ -23,6 +25,8 @@ export class SalaryExpenseComponent extends ShareComponent{
   dataSource: any;
   staffList: any;
   staffFilterOptions: any;
+  staffSelected = new SelectionModel<any>(true, []);
+
 
   searchForm = new FormControl('');
   filterQuery = '';
@@ -33,7 +37,6 @@ export class SalaryExpenseComponent extends ShareComponent{
   frequencies : any[];
   frequencyFilterData : any[] = [];
 
-  staffSelected: any[] = [];
 
   totalItems = 0;
   itemsPerPage = 10;
@@ -42,13 +45,17 @@ export class SalaryExpenseComponent extends ShareComponent{
 
   URL_API = environment.URL_API;
   displayedColumns: string[] = [
+    'select',
     'avatar',
     'name',
     'firstname',
     'email',
     'posts',
     'salary',
+    'frequency'
   ];
+
+  disableEditButton = true;
 
   constructor(
     private _salaryService: SalaryService,
@@ -75,15 +82,24 @@ export class SalaryExpenseComponent extends ShareComponent{
     this.staffList = this.route.snapshot.data.initialData[0].data;
 
     this.frequencies = this.route.snapshot.data.initialData[1].data;
-    this.posts = this.route.snapshot.data.initialData[2].data;
+    this.posts = this.route.snapshot.data.initialData[2].data.services;
+
+    
 
     this.staffFilterOptions = this.staffList.options;
 
     this.dataSource = new MatTableDataSource<any>(this.staffList.staff.items);
     this.dataSource.sort = this.sort;
-    this.totalItems = this.staffList.staff.totalItems;
+    
+    this.totalItems = this.staffList.staff.pagination.totalItems;
 
     this.initForm();
+
+    this.staffSelected.changed.subscribe(() => {
+      this.staffSelected.selected.length > 0
+          ? this.disableEditButton = false
+          : this.disableEditButton = true;
+    });
 
     this.handleFilterChange();
   }
@@ -122,7 +138,6 @@ export class SalaryExpenseComponent extends ShareComponent{
         .search(this.page, this.itemsPerPage, query, data)
         .subscribe((response) => {
           this.staffList = response.data;
-          console.log(response);
           
           this.dataSource = new MatTableDataSource<any>(this.staffList.staff.items);
           this.dataSource.sort = this.sort;
@@ -142,24 +157,19 @@ export class SalaryExpenseComponent extends ShareComponent{
   updateSalary() {
     this._matDialog
         .open(
-            ConfirmationComponent, {
+            SalaryEditComponent, {
               width: '900px',
-              // data: {
-              //   posts: this.posts,
-              //   frequencies: this.frequencies,
-              //   staff: this.staffSelected,
+              data: {
+                frequencies: this.frequencies,
+                staff: this.staffSelected,
                 
-              // },
-               data: {
-                type: 'delete',
-                message: `Voulez vous modifier le salaire." ? `,
-            
               },
           }
         )
         .afterClosed()
         .subscribe(() => {
             this.syncData();
+            this.staffSelected.clear();
         });
   }
 
@@ -186,5 +196,35 @@ export class SalaryExpenseComponent extends ShareComponent{
 
     return `Tous les ${frequencyValue===1?"":frequencyValue+" "}${frenchEquivalent}`;
   }
+
+
+  isAllSelected() {
+    const numSelected = this.staffSelected.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  masterToggle() {
+    this.isAllSelected() ?
+        this.staffSelected.clear() :
+        this.dataSource.data.forEach((row:any) => this.staffSelected.select(row));
+  }
+
+
+  removeFilterList(id: string, filterData: any[],formControlName: 'posts'|'frequencies') {
+    
+    const updatedFilterData = filterData.filter((c) => c._id !==id );
+    this.form.get(formControlName+"_choice").setValue(updatedFilterData);
+    return updatedFilterData;
+    }
+
+
+    updateFilterList(event: MatSelectChange, filterData: any[], data: any[],formControlName: 'posts'|'frequencies') {
+    if (filterData.filter((item) => item._id == event.value).length != 0) return filterData;
+    const updatedFilterData = [...filterData, data.find((item) => item._id === event.value)];
+    this.form.get(formControlName+"_choice").setValue(updatedFilterData);
+
+    return updatedFilterData;
+    }
 
 }

@@ -27,6 +27,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SalaryEditComponent } from './salary-expense/salary-edit/salary-edit.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -50,7 +52,7 @@ const expenseRoutes: Route[] = [
 
 
 @NgModule({
-  declarations: [ GeneralExpenseComponent, SalaryExpenseComponent,ExpenseCreationComponent,ExpenseEditComponent],
+  declarations: [ GeneralExpenseComponent, SalaryExpenseComponent,ExpenseCreationComponent,ExpenseEditComponent,SalaryEditComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(expenseRoutes), 
@@ -71,6 +73,7 @@ const expenseRoutes: Route[] = [
     MatTooltipModule,
     MatExpansionModule,
     MatSliderModule,
+    MatCheckboxModule,
     SharedModule
   ],
   

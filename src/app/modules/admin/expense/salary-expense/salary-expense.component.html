@@ -19,6 +19,7 @@
                             mat-flat-button
                             [color]="'primary'"
                             (click)="updateSalary()"
+                            [disabled]="disableEditButton"
                         >
                             <mat-icon svgIcon="mat_outline:edit"></mat-icon>
                             <span class="ml-2 mr-1">Modifier</span>
@@ -27,6 +28,186 @@
                 </div>
 
                 <!-- FORMULAIRE DE RECHERCHE -->
+                    <!-- *FILTRER PAR-->
+                    
+                <mat-accordion>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            Recherche avancée
+                          </mat-panel-title>
+                          <mat-panel-description>
+                            <mat-icon>filter_list</mat-icon>
+                          </mat-panel-description>
+                        </mat-expansion-panel-header>
+                        
+
+                        <form
+                        [formGroup]="form"
+                        class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto"
+
+                        >
+                           
+
+                            <div class="grid sm:grid-cols-4 gap-6 w-full">
+                                <div class="sm:col-span-2">
+                                    <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                                        <mat-label>Postes</mat-label>
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_outline:identification'"
+                                            matPrefix
+                                        ></mat-icon>
+                                        <mat-select
+                                            (selectionChange)="postFilterData = updateFilterList($event,postFilterData ,posts,'posts')"
+                                        >
+                                            <ng-container *ngFor="let post of posts">
+                                                <mat-option value="{{ post._id }}">{{
+                                                    post.name
+                                                }}</mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <mat-form-field class="flex">
+                                        <mat-label>Poste(s) occupée(s)</mat-label>
+                                        <mat-chip-grid #postChipGrid>
+                                            <ng-container *ngFor="let post of postFilterData">
+                                                <mat-chip-row>
+                                                    {{ post.name }}
+                                                    <mat-icon
+                                                        (click)="postFilterData = removeFilterList(post._id,postFilterData,'posts')"
+                                                        class="icon-size-5"
+                                                        matChipRemove
+                                                        [svgIcon]="'heroicons_solid:minus-circle'"
+                                                    ></mat-icon>
+                                                </mat-chip-row>
+                                            </ng-container>
+                                            <input
+                                                style="display: none"
+                                                placeholder="New chip..."
+                                                [matChipInputFor]="postChipGrid"
+                                            />
+                                        </mat-chip-grid>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="grid sm:grid-cols-4 gap-6 w-full">
+                                <div class="sm:col-span-2">
+                                    <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                                        <mat-label>Fréquences</mat-label>
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_outline:arrow-path-solid'"
+                                            matPrefix
+                                        ></mat-icon>
+                                        <mat-select
+                                            (selectionChange)="frequencyFilterData = updateFilterList($event,frequencyFilterData ,frequencies,'frequencies')"
+                                        >
+                                            <ng-container *ngFor="let item of frequencies">
+                                                <mat-option value="{{ item._id }}">{{
+                                                    item.frequency
+                                                }}</mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <mat-form-field class="flex">
+                                        <mat-label>Fréquence(s) choisie(s)</mat-label>
+                                        <mat-chip-grid #freqChipGrid>
+                                            <ng-container *ngFor="let item of frequencyFilterData">
+                                                <mat-chip-row>
+                                                    {{ item.frequency }}
+                                                    <mat-icon
+                                                        (click)="frequencyFilterData = removeFilterList(item._id,frequencyFilterData,'frequencies')"
+                                                        class="icon-size-5"
+                                                        matChipRemove
+                                                        [svgIcon]="'heroicons_solid:minus-circle'"
+                                                    ></mat-icon>
+                                                </mat-chip-row>
+                                            </ng-container>
+                                            <input
+                                                style="display: none"
+                                                placeholder="New chip..."
+                                                [matChipInputFor]="freqChipGrid"
+                                            />
+                                        </mat-chip-grid>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="grid sm:grid-cols-4 gap-6 w-full">
+
+                                <div class="sm:col-span-2">
+                                    <mat-card
+                                    class="fuse-mat-rounded fuse-mat-dense w-full"
+                                    >
+                                        <mat-card-header>
+
+                                            <mat-card-title>
+                                                <mat-label>Montant (Ar)</mat-label>
+                                            </mat-card-title>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <mat-slider [displayWith]="displayPrice" [min]="staffFilterOptions.amount.min" [max]="staffFilterOptions.amount.max" discrete>
+                                                <input matInput [formControlName]="'min_amount'" matSliderStartThumb />
+                                                <input matInput [formControlName]="'max_amount'" matSliderEndThumb />
+                                            </mat-slider>  
+                                                      
+                                        </mat-card-content>
+        
+                                    
+                                    </mat-card>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <mat-card
+                                    class="fuse-mat-rounded fuse-mat-dense w-full"
+                                    >
+                                        <mat-card-header>
+
+                                            <mat-card-title>
+                                                <mat-label>Valeur de la fréquence</mat-label>
+                                            </mat-card-title>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <mat-slider [min]="staffFilterOptions.frequencyValue.min" [max]="staffFilterOptions.frequencyValue.max" discrete>
+                                                <input matInput [formControlName]="'min_freq'" matSliderStartThumb />
+                                                <input matInput [formControlName]="'max_freq'" matSliderEndThumb />
+                                            </mat-slider>  
+                                                      
+                                        </mat-card-content>
+        
+                                    
+                                    </mat-card>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+                <div class="grid gap-6 w-full">                    
+                    <mat-form-field
+                    class="fuse-mat-rounded fuse-mat-dense w-full"
+                    [subscriptSizing]="'dynamic'"
+                    >
+                        <mat-icon
+                            matPrefix
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:search'"
+                        ></mat-icon>
+                        <input
+                            matInput
+                            [formControl]="searchForm"
+                            [autocomplete]="'on'"
+                            [placeholder]="'Recherche'"                         />
+                    </mat-form-field>
+                </div>
+
 
                 <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
                     <table
@@ -35,6 +216,22 @@
                         class="mat-elevation-z8"
                         matSort
                     >
+
+                        <ng-container matColumnDef="select">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                [checked]="staffSelected.hasValue() && isAllSelected()"
+                                                [indeterminate]="staffSelected.hasValue() && !isAllSelected()">
+                                </mat-checkbox>
+                            </th>
+                            <td mat-cell *matCellDef="let row">
+                                <mat-checkbox (click)="$event.stopPropagation()"
+                                                (change)="$event ? staffSelected.toggle(row) : null"
+                                                [checked]="staffSelected.isSelected(row)">
+                                </mat-checkbox>
+                            </td>
+                        </ng-container>
+
                         <ng-container matColumnDef="avatar">
                             <th
                                 mat-header-cell
@@ -140,6 +337,20 @@
                             </td>
                         </ng-container>
 
+                        <ng-container matColumnDef="frequency">
+                            <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                                class="text-black uppercase"
+                                mat-sort-header
+                            >
+                                Fréquence
+                            </th>
+                            <td mat-cell *matCellDef="let user">
+                                
+                                {{user.latestSalary? displayFrequency(user.latestSalary?.frequencyValue,user.latestSalary?.frequency.level) : ''}}
+                            </td>
+                        </ng-container>
 
 
                         <tr
@@ -148,6 +359,7 @@
                         ></tr>
                         <tr
                             mat-row
+                            (click)="staffSelected.toggle(row)"
                             *matRowDef="let row; columns: displayedColumns"
                         ></tr>
                     </table>

@@ -32,4 +32,13 @@ export class SalaryService extends CRUDService {
           
           return this.ownHttp.post<any>(url,data);
     }
+
+
+    create(data: any) {
+        return this.ownHttp.put<any>(
+            `${environment.URL_API}/${this.baseUrl}/multiple-update`,
+            data,
+        );
+    }
+
 }
