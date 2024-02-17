@@ -195,34 +195,20 @@ displayPrice(price: number) {
 
 
 
-  removeFilterList(id: string,formControlName: string) {
+  removeFilterList(id: string, filterData: any[],formControlName: 'categories'|'frequencies') {
     
-    switch (formControlName) {
-      case 'categories':
-        this.categoryFilterData = this.categoryFilterData.filter((c) => c._id !==id );
-        if (this.categoryFilterData.length == 0) this.form.get(formControlName).setValue('');
-        break;
-      case 'frequencies':
-        this.frequencyFilterData = this.frequencyFilterData.filter((c) => c._id !==id );
-        if (this.frequencyFilterData.length == 0) this.form.get(formControlName).setValue('');
-        break;
-    }
+        const updatedFilterData = filterData.filter((c) => c._id !==id );
+        if (updatedFilterData.length == 0) this.form.get(formControlName).setValue('');
+        return updatedFilterData;
+  }
+  
 
+  updateFilterList(event: MatSelectChange, filterData: any[], data: any[]) {
+    if (filterData.filter((item) => item._id == event.value).length != 0) return filterData;
+    const updatedFilterData = [...filterData, data.find((item) => item._id === event.value)];
+    return updatedFilterData;
   }
 
-  updateFilterList(event: MatSelectChange,formControlName: string) {
-    switch (formControlName) {
-      case 'categories':
-        if (this.categoryFilterData.filter((item) => item._id == event.value).length != 0) return;
-        this.categoryFilterData = [...this.categoryFilterData, this.categories.find((item) => item._id === event.value)];
-        break;
-      case 'frequencies':
-        if (this.frequencyFilterData.filter((item) => item._id == event.value).length != 0) return;
-        this.frequencyFilterData = [...this.frequencyFilterData, this.frequencies.find((item) => item._id === event.value)];
-        break;
-    }
-    
-  }
 
 
 }

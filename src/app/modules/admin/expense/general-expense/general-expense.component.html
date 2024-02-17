@@ -80,7 +80,7 @@
                                         ></mat-icon>
                                         <mat-select
                                             [formControlName]="'categories'"
-                                            (selectionChange)="updateFilterList($event,'categories')"
+                                            (selectionChange)="categoryFilterData = updateFilterList($event,categoryFilterData ,categories)"
                                         >
                                             <ng-container *ngFor="let ctg of categories">
                                                 <mat-option value="{{ ctg._id }}">{{
@@ -98,7 +98,7 @@
                                                 <mat-chip-row>
                                                     {{ ctg.categoryName }}
                                                     <mat-icon
-                                                        (click)="removeFilterList(ctg._id,'categories')"
+                                                        (click)="categoryFilterData = removeFilterList(ctg._id,categoryFilterData,'categories')"
                                                         class="icon-size-5"
                                                         matChipRemove
                                                         [svgIcon]="'heroicons_solid:minus-circle'"
@@ -125,7 +125,7 @@
                                         ></mat-icon>
                                         <mat-select
                                             [formControlName]="'frequencies'"
-                                            (selectionChange)="updateFilterList($event,'frequencies')"
+                                            (selectionChange)="frequencyFilterData = updateFilterList($event,frequencyFilterData ,frequencies)"
                                         >
                                             <ng-container *ngFor="let item of frequencies">
                                                 <mat-option value="{{ item._id }}">{{
@@ -143,7 +143,7 @@
                                                 <mat-chip-row>
                                                     {{ item.frequency }}
                                                     <mat-icon
-                                                        (click)="removeFilterList(item._id,'frequencies')"
+                                                        (click)="frequencyFilterData = removeFilterList(item._id,frequencyFilterData,'frequencies')"
                                                         class="icon-size-5"
                                                         matChipRemove
                                                         [svgIcon]="'heroicons_solid:minus-circle'"
