@@ -25,6 +25,8 @@ import { ExpenseEditComponent } from './general-expense/expense-edit/expense-edi
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatCardModule } from '@angular/material/card';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -63,10 +65,12 @@ const expenseRoutes: Route[] = [
     MatOptionModule,
     MatSelectModule,
     MatChipsModule,
+    MatCardModule,
     MatPaginatorModule,
     MatDatepickerModule,
     MatTooltipModule,
     MatExpansionModule,
+    MatSliderModule,
     SharedModule
   ],
   

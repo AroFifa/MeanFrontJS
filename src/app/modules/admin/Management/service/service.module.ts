@@ -27,6 +27,7 @@ import { ServiceCreationComponent } from './service/service-creation/service-cre
 import { ServiceEditComponent } from './service/service-edit/service-edit.component';
 import {MatSliderModule} from '@angular/material/slider';
 import { SharedModule } from 'app/shared/module/shared.module';
+import { MatCardModule } from '@angular/material/card';
 registerLocaleData(localeFr, 'fr');
 
 
@@ -71,6 +72,7 @@ const serviceRoutes: Route[] = [
     MatChipsModule,
     MatPaginatorModule,
     MatSliderModule,
+    MatCardModule,
     SharedModule
   ],
   providers: [

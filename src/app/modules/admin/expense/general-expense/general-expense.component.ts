@@ -189,17 +189,40 @@ export class GeneralExpenseComponent extends ShareComponent {
 }
 
 
+displayPrice(price: number) {
+  return price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+}
 
-  removeCategoryFilterList(ctg_id: string) {
+
+
+  removeFilterList(id: string,formControlName: string) {
     
-    this.categoryFilterData=this.categoryFilterData.filter((c) => c._id !==ctg_id );
-    if (this.categoryFilterData.length == 0) this.form.get('categories').setValue('');
+    switch (formControlName) {
+      case 'categories':
+        this.categoryFilterData = this.categoryFilterData.filter((c) => c._id !==id );
+        if (this.categoryFilterData.length == 0) this.form.get(formControlName).setValue('');
+        break;
+      case 'frequencies':
+        this.frequencyFilterData = this.frequencyFilterData.filter((c) => c._id !==id );
+        if (this.frequencyFilterData.length == 0) this.form.get(formControlName).setValue('');
+        break;
+    }
+
   }
 
-  updateCategoryFilterList(event: MatSelectChange) {
+  updateFilterList(event: MatSelectChange,formControlName: string) {
+    switch (formControlName) {
+      case 'categories':
+        if (this.categoryFilterData.filter((item) => item._id == event.value).length != 0) return;
+        this.categoryFilterData = [...this.categoryFilterData, this.categories.find((item) => item._id === event.value)];
+        break;
+      case 'frequencies':
+        if (this.frequencyFilterData.filter((item) => item._id == event.value).length != 0) return;
+        this.frequencyFilterData = [...this.frequencyFilterData, this.frequencies.find((item) => item._id === event.value)];
+        break;
+    }
     
-    if (this.categoryFilterData.filter((ctg) => ctg._id == event.value).length != 0) return;
-    this.categoryFilterData = [...this.categoryFilterData, this.categories.find((ctg) => ctg._id === event.value)];
   }
+
 
 }

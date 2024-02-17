@@ -79,9 +79,8 @@
                                             matPrefix
                                         ></mat-icon>
                                         <mat-select
-                                            required
                                             [formControlName]="'categories'"
-                                            (selectionChange)="updateCategoryFilterList($event)"
+                                            (selectionChange)="updateFilterList($event,'categories')"
                                         >
                                             <ng-container *ngFor="let ctg of categories">
                                                 <mat-option value="{{ ctg._id }}">{{
@@ -94,12 +93,12 @@
                                 <div class="sm:col-span-2">
                                     <mat-form-field class="flex">
                                         <mat-label>Catégorie(s) choisie(s)</mat-label>
-                                        <mat-chip-grid #chipGrid>
+                                        <mat-chip-grid #ctgChipGrid>
                                             <ng-container *ngFor="let ctg of categoryFilterData">
                                                 <mat-chip-row>
                                                     {{ ctg.categoryName }}
                                                     <mat-icon
-                                                        (click)="removeCategoryFilterList(ctg._id)"
+                                                        (click)="removeFilterList(ctg._id,'categories')"
                                                         class="icon-size-5"
                                                         matChipRemove
                                                         [svgIcon]="'heroicons_solid:minus-circle'"
@@ -109,12 +108,105 @@
                                             <input
                                                 style="display: none"
                                                 placeholder="New chip..."
-                                                [matChipInputFor]="chipGrid"
+                                                [matChipInputFor]="ctgChipGrid"
                                             />
                                         </mat-chip-grid>
                                     </mat-form-field>
                                 </div>
                             </div>
+                            <div class="grid sm:grid-cols-4 gap-6 w-full">
+                                <div class="sm:col-span-2">
+                                    <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                                        <mat-label>Fréquences</mat-label>
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_outline:arrow-path-solid'"
+                                            matPrefix
+                                        ></mat-icon>
+                                        <mat-select
+                                            [formControlName]="'frequencies'"
+                                            (selectionChange)="updateFilterList($event,'frequencies')"
+                                        >
+                                            <ng-container *ngFor="let item of frequencies">
+                                                <mat-option value="{{ item._id }}">{{
+                                                    item.frequency
+                                                }}</mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <mat-form-field class="flex">
+                                        <mat-label>Fréquence(s) choisie(s)</mat-label>
+                                        <mat-chip-grid #freqChipGrid>
+                                            <ng-container *ngFor="let item of frequencyFilterData">
+                                                <mat-chip-row>
+                                                    {{ item.frequency }}
+                                                    <mat-icon
+                                                        (click)="removeFilterList(item._id,'frequencies')"
+                                                        class="icon-size-5"
+                                                        matChipRemove
+                                                        [svgIcon]="'heroicons_solid:minus-circle'"
+                                                    ></mat-icon>
+                                                </mat-chip-row>
+                                            </ng-container>
+                                            <input
+                                                style="display: none"
+                                                placeholder="New chip..."
+                                                [matChipInputFor]="freqChipGrid"
+                                            />
+                                        </mat-chip-grid>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="grid sm:grid-cols-4 gap-6 w-full">
+
+                                <div class="sm:col-span-2">
+                                    <mat-card
+                                    class="fuse-mat-rounded fuse-mat-dense w-full"
+                                    >
+                                        <mat-card-header>
+
+                                            <mat-card-title>
+                                                <mat-label>Montant (Ar)</mat-label>
+                                            </mat-card-title>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <mat-slider [displayWith]="displayPrice" [min]="expensesFilterOptions.amount.min" [max]="expensesFilterOptions.amount.max" discrete>
+                                                <input matInput [formControlName]="'min_amount'" matSliderStartThumb />
+                                                <input matInput [formControlName]="'max_amount'" matSliderEndThumb />
+                                            </mat-slider>  
+                                                      
+                                        </mat-card-content>
+        
+                                    
+                                    </mat-card>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <mat-card
+                                    class="fuse-mat-rounded fuse-mat-dense w-full"
+                                    >
+                                        <mat-card-header>
+
+                                            <mat-card-title>
+                                                <mat-label>Valeur de la fréquence</mat-label>
+                                            </mat-card-title>
+                                        </mat-card-header>
+                                        <mat-card-content>
+                                            <mat-slider [min]="expensesFilterOptions.frequencyValue.min" [max]="expensesFilterOptions.frequencyValue.max" discrete>
+                                                <input matInput [formControlName]="'min_freq'" matSliderStartThumb />
+                                                <input matInput [formControlName]="'max_freq'" matSliderEndThumb />
+                                            </mat-slider>  
+                                                      
+                                        </mat-card-content>
+        
+                                    
+                                    </mat-card>
+                                </div>
+                            </div>
+
                         </form>
 
                     </mat-expansion-panel>
