@@ -1,0 +1,130 @@
+<div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6">
+    <div
+        class="flex text-4xl flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8"
+    >
+        <div class="text-lg font-medium">Ajout employé</div>
+        <button mat-icon-button [tabIndex]="-1" (click)="closeModal()">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"
+            ></mat-icon>
+        </button>
+    </div>
+
+    <form class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto">
+        <div class="gap-6 w-full">
+            <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                <mat-label>Employés</mat-label>
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:user-circle'"
+                    matPrefix
+                ></mat-icon>
+                <mat-select #inputSelect>
+                    <ng-container *ngFor="let staff of staffs">
+                        <mat-option value="{{ staff._id }}">{{
+                            staff.name + " " + staff.firstName
+                        }}</mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <fuse-alert
+            class="mt-4"
+            *ngIf="showAlert"
+            [appearance]="'outline'"
+            [showIcon]="true"
+            [type]="alert.type"
+        >
+            {{ alert.message }}
+        </fuse-alert>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end mt-4">
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                [color]="'primary'"
+                (click)="selectStaff(inputSelect)"
+            >
+                <span>Enregistrer</span>
+            </button>
+        </div>
+    </form>
+
+    <div class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto">
+        <table
+            mat-table
+            [dataSource]="dataSource"
+            class="mat-elevation-z8"
+            matSort
+        >
+            <ng-container matColumnDef="name">
+                <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="text-black uppercase"
+                    mat-sort-header
+                >
+                    Nom
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.name }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="firstName">
+                <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="text-black uppercase"
+                    mat-sort-header
+                >
+                    Début
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.firstName }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+                <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="text-black uppercase"
+                    mat-sort-header
+                >
+                    Fin
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.email }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="delete">
+                <th
+                    mat-header-cell
+                    class="text-base uppercase"
+                    *matHeaderCellDef
+                ></th>
+                <td mat-cell *matCellDef="let element">
+                    <button
+                        class="ml-4"
+                        mat-button
+                        (click)="deleteStaff(element._id)"
+                    >
+                        <mat-icon
+                            svgIcon="heroicons_outline:trash"
+                            class="text-red-700 cursor-pointer"
+                        ></mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+    </div>
+</div>

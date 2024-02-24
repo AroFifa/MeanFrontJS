@@ -16,6 +16,12 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { StaffEditComponent } from './staff/staff-edit/staff-edit.component';
+import { WorkhourComponent } from './workhour/workhour.component';
+import { WorkhourCreationComponent } from './workhour/workhour-creation/workhour-creation.component';
+import { WorkhourEditComponent } from './workhour/workhour-edit/workhour-edit.component';
+import { WorkHourResolver } from '../../../resolvers/workHourResolver';
+import { WorkhourStaffComponent } from './workhour/workhour-staff/workhour-staff.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const managementRoutes: Route[] = [
     {
@@ -26,16 +32,33 @@ const managementRoutes: Route[] = [
         },
     },
     {
+
+        path: 'workhours',
+        component: WorkhourComponent,
+        resolve: {
+            initialData: WorkHourResolver,
+        },
+    },
+
         path: 'service-mgmt',
         loadChildren: () =>
             import('app/modules/admin/Management/service/service.module').then(
                 (m) => m.ServiceModule,
             ),
     }
+
 ];
 
 @NgModule({
-    declarations: [StaffComponent, StaffCreationComponent, StaffEditComponent],
+    declarations: [
+        StaffComponent,
+        StaffCreationComponent,
+        StaffEditComponent,
+        WorkhourComponent,
+        WorkhourCreationComponent,
+        WorkhourEditComponent,
+        WorkhourStaffComponent,
+    ],
     imports: [
         CommonModule,
         RouterModule.forChild(managementRoutes),
@@ -50,6 +73,7 @@ const managementRoutes: Route[] = [
         MatOptionModule,
         MatSelectModule,
         MatChipsModule,
+        MatTooltipModule,
     ],
 })
 export class ManagementModule {}

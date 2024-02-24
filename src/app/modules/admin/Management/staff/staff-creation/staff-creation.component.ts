@@ -84,7 +84,7 @@ export class StaffCreationComponent extends ShareComponent implements OnInit {
 
         let staff: User = {
             ...this.form.value,
-            posts: this.posts,
+            posts: this.buildIdArray(this.posts),
             userType: 'Staff',
         };
         let fomData = new FormData();
