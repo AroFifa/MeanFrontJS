@@ -20,6 +20,7 @@ import { ConfirmationComponent } from './modules/Common/confirmation/confirmatio
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { TokenInterceptor } from './shared/utils/TokenInterceptor';
+import { MatNativeDateModule } from '@angular/material/core';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
@@ -46,6 +47,7 @@ const routerConfig: ExtraOptions = {
         FormsModule,
         HttpClientModule,
         MatDatepickerModule,
+        MatNativeDateModule,
         MatIconModule,
         MatButtonModule,
     ],

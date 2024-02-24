@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FuseAlertModule } from '../../../@fuse/components/alert';
+import { AriaryCurrencyPipe } from 'app/custom/pipe/AriaryCurrencyPipe';
 
 @NgModule({
     imports: [CommonModule, FormsModule, ReactiveFormsModule, FuseAlertModule],
-    exports: [CommonModule, FormsModule, ReactiveFormsModule],
-    declarations: [],
+    exports: [CommonModule, FormsModule, ReactiveFormsModule,AriaryCurrencyPipe],
+    declarations: [AriaryCurrencyPipe],
 })
 export class SharedModule {}

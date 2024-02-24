@@ -32,12 +32,21 @@ const managementRoutes: Route[] = [
         },
     },
     {
+
         path: 'workhours',
         component: WorkhourComponent,
         resolve: {
             initialData: WorkHourResolver,
         },
     },
+
+        path: 'service-mgmt',
+        loadChildren: () =>
+            import('app/modules/admin/Management/service/service.module').then(
+                (m) => m.ServiceModule,
+            ),
+    }
+
 ];
 
 @NgModule({

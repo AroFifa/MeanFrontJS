@@ -22,8 +22,33 @@ export class CRUDService {
         );
     }
 
-    getAll() {
-        return this._http.get<any>(`${environment.URL_API}/${this.baseUrl}`);
+    getAll(page: number = null, itemsPerPage: number = null,query: string = null) {
+        let params = [
+            page ? `page=${page}` : '',
+            itemsPerPage ? `size=${itemsPerPage}` : '',
+            query 
+          ].filter(Boolean).join('&');
+          
+          
+          let url = `${environment.URL_API}/${this.baseUrl}${params ? '?' + params : ''}`;
+          
+          return this._http.get<any>(url);
+          
+    }
+
+
+    search(page: number = null, itemsPerPage: number = null,query: string = null,data= {}) {
+        let params = [
+            page ? `page=${page}` : '',
+            itemsPerPage ? `size=${itemsPerPage}` : '',
+            query 
+          ].filter(Boolean).join('&');
+          
+          
+          let url = `${environment.URL_API}/${this.baseUrl}/search${params ? '?' + params : ''}`;
+          
+          return this._http.post<any>(url,data);
+          
     }
 
     getOne(id: string) {
