@@ -89,7 +89,7 @@ export class StaffEditComponent extends ShareComponent implements OnInit {
         let staff: User = {
             ...this.form.value,
             _id: this.staffData._id,
-            posts: this.posts,
+            posts: this.buildIdArray(this.posts),
             userType: 'Staff',
         };
         let fomData = new FormData();

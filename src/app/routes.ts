@@ -29,6 +29,13 @@ function getAdminNavigations() {
                     icon: 'heroicons_outline:user-group',
                     link: '/admin/management/staff',
                 },
+                {
+                    id: 'management.users',
+                    title: 'Heure de travail',
+                    type: 'basic',
+                    icon: 'heroicons_outline:calendar',
+                    link: '/admin/management/workhours',
+                },
             ],
         },
     ];
@@ -46,6 +53,13 @@ function getStaffNavigations() {
             type: 'basic',
             icon: 'heroicons_outline:home',
             link: '/staff/home',
+        },
+        {
+            id: 'home',
+            title: 'Heure de travail',
+            type: 'basic',
+            icon: 'heroicons_outline:calendar',
+            link: '/staff/workHour',
         },
     ];
 }

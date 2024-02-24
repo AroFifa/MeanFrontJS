@@ -40,6 +40,7 @@ export class AuthGuard implements CanActivate {
         }
 
         let userType = this._commonService.getValue_FromToken('userType');
+        if (!userType) this._router.navigate(['']).then();
         if (state.url.split('/')[1] !== userType.toLowerCase())
             this._commonService.handleRedirection();
 

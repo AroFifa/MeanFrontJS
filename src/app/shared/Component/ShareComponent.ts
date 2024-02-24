@@ -20,6 +20,10 @@ export class ShareComponent {
         this.callback = null;
     }
 
+    buildIdArray(array: any[]) {
+        return array.map((x) => x._id);
+    }
+
     handleMessage() {
         this.showAlert = true;
         setInterval(() => {

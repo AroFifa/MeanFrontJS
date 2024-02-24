@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { MatTableDataSource } from '@angular/material/table';
@@ -15,7 +15,7 @@ import { ConfirmationComponent } from '../../../Common/confirmation/confirmation
     selector: 'app-staff',
     templateUrl: './staff.component.html',
 })
-export class StaffComponent extends ShareComponent {
+export class StaffComponent extends ShareComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     dataSource: any;
     URL_API = environment.URL_API;

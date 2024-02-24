@@ -4,23 +4,22 @@ import {
     Resolve,
     RouterStateSnapshot,
 } from '@angular/router';
+import { WorkHourService } from '../modules/admin/Management/workhour/workHour.service';
 import { StaffService } from '../modules/admin/Management/staff/staff.service';
-import { ServiceService } from '../modules/admin/Management/service.service';
 import { forkJoin } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
-export class StaffResolver implements Resolve<any> {
+export class WorkHourResolver implements Resolve<any> {
     constructor(
-        private staffService: StaffService,
-        private serviceService: ServiceService,
+        private _workHourService: WorkHourService,
+        private _staffService: StaffService,
     ) {}
-
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
         return forkJoin([
-            this.staffService.getAll(),
-            this.serviceService.getAll(),
+            this._workHourService.getAll(),
+            this._staffService.getAll(),
         ]);
     }
 }

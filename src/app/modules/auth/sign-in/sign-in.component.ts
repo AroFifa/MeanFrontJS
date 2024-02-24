@@ -3,9 +3,7 @@ import { UntypedFormBuilder, NgForm, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { ShareComponent } from '../../../shared/Component/ShareComponent';
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
 import { CommonService } from '../../../shared/service/common.service';
-import { UserService } from '../../../shared/service/user.service';
 
 @Component({
     selector: 'auth-sign-in',
