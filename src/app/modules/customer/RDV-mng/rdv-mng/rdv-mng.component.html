@@ -1,0 +1,135 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <mat-drawer-container class="flex-auto h-full">
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-80"
+            [autoFocus]="false"
+            [mode]="'side'"
+            [opened]="true"
+            #matDrawer
+        >
+            <div class="flex flex-col flex-auto h-full dark:bg-default">
+                <!-- Watchlist -->
+                <div class="flex flex-col flex-0">
+                    <div class="flex flex-0 items-center p-5 border-b">
+                        <div class="flex items-center mt-2">
+                            <div
+                                class="min-w-20 text-center text-3xl tracking-tighter leading-none"
+                            >
+                                Rendez-vous
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form [formGroup]="form">
+                    <div
+                        class="flex flex-col flex-auto shrink-0 pt-6 bg-gray-50 dark:bg-transparent"
+                    >
+                        <div class="flex flex-col px-6 pb-2">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Date</mat-label>
+                                <input
+                                    matInput
+                                    [formControlName]="'bookingDate'"
+                                    [matDatepicker]="picker1"
+                                />
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="picker1"
+                                ></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col px-6 pb-2">
+                            <mat-form-field>
+                                <mat-label>Heure</mat-label>
+                                <input
+                                    matInput
+                                    [formControlName]="'bookingHour'"
+                                    [ngxTimepicker]="timePicker"
+                                    placeholder="Choose a time"
+                                />
+                                <ngx-material-timepicker-toggle
+                                    matSuffix
+                                    [for]="timePicker"
+                                ></ngx-material-timepicker-toggle>
+                                <ngx-material-timepicker
+                                    #timePicker
+                                ></ngx-material-timepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col px-6 pb-2">
+                            <mat-form-field>
+                                <mat-label>Services</mat-label>
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                ></mat-icon>
+                                <mat-select [formControlName]="'services'">
+                                    <ng-container
+                                        *ngFor="let service of services"
+                                    >
+                                        <mat-option [value]="service._id">
+                                            {{ service.name }}
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Wallet -->
+                        <div class="flex flex-col px-6 pb-2">
+                            <mat-form-field class="w-full">
+                                <mat-label>Employés</mat-label>
+                                <mat-select [formControlName]="'staff'">
+                                    <ng-container *ngFor="let staff of staffs">
+                                        <mat-option [value]="staff._id">{{
+                                            staff.name + " " + staff.firstName
+                                        }}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col px-6 pb-2">
+                            <button
+                                class="mt-4 mb-8"
+                                mat-flat-button
+                                [color]="'primary'"
+                            >
+                                Valider
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </mat-drawer>
+
+        <!-- Content -->
+        <mat-drawer-content class="flex flex-col">
+            <!-- BTC Price -->
+            <div
+                class="flex flex-col flex-auto min-h-full bg-card dark:bg-default"
+            >
+                <div
+                    class="relative flex flex-auto bg-gray-50 dark:bg-transparent"
+                >
+                    <bryntum-calendar-project-model
+                        #project
+                        [events]="events"
+                        [resources]="resources"
+                    ></bryntum-calendar-project-model>
+
+                    <bryntum-calendar
+                        #calendar
+                        [date]="calendarConfig.date!"
+                        [project]="project"
+                    ></bryntum-calendar>
+                </div>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>
