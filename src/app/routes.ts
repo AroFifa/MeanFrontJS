@@ -30,13 +30,13 @@ function getAdminNavigations() {
                     link: '/admin/management/staff',
                 },
                 {
-
                     id: 'management.users',
                     title: 'Heure de travail',
                     type: 'basic',
                     icon: 'heroicons_outline:calendar',
                     link: '/admin/management/workhours',
-
+                },
+                {
                     id: 'management.service',
                     title: 'Services',
                     type: 'basic',
@@ -50,9 +50,9 @@ function getAdminNavigations() {
                     icon: 'heroicons_outline:receipt-percent',
                     link: '/admin/management/service-mgmt/commissions',
                 },
-
             ],
-        }, {
+        },
+        {
             id: 'expense-mgmt',
             title: 'Dépenses',
             type: 'aside',
@@ -73,7 +73,6 @@ function getAdminNavigations() {
                     type: 'basic',
                     icon: 'heroicons_outline:pay-day',
                     link: '/admin/expense/general',
-
                 },
             ],
         },
