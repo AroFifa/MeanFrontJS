@@ -12,8 +12,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
-import { ExpenseResolver } from 'app/resolvers/ExpenseResolver';
-import { SalaryResolver } from 'app/resolvers/SalaryResolver';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatPaginatorIntlFrench } from 'app/custom/intl/MatpaginatorIntlFrench';
 import localeFr from '@angular/common/locales/fr';
@@ -25,23 +23,27 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ServiceComponent } from '../Management/service/service/service.component';
+import { BookingHistoryResolver } from 'app/resolvers/BookingResolver';
 
 registerLocaleData(localeFr, 'fr');
 
 
 const bookingRoutes: Route[] = [
+  // link to the component that Toavina created 
   {
     path: 'general',
     component: ServiceComponent,
     resolve: {
-      initialData: ExpenseResolver
+
+      initialData: BookingHistoryResolver
     }
   },
+  // ---------------
   {
     path: 'history',
     component: ServiceComponent,
     resolve: {
-      initialData: SalaryResolver
+      initialData: BookingHistoryResolver
     }
   },
 ];
