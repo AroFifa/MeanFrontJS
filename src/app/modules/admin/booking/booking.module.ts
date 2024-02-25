@@ -22,8 +22,10 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ServiceComponent } from '../Management/service/service/service.component';
 import { BookingHistoryResolver } from 'app/resolvers/BookingResolver';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { BookingHistoryComponent } from './booking-history/booking-history.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -32,7 +34,7 @@ const bookingRoutes: Route[] = [
   // link to the component that Toavina created 
   {
     path: 'general',
-    component: ServiceComponent,
+    component: BookingHistoryComponent,
     resolve: {
 
       initialData: BookingHistoryResolver
@@ -41,7 +43,7 @@ const bookingRoutes: Route[] = [
   // ---------------
   {
     path: 'history',
-    component: ServiceComponent,
+    component: BookingHistoryComponent,
     resolve: {
       initialData: BookingHistoryResolver
     }
@@ -50,7 +52,7 @@ const bookingRoutes: Route[] = [
 
 
 @NgModule({
-  declarations: [ServiceComponent],
+  declarations: [BookingHistoryComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(bookingRoutes), 
@@ -72,7 +74,9 @@ const bookingRoutes: Route[] = [
     MatExpansionModule,
     MatSliderModule,
     MatCheckboxModule,
-    SharedModule
+    SharedModule,
+    MatSidenavModule,
+    MatMenuModule
   ],
   
   providers: [
