@@ -97,7 +97,7 @@ function getAdminNavigations() {
                     id: 'booking-mgmt.history',
                     title: 'Historique',
                     type: 'basic',
-                    icon: 'heroicons_outline:booking-hotel',
+                    icon: 'heroicons_outline:document-search',
                     // /customer/booking/history
                     link: '/admin/booking/history',
                 },

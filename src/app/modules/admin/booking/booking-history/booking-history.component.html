@@ -109,8 +109,8 @@
                 <!-- LIST -->
                 <div class="relative flex flex-auto w-full bg-card dark:bg-transparent">
 
-                    <!-- panels list -->
-                    <ng-container *ngIf="panels && panels.length > 0; else noData">
+                    <!-- items list -->
+                    <ng-container *ngIf="items && items.length > 0; else noData">
                         <div class="relative flex flex-auto flex-col w-full min-w-0 lg:min-w-90 lg:max-w-90 border-r z-10">
                 
                             <!-- Header -->
@@ -161,50 +161,78 @@
                 
                             </div>
                 
-                            <!-- Panel list -->
+                            <!-- item list -->
                             <div
                                 class="overflow-y-auto"
-                                #panelList>
+                                #itemList>
                 
                                 <!-- Item loop -->
-                                <ng-container *ngFor="let panel of panels; let i = index; trackBy: trackByFn">
+                                <ng-container *ngFor="let item of items; let i = index; trackBy: trackByFn">
                 
                                     <!-- Item -->
                                     <div
                                     class="flex px-8 py-5 cursor-pointer"
                                     [ngClass]="{
                                         'hover:bg-gray-100 dark:hover:bg-hover':
-                                            !selectedPanel || selectedPanel !== panel.id,
+                                            !selectedItem || selectedItem.id !== item.id,
                                         'bg-primary-50 dark:bg-hover':
-                                            selectedPanel && selectedPanel === panel.id
+                                            selectedItem && selectedItem.id === item.id
                                     }"
-                                    (click)="goToPanel(panel.id)"
+                                    (click)="onSelectedItem(item)"
                                     >
-                                        <mat-icon
-                                            [ngClass]="{
-                                                'text-hint':
-                                                    !selectedPanel ||
-                                                    selectedPanel !== panel.id,
-                                                'text-primary dark:text-primary-500':
-                                                    selectedPanel && selectedPanel === panel.id
-                                            }"
-                                            [svgIcon]="panel.icon"
-                                        ></mat-icon>
-                                        <div class="ml-3">
-                                            <div
-                                                class="font-medium leading-6"
-                                                [ngClass]="{
-                                                    'text-primary dark:text-primary-500':
-                                                        selectedPanel &&
-                                                        selectedPanel === panel.id
-                                                }"
-                                            >
-                                                {{ panel.title }}
+                                       
+
+                                  
+
+
+
+
+
+
+
+
+
+                                        <!-- Item content -->
+                                        <div
+                                        class="flex flex-col items-start justify-start w-full py-6 pr-4 pl-5 border-l-4 border-transparent"
+                                        [ngClass]="{'bg-primary-50 dark:bg-black dark:bg-opacity-5': selectedItem && selectedItem.id === item.id}">
+
+                                        <!-- Info -->
+                                        <div class="flex items-center w-full">
+                                            <!-- Service name -->
+                                            <div class="mr-2 font-semibold truncate">
+                                                {{item.name.split('<')[0].trim()}}
+                                                </div>
+                                                <!-- Status indicator -->
+                                                <mat-icon
+                                                    class="mr-3 icon-size-4"
+                                                    *ngIf="item.achievedDate || item.isCanceled || item.isPayed"
+                                                    [svgIcon]="item.isPayed ? 'heroicons_solid:check-circle' : (item.isCanceled ? 'heroicons_solid:x-circle' : 'heroicons_solid:check-circle')"
+                                                    [ngStyle]="{
+                                                        'color': item.isPayed ? 'green' : (item.isCanceled ? 'red' : 'yellow')
+                                                    }"
+                                                    [matTooltip]="item.isPayed?'payée':(item.isCanceled?'annullée':'effectuée')">
+                                                </mat-icon>
+                                                <!-- Date -->
+                                                <div class="ml-auto text-md text-right whitespace-nowrap text-hint">
+                                                    {{item.date | date:'LLL dd YYYY, HH:mm'}}
+                                                </div>
                                             </div>
-                                            <div class="mt-0.5 text-secondary">
-                                                {{ panel.description }}
+
+
+                                            <!-- Excerpt -->
+                                            <div class="mt-2 leading-normal line-clamp-2 text-secondary">
+                                                {{ item.description?.length > 50 ? item.description?.slice(0, 50) + '...' : item.description }}
                                             </div>
+
                                         </div>
+
+
+
+
+
+
+
                                     </div>
                     
                                 </ng-container>
@@ -215,7 +243,7 @@
                 
                     </ng-container>
                 
-                    <!-- No panels template -->
+                    <!-- No items template -->
                     <ng-template #noData>
                         <div class="z-100 absolute inset-0 flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
                             <mat-icon
@@ -225,17 +253,17 @@
                         </div>
                     </ng-template>
                 
-                    <!-- panel details -->
-                    <ng-container *ngIf="panels && panels.length > 0">
+                    <!-- item details -->
+                    <ng-container *ngIf="items && items.length > 0">
                         <div
                             class="flex-auto"
-                            [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': selectedPanel,
-                                        'hidden lg:flex': !selectedPanel}"
+                            [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': selectedItem && selectedItem.id,
+                                        'hidden lg:flex': !selectedItem || !selectedItem.id}"
                         >
 
                             <div class="flex flex-col flex-auto overflow-y-auto lg:overflow-hidden bg-card dark:bg-default">
 
-                                <ng-container *ngIf="selectedPanel; else selectPanelToDisplay">
+                                <ng-container *ngIf="selectedItem && selectedItem.id; else selectitemToDisplay">
                                     <!-- Header -->
                                     <div class="z-10 relative flex flex-col flex-0 w-full border-b">
                                         
@@ -248,64 +276,88 @@
                 <button
                     class="lg:hidden md:-ml-2"
                     mat-icon-button
-                    (click)="removeSeletedPanel()">
+                    (click)="removeSeleteditem()">
                     <mat-icon [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
                 </button>
 
                 <!-- ACTION BUTTON -->
 
-                <!-- Toggle important button -->
+                <!-- cancel button -->
                 <button
                     class="ml-2"
+                    *ngIf="!selectedItem.achievedDate && !selectedItem.isCanceled && !selectedItem.isPayed"
+                    [matTooltip]="'Annuler la réservation'"
                     mat-icon-button>
                     <mat-icon
                         [ngClass]="'text-red-600 dark:text-red-500'"
-                        [svgIcon]="'heroicons_outline:exclamation-circle'"></mat-icon>
+                        [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
                 </button>
 
-                <!-- Toggle starred button -->
+                <!-- edit button -->
                 <button
                     class="ml-2"
+                    *ngIf="!selectedItem.achievedDate && !selectedItem.isCanceled && !selectedItem.isPayed"
+                    [matTooltip]="'Modifier la réservation'"
                     mat-icon-button>
                     <mat-icon
-                        [ngClass]="'text-orange-500 dark:text-red-400'"
-                        [svgIcon]="'heroicons_outline:star'"></mat-icon>
+                        [ngClass]="'text-yellow-600 dark:text-yellow-500'"
+                        [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+                </button>
+
+
+                <!-- done button -->
+                <button
+                    class="ml-2"
+                    *ngIf="!selectedItem.achievedDate && !selectedItem.isCanceled && !selectedItem.isPayed"
+                    [matTooltip]="'Terminer'"
+                    mat-icon-button>
+                    <mat-icon
+                        [ngClass]="'text-green-600 dark:text-green-500'"
+                        [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                </button>
+
+                <!-- pay button -->
+                <button
+                    class="ml-2"
+                    [matTooltip]="'Payer'"
+                    *ngIf="selectedItem.achievedDate"
+                    mat-icon-button>
+                    <mat-icon
+                        [ngClass]="'text-green-500 dark:text-green-400'"
+                        [svgIcon]="'heroicons_outline:credit-card'"></mat-icon>
                 </button>
 
                 <!-- Other actions button & menu -->
-                <button
+                <!-- <button
                     class="ml-2"
                     mat-icon-button
                     [matMenuTriggerFor]="detailsMenu">
                     <mat-icon [svgIcon]="'heroicons_outline:dots-vertical'"></mat-icon>
                 </button>
                 <mat-menu #detailsMenu="matMenu">
-                    <!-- Mark as read / unread -->
                     <button
                         mat-menu-item>
                         <mat-icon [svgIcon]="'heroicons_outline:mail'"></mat-icon>
                         <span>Mark as unread</span>
                     </button>
-                    <!-- Marks as spam / not span-->
                     <button
                         mat-menu-item>
                         <mat-icon [svgIcon]="'heroicons_outline:exclamation'"></mat-icon>
                         <span>Spam</span>
                     </button>
-                    <!-- Delete -->
                     <button
                         mat-menu-item
                         >
                         <mat-icon [svgIcon]="'heroicons_outline:trash'"></mat-icon>
                         <span>Delete</span>
                     </button>
-                </mat-menu>
+                </mat-menu> -->
 
             </div>
 
             <!-- Subject -->
             <div class="flex flex-wrap items-center py-5 px-6">
-                <div class="flex flex-auto my-1 mr-4 text-2xl"> {{ getPanelInfo(selectedPanel).title }}</div>
+                <div class="flex flex-auto my-1 mr-4 text-2xl"> {{ getItemInfo(selectedItem).name }}</div>
             </div>
 
                                         
@@ -313,33 +365,6 @@
                                         
                                         
                                         
-                                        
-                                        <!-- Panel header -->
-
-
-
-
-                                        <!-- <div class="flex items-center">
-
-                                            Panel title
-                                            <div
-                                                class="ml-2 lg:ml-0 text-3xl font-bold tracking-tight leading-none"
-                                            >
-                                                {{ getPanelInfo(selectedPanel).title }}
-                                            </div>
-                                        </div>
-
-                                        Load settings panel
-                                        <div class="mt-8">
-                                            <ng-container [ngSwitch]="selectedPanel">
-                                                Account
-                                                <ng-container *ngSwitchCase="'account'">
-                                                    <app-profile></app-profile>
-                                                </ng-container>
-                                                Security
-                                            </ng-container>
-                                        </div>
- -->
 
 
 
@@ -355,7 +380,7 @@
                             
                                 </ng-container>
                             
-                                <ng-template #selectPanelToDisplay>
+                                <ng-template #selectitemToDisplay>
                             
                                     <div class="flex flex-col flex-auto items-center justify-center bg-gray-100 dark:bg-transparent">
                                         <mat-icon

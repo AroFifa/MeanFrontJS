@@ -18,9 +18,9 @@ export class BookingHistoryComponent implements OnInit, OnDestroy {
     @ViewChild('drawer') drawer: MatDrawer;
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = false;
-    panels: any[] = [];
-    selectedPanel: string;
-    @ViewChild('panelList') panelList: ElementRef;
+    items: any[] = [];
+    selectedItem: any;
+    @ViewChild('itemList') itemList: ElementRef;
     formFieldHelpers: string[] = [''];
 
     pagination = {
@@ -60,34 +60,48 @@ export class BookingHistoryComponent implements OnInit, OnDestroy {
             });
     }
 
-    removeSeletedPanel(){
+    removeSeleteditem(){
         
-        this.selectedPanel = null;
+        this.selectedItem = null;
     }
-    getPanelData() {
-        this.panels = [
+    getItemData() {
+        this.items = [
             {
-                id: 'account',
+                id: '1',
+                name: "Manucure",
+                date: new Date(),
+                employee: {
+                    id: 1,
+                    name: 'Rakoto Ramiarimanana',
+                    email: ''
+                },
                 icon: 'heroicons_outline:user-circle',
-                title: 'Profil',
-                description: 'Gérer vos informations publiques et privées',
+                description: 'Manucure simple',
+                achievedDate: null,
             },
             {
-                id: 'security',
+                id: '2',
+                name: "Pédicure",
+                date: new Date(),
+                employee: {
+                    id: 1,
+                    name: 'Rakoto Ramiarimanana',
+                    email: ''
+                },
+                achievedDate: new Date(),
                 icon: 'heroicons_outline:lock-closed',
-                title: 'Sécurité',
-                description: 'Gerer votre mot de passe',
+                // description: 'Gerer votre mot de passe',
             },
         ];
     }
 
     ngOnInit(): void {
-        this.getPanelData();
+        this.getItemData();
         this.detectChanges();
     }
 
-    goToPanel(panel: string): void {
-        this.selectedPanel = panel;
+    onSelectedItem(item: any): void {
+        this.selectedItem = item;
 
         // Close the drawer on 'over' mode
         if (this.drawerMode === 'over') {
@@ -95,8 +109,8 @@ export class BookingHistoryComponent implements OnInit, OnDestroy {
         }
     }
 
-    getPanelInfo(id: string): any {
-        return this.panels.find((panel) => panel.id === id);
+    getItemInfo(item:any): any {
+        return this.items.find((i) => i.id === item.id);
     }
 
     trackByFn(index: number, item: any): any {
