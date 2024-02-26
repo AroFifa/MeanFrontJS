@@ -73,11 +73,13 @@ export class BookingHistoryComponent implements OnInit, OnDestroy {
                 employee: {
                     id: 1,
                     name: 'Rakoto Ramiarimanana',
-                    email: ''
+                    email: 'rakotoramari@gmail.com'
                 },
                 icon: 'heroicons_outline:user-circle',
                 description: 'Manucure simple',
                 achievedDate: null,
+                duration: 45,
+                price: 80000
             },
             {
                 id: '2',
@@ -86,10 +88,13 @@ export class BookingHistoryComponent implements OnInit, OnDestroy {
                 employee: {
                     id: 1,
                     name: 'Rakoto Ramiarimanana',
-                    email: ''
+                    email: 'rakotoramari@gmail.com'
                 },
                 achievedDate: new Date(),
+                duration: 150,
                 icon: 'heroicons_outline:lock-closed',
+                price: 150000,
+                payed_amount: 30000
                 // description: 'Gerer votre mot de passe',
             },
         ];
@@ -109,11 +114,17 @@ export class BookingHistoryComponent implements OnInit, OnDestroy {
         }
     }
 
-    getItemInfo(item:any): any {
-        return this.items.find((i) => i.id === item.id);
-    }
-
+   
     trackByFn(index: number, item: any): any {
         return item.id || index;
     }
+
+    getTime(startDate: Date, durationInMinutes: number): string {
+        const endTime = new Date(startDate);
+        endTime.setMinutes(endTime.getMinutes() + durationInMinutes);
+        // Format the time as "HH:mm"
+        return `${endTime.getHours().toString().padStart(2, '0')}:${endTime.getMinutes().toString().padStart(2, '0')}`;
+    }
+
+
 }
