@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { ServiceService } from '../modules/admin/Management/service.service';
 
-import { BookingService } from "app/modules/admin/booking/booking.service";
+import { BookingService } from "app/modules/customer/RDV-history/booking.service";
 
 @Injectable({
     providedIn: 'root',
