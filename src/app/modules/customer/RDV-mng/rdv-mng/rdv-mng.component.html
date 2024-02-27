@@ -1,6 +1,5 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
     <mat-drawer-container class="flex-auto h-full">
-        <!-- Drawer -->
         <mat-drawer
             class="w-80"
             [autoFocus]="false"
@@ -9,7 +8,6 @@
             #matDrawer
         >
             <div class="flex flex-col flex-auto h-full dark:bg-default">
-                <!-- Watchlist -->
                 <div class="flex flex-col flex-0">
                     <div class="flex flex-0 items-center p-5 border-b">
                         <div class="flex items-center mt-2">
@@ -27,48 +25,28 @@
                         class="flex flex-col flex-auto shrink-0 pt-6 bg-gray-50 dark:bg-transparent"
                     >
                         <div class="flex flex-col px-6 pb-2">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Date</mat-label>
-                                <input
-                                    matInput
-                                    [formControlName]="'bookingDate'"
-                                    [matDatepicker]="picker1"
-                                />
-                                <mat-datepicker-toggle
-                                    matSuffix
-                                    [for]="picker1"
-                                ></mat-datepicker-toggle>
-                                <mat-datepicker #picker1></mat-datepicker>
-                            </mat-form-field>
+                            <div class="p-4 leading-none rounded-xl border">
+                                <div class="text-sm font-medium text-secondary">
+                                    Total
+                                </div>
+                                <div class="mt-2 font-mono text-xl">0 Ar</div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col px-6 py-2">
+                            <mat-label>Date</mat-label>
+                            <bryntum-date-time-field
+                                (onChange)="addValue($event)"
+                            ></bryntum-date-time-field>
                         </div>
 
                         <div class="flex flex-col px-6 pb-2">
-                            <mat-form-field>
-                                <mat-label>Heure</mat-label>
-                                <input
-                                    matInput
-                                    [formControlName]="'bookingHour'"
-                                    [ngxTimepicker]="timePicker"
-                                    placeholder="Choose a time"
-                                />
-                                <ngx-material-timepicker-toggle
-                                    matSuffix
-                                    [for]="timePicker"
-                                ></ngx-material-timepicker-toggle>
-                                <ngx-material-timepicker
-                                    #timePicker
-                                ></ngx-material-timepicker>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="flex flex-col px-6 pb-2">
-                            <mat-form-field>
+                            <mat-form-field class="w-full">
                                 <mat-label>Services</mat-label>
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                ></mat-icon>
-                                <mat-select [formControlName]="'services'">
+                                <mat-select
+                                    [formControlName]="'service'"
+                                    (selectionChange)="getStaffs($event)"
+                                >
                                     <ng-container
                                         *ngFor="let service of services"
                                     >
@@ -80,12 +58,13 @@
                             </mat-form-field>
                         </div>
 
-                        <!-- Wallet -->
-                        <div class="flex flex-col px-6 pb-2">
+                        <div class="flex flex-col px-6 pb-1">
                             <mat-form-field class="w-full">
                                 <mat-label>Employés</mat-label>
                                 <mat-select [formControlName]="'staff'">
-                                    <ng-container *ngFor="let staff of staffs">
+                                    <ng-container
+                                        *ngFor="let staff of staffsService"
+                                    >
                                         <mat-option [value]="staff._id">{{
                                             staff.name + " " + staff.firstName
                                         }}</mat-option>
@@ -95,10 +74,26 @@
                         </div>
 
                         <div class="flex flex-col px-6 pb-2">
+                            <mat-form-field class="w-full">
+                                <mat-label>Rappel</mat-label>
+                                <mat-select [formControlName]="'remainder'">
+                                    <ng-container
+                                        *ngFor="let remainder of remainders"
+                                    >
+                                        <mat-option [value]="remainder.value">{{
+                                            remainder.label
+                                        }}</mat-option>
+                                    </ng-container>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="flex flex-col px-6 pb-2">
                             <button
-                                class="mt-4 mb-8"
+                                class="mt-4 mb-8 bg-primary"
                                 mat-flat-button
                                 [color]="'primary'"
+                                (click)="makeBooking()"
                             >
                                 Valider
                             </button>
@@ -108,9 +103,7 @@
             </div>
         </mat-drawer>
 
-        <!-- Content -->
         <mat-drawer-content class="flex flex-col">
-            <!-- BTC Price -->
             <div
                 class="flex flex-col flex-auto min-h-full bg-card dark:bg-default"
             >

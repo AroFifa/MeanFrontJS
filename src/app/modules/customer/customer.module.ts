@@ -14,11 +14,16 @@ import { RdvCalendarComponent } from './RDV-mng/rdv-calendar/rdv-calendar.compon
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { BryntumCalendarModule } from '@bryntum/calendar-angular';
+import { MatChipsModule } from '@angular/material/chips';
+import { BookingResolver } from '../../resolvers/BookingResolver';
 
 const customerRoutes: Route[] = [
     {
         path: 'rdvMng',
         component: RdvMngComponent,
+        resolve: {
+            data: BookingResolver,
+        },
     },
 ];
 
@@ -38,6 +43,7 @@ const customerRoutes: Route[] = [
         MatSortModule,
         MatTableModule,
         BryntumCalendarModule,
+        MatChipsModule,
     ],
 })
 export class CustomerModule {}
