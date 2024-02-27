@@ -43,6 +43,8 @@ export class StaffComponent extends ShareComponent implements OnInit {
         this.dataSource = new MatTableDataSource<User>(
             this.route.snapshot.data['initialData'][0].data,
         );
+
+        
         this.services =
             this.route.snapshot.data['initialData'][1].data?.services;
         this.dataSource.sort = this.sort;

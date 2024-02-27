@@ -85,9 +85,12 @@ export class SalaryExpenseComponent extends ShareComponent{
     this.posts = this.route.snapshot.data.initialData[2].data.services;
 
     
+    
 
     this.staffFilterOptions = this.staffList.options;
 
+    console.log(this.staffList);
+    
     this.dataSource = new MatTableDataSource<any>(this.staffList.staff.items);
     this.dataSource.sort = this.sort;
     

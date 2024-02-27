@@ -32,6 +32,7 @@ export class CRUDService {
           
           let url = `${environment.URL_API}/${this.baseUrl}${params ? '?' + params : ''}`;
           
+          
           return this._http.get<any>(url);
           
     }

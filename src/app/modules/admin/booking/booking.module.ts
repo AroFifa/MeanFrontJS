@@ -26,6 +26,8 @@ import { BookingHistoryResolver } from 'app/resolvers/BookingResolver';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BookingHistoryComponent } from './booking-history/booking-history.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { PaymentComponent } from './payment/payment.component';
+import {MatRadioModule} from '@angular/material/radio';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -52,7 +54,7 @@ const bookingRoutes: Route[] = [
 
 
 @NgModule({
-  declarations: [BookingHistoryComponent],
+  declarations: [BookingHistoryComponent,PaymentComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(bookingRoutes), 
@@ -76,7 +78,8 @@ const bookingRoutes: Route[] = [
     MatCheckboxModule,
     SharedModule,
     MatSidenavModule,
-    MatMenuModule
+    MatMenuModule,
+    MatRadioModule
   ],
   
   providers: [
