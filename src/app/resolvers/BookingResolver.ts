@@ -1,9 +1,25 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
-import { ServiceService } from "app/modules/admin/Management/service.service";
-import { StaffService } from "app/modules/admin/Management/staff/staff.service";
+import {
+    ActivatedRouteSnapshot,
+    Resolve,
+    RouterStateSnapshot,
+} from '@angular/router';
+import { StaffService } from '../modules/admin/Management/staff/staff.service';
+import { Injectable } from '@angular/core';
+import { forkJoin } from 'rxjs';
+import { ServiceService } from '../modules/admin/Management/service.service';
+
 import { BookingService } from "app/modules/admin/booking/booking.service";
-import { forkJoin } from "rxjs";
+
+@Injectable({
+    providedIn: 'root',
+})
+export class BookingResolver implements Resolve<any> {
+    constructor(private _serviceService: ServiceService) {}
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        return forkJoin([this._serviceService.getAll()]);
+    }
+}
 
 @Injectable({
     providedIn: 'root'
