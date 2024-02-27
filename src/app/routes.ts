@@ -107,15 +107,7 @@ function getAdminNavigations() {
 }
 
 function getCustomerNavigations() {
-    return [
-        {
-            id: 'home',
-            title: 'Rendez-vous',
-            type: 'basic',
-            icon: 'heroicons_outline:document-text',
-            link: '/customer/rdvMng',
-        },
-    ];
+    return [];
 }
 
 function getStaffNavigations() {
