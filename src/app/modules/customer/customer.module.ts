@@ -49,7 +49,8 @@ const customerRoutes: Route[] = [
       path: 'rdvHistory',
       component: BookingHistoryComponent,
       resolve: {
-        initialData: BookingHistoryResolver
+        // set to booking  history resolver when the backend is done
+        data: BookingResolver
       }
     },
     {
