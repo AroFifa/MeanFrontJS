@@ -1,0 +1,683 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <mat-drawer-container class="flex-auto h-full">
+
+        <mat-drawer
+            class="w-72 dark:bg-gray-900"
+            [mode]="drawerMode"
+            [opened]="drawerOpened"
+            #drawer>
+
+            <div class="flex flex-col flex-auto w-full">
+                <!-- Title -->
+                <div class="mt-10 mb-8 mx-6 text-2xl font-extrabold tracking-tight leading-none">Filtrer</div>
+            
+                <!-- FORM ADVANCED SEARCH -->
+                <form
+                [formGroup]="form"
+                class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto"
+            >
+
+                <div class="flex">
+                    <mat-form-field
+                        class="flex-auto"
+                    >
+                        <mat-label
+                            >Entrer une intervalle de
+                            date</mat-label
+                        >
+                        <mat-date-range-input
+                            [rangePicker]="picker"
+                        >
+                            <input
+                                matStartDate
+                                placeholder="Date début"
+                                [formControlName]="'min_date'"
+                            />
+                            <input
+                                matEndDate
+                                placeholder="Date fin"
+                                [formControlName]="'max_date'"
+                            />
+                        </mat-date-range-input>
+                        <mat-hint
+                            >MM/DD/YYYY – MM/DD/YYYY</mat-hint
+                        >
+                        <mat-datepicker-toggle
+                            matIconSuffix
+                            [for]="picker"
+                        ></mat-datepicker-toggle>
+                        <mat-date-range-picker
+                            #picker
+                        ></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                        class="flex-auto gt-xs:pr-3"
+                        >
+                            <mat-label>Services</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="
+                                    'heroicons_outline:identification'
+                                "
+                                matPrefix
+                            ></mat-icon>
+                            <mat-select
+                                (selectionChange)="
+                                    serviceFilterData =
+                                        updateFilterList(
+                                            $event,
+                                            serviceFilterData,
+                                            services,
+                                            'services'
+                                        )
+                                "
+                            >
+                                <ng-container
+                                    *ngFor="let s of services"
+                                >
+                                    <mat-option
+                                        value="{{ s._id }}"
+                                        >{{ s.name }}</mat-option
+                                    >
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="serviceFilterData && serviceFilterData.length > 0" class="flex-auto gt-xs:pr-3">
+                            <mat-label
+                                >Service(s) choisie(s)</mat-label
+                            >
+                            <mat-chip-grid #serviceChipGrid>
+                                <ng-container
+                                    *ngFor="
+                                        let s of serviceFilterData
+                                    "
+                                >
+                                    <mat-chip-row>
+                                        {{ s.name }}
+                                        <mat-icon
+                                            (click)="
+                                                serviceFilterData =
+                                                    removeFilterList(
+                                                        s._id,
+                                                        serviceFilterData,
+                                                        'services'
+                                                    )
+                                            "
+                                            class="icon-size-5"
+                                            matChipRemove
+                                            [svgIcon]="
+                                                'heroicons_solid:minus-circle'
+                                            "
+                                        ></mat-icon>
+                                    </mat-chip-row>
+                                </ng-container>
+                                <input
+                                    style="display: none"
+                                    placeholder="New chip..."
+                                    [matChipInputFor]="serviceChipGrid"
+                                />
+                            </mat-chip-grid>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                        class="flex-auto gt-xs:pr-3"
+                        >
+                            <mat-label>Employés</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="
+                                    'heroicons_outline:user'
+                                "
+                                matPrefix
+                            ></mat-icon>
+                            <mat-select
+                                (selectionChange)="
+                                    staffFilterData =
+                                        updateFilterList(
+                                            $event,
+                                            staffFilterData,
+                                            staff,
+                                            'staff'
+                                        )
+                                "
+                            >
+                                <ng-container
+                                    *ngFor="let i of staff"
+                                >
+                                    <mat-option
+                                        value="{{ i._id }}"
+                                        >{{i.name}} {{i.firstName}}</mat-option
+                                    >
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field 
+                        class="flex-auto gt-xs:pr-3"
+                        *ngIf="staffFilterData && staffFilterData.length > 0">
+                            <mat-label
+                                >Employé(s) choisi(s)</mat-label
+                            >
+                            <mat-chip-grid #staffChipGrid>
+                                <ng-container
+                                    *ngFor="
+                                        let i of staffFilterData
+                                    "
+                                >
+                                    <mat-chip-row>
+                                        {{i.name}} {{i.firstName}}
+                                        <mat-icon
+                                            (click)="
+                                                staffFilterData =
+                                                    removeFilterList(
+                                                        i._id,
+                                                        staffFilterData,
+                                                        'staff'
+                                                    )
+                                            "
+                                            class="icon-size-5"
+                                            matChipRemove
+                                            [svgIcon]="
+                                                'heroicons_solid:minus-circle'
+                                            "
+                                        ></mat-icon>
+                                    </mat-chip-row>
+                                </ng-container>
+                                <input
+                                    style="display: none"
+                                    placeholder="New chip..."
+                                    [matChipInputFor]="staffChipGrid"
+                                />
+                            </mat-chip-grid>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="flex">
+                        <mat-card
+                            class="flex-auto"
+                        >
+                            <mat-card-header>
+                                <mat-card-title>
+                                    <mat-label
+                                        >Prix (Ar)</mat-label
+                                    >
+                                </mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <mat-slider
+                                    [displayWith]="displayPrice"
+                                    [min]="
+                                        filterOptions.price
+                                            .min
+                                    "
+                                    [max]="
+                                        filterOptions.price
+                                            .max
+                                    "
+                                    discrete
+                                >
+                                    <input
+                                        matInput
+                                        [formControlName]="
+                                            'min_price'
+                                        "
+                                        matSliderStartThumb
+                                    />
+                                    <input
+                                        matInput
+                                        [formControlName]="
+                                            'max_price'
+                                        "
+                                        matSliderEndThumb
+                                    />
+                                </mat-slider>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+            </form>
+            
+            
+
+            </div>
+            
+        </mat-drawer>
+
+        <!-- Drawer content -->
+        <mat-drawer-content class="flex flex-col overflow-hidden">
+
+            <!-- Main -->
+            <div class="flex flex-auto overflow-hidden">
+
+                <!-- _________________________________________ -->
+                <!-- _________________________________________ -->
+                <!-- _________________________________________ -->
+                <!-- _________________________________________ -->
+                <!-- LIST -->
+                <div class="relative flex flex-auto w-full bg-card dark:bg-transparent">
+
+                    <!-- items list -->
+                    <ng-container *ngIf="items && items.length > 0; else noData">
+                        <div class="relative flex flex-auto flex-col w-full min-w-0 lg:min-w-90 lg:max-w-90 border-r z-10">
+                
+                            <!-- Header -->
+                            <div class="relative flex flex-0 items-center justify-between h-16 px-4 border-b bg-gray-50 dark:bg-transparent">
+                
+                                <div class="flex items-center">
+                                    <!-- Sidebar toggle button -->
+                                    <button
+                                        mat-icon-button
+                                        (click)="drawer.toggle()">
+                                        <mat-icon [svgIcon]="'heroicons_outline:filter'"></mat-icon>
+                                    </button>
+                                    <div class="ml-2 font-semibold uppercase">Historique des réservations</div>
+                                </div>
+                           
+                                <!-- Pagination -->
+                                <div class="flex items-center">
+                                    <!-- Info -->
+                                    <div class="flex items-center mr-3 text-md font-medium">
+                                        <span>{{pagination.startIndex + 1}}</span>
+                                        <span class="mx-1 text-secondary">-</span>
+                                        <span>{{pagination.endIndex + 1}}</span>
+                                        <span class="mx-1 text-secondary">sur</span>
+                                        <span>{{pagination.totalResults}}</span>
+                                    </div>
+                                    <!-- Previous page button -->
+                                    <a
+                                        class="w-8 h-8 min-h-8"
+                                        mat-icon-button
+                                        [disabled]="pagination.currentPage == 1"
+                                        (click)="onPageChange(-1)">
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
+                                    </a>
+                                    <!-- Next page button-->
+                                    <a
+                                        class="w-8 h-8 min-h-8"
+                                        mat-icon-button
+                                        [disabled]="pagination.currentPage == pagination.lastPage"
+                                       (click)="onPageChange(1)"
+                                        >
+                                        <mat-icon
+                                            class="icon-size-5"
+                                            [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
+                                    </a>
+                                </div>
+                
+                            </div>
+                
+                            <!-- item list -->
+                            <div
+                                class="overflow-y-auto"
+                                #itemList>
+                
+                                <!-- Item loop -->
+                                <ng-container *ngFor="let item of items; let i = index; trackBy: trackByFn">
+                
+                                    <!-- Item -->
+                                    <div
+                                    class="flex px-8 py-5 cursor-pointer"
+                                    [ngClass]="{
+                                        'hover:bg-gray-100 dark:hover:bg-hover':
+                                            !selectedItem || selectedItem.booking._id !== item.id,
+                                        'bg-primary-50 dark:bg-hover':
+                                            selectedItem && selectedItem.booking._id === item.id
+                                    }"
+                                    (click)="onSelectedItem(item)"
+                                    >
+                                       
+
+                                  
+
+
+
+
+
+
+
+
+
+                                        <!-- Item content -->
+                                        <div
+                                        class="flex flex-col items-start justify-start w-full py-6 pr-4 pl-5 border-l-4 border-transparent"
+                                        [ngClass]="{'bg-primary-50 dark:bg-black dark:bg-opacity-5': selectedItem && selectedItem.booking._id === item.id}">
+
+                                        <!-- Info -->
+                                        <div class="flex items-center w-full">
+                                            <!-- Service name -->
+                                            <div class="mr-2 font-semibold truncate">
+                                                {{item.booking.service.name.split('<')[0].trim()}}
+                                                </div>
+                                                <!-- Status indicator -->
+                                                <mat-icon
+                                                    class="mr-3 icon-size-4"
+                                                    *ngIf="item.booking.isDone || item.booking.isDeleted || item.isFullyPaid"
+                                                    [svgIcon]="item.isFullyPaid ? 'heroicons_solid:check-circle' : (item.booking.isDeleted ? 'heroicons_solid:x-circle' : 'heroicons_solid:check-circle')"
+                                                    [ngStyle]="{
+                                                        'color': item.isFullyPaid ? 'green' : (item.booking.isDeleted ? 'red' : 'yellow')
+                                                    }"
+                                                    [matTooltip]="item.isFullyPaid?'payée':(item.booking.isDeleted?'annullée':'effectuée')">
+                                                </mat-icon>
+                                                <!-- Date -->
+                                                <div class="ml-auto text-md text-right whitespace-nowrap text-hint">
+                                                    {{item.booking.startDate | date:'LLL dd YYYY, HH:mm'}}
+                                                </div>
+                                            </div>
+
+
+                                            <!-- Excerpt -->
+                                            <div class="mt-2 leading-normal line-clamp-2 text-secondary">
+                                                {{ item.booking.service.description?.length > 50 ? item.booking.service.description?.slice(0, 50) + '...' : item.booking.service.description }}
+                                            </div>
+
+                                        </div>
+
+
+
+
+
+
+
+                                    </div>
+                    
+                                </ng-container>
+                
+                            </div>
+                
+                        </div>
+                
+                    </ng-container>
+                
+                    <!-- No items template -->
+                    <ng-template #noData>
+                        <div class="z-100 absolute inset-0 flex flex-auto flex-col items-center justify-center bg-gray-100 dark:bg-transparent">
+                            <mat-icon
+                                class="icon-size-24"
+                                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                            <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">Aucune réservation</div>
+                        </div>
+                    </ng-template>
+                
+                    <!-- item details -->
+                    <ng-container *ngIf="items && items.length > 0">
+                        <div
+                            class="flex-auto"
+                            [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': selectedItem && selectedItem.booking._id,
+                                        'hidden lg:flex': !selectedItem || !selectedItem.booking._id}"
+                        >
+
+                            <div class="flex flex-col flex-auto overflow-y-auto lg:overflow-hidden bg-card dark:bg-default">
+
+                                <ng-container *ngIf="selectedItem && selectedItem.booking._id; else selectitemToDisplay">
+                                    <!-- Header -->
+                                    <div class="z-10 relative flex flex-col flex-0 w-full border-b">
+                                        
+                                        
+                                        
+                                        <!-- Toolbar -->
+                                        <div class="flex items-center min-h-16 px-4 md:px-6 border-b bg-gray-50 dark:bg-transparent">
+
+                                            <!-- Back button -->
+                                            <button
+                                                class="lg:hidden md:-ml-2"
+                                                mat-icon-button
+                                                (click)="removeSeleteditem()">
+                                                <mat-icon [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                                            </button>
+
+                                            <!-- ACTION BUTTON -->
+
+                                            <!-- cancel button -->
+                                            <button
+                                                class="ml-2"
+                                                *ngIf="!selectedItem.booking.isDone && !selectedItem.booking.isDeleted && !selectedItem.isFullyPaid"
+                                                [matTooltip]="'Annuler la réservation'"
+
+                                                (click)="cancelBooking()"
+                                                mat-icon-button>
+                                                <mat-icon
+                                                    [ngClass]="'text-red-600 dark:text-red-500'"
+                                                    [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                                            </button>
+
+                                            <!-- edit button -->
+                                            <button
+                                                class="ml-2"
+                                                *ngIf="!selectedItem.booking.isDone && !selectedItem.booking.isDeleted"
+                                                [matTooltip]="'Modifier la réservation'"
+
+                                                (click)="updateBooking()"
+                                                mat-icon-button>
+                                                <mat-icon
+                                                    [ngClass]="'text-yellow-600 dark:text-yellow-500'"
+                                                    [svgIcon]="'heroicons_outline:pencil'"></mat-icon>
+                                            </button>
+
+
+                                            <!-- done button -->
+                                            <button
+                                                class="ml-2"
+                                                (click)="doneBooking()"
+                                                *ngIf="!selectedItem.booking.isDone && !selectedItem.booking.isDeleted && !selectedItem.isPayed"
+                                                [matTooltip]="'Terminer'"
+                                                mat-icon-button>
+                                                <mat-icon
+                                                    [ngClass]="'text-green-600 dark:text-green-500'"
+                                                    [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                                            </button>
+
+
+                                            <!-- pay button -->
+                                            <button
+                                                class="ml-2"
+                                                [matTooltip]="'Payer'"
+                                                *ngIf="selectedItem.booking.isDone"
+                                                (click)="savePayment()"
+                                                disabled ="selectedItem.booking.isFullyPaid"
+                                                mat-icon-button>
+                                                <mat-icon
+                                                    [ngClass]="'text-green-500 dark:text-green-400'"
+                                                    [svgIcon]="'heroicons_outline:credit-card'"></mat-icon>
+                                            </button>
+
+
+                                        </div>
+
+                                        <!-- Subject -->
+                                        <div class="flex flex-wrap items-center py-5 px-6">
+                                            <div class="flex flex-auto my-1 mr-4 text-2xl"> {{ selectedItem.booking.service.name }}</div>
+                                            <!-- employee -->
+                                            <ng-container >
+                                                <div class="flex flex-wrap items-center justify-start -mx-1">
+                                                    <ng-container>
+                                                        <div
+                                                            class="m-1 py-0.5 px-2.5 rounded-full text-sm font-medium whitespace-nowrap"
+                                                            [ngClass]="'text-teal-800 bg-teal-100'"
+                                                            [matTooltip]="selectedItem.booking.staff.email"
+                                                            >
+                                                            {{selectedItem.booking.staff.name}} {{selectedItem.booking.staff.firstName}}
+                                                        </div>
+                                                    </ng-container>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+
+                        
+                                    </div>
+
+
+
+
+                                                    
+                                        
+                <!-- _________________________________________ -->
+                <!-- _________________________________________ -->
+                <!-- _________________________________________ -->
+                <!-- _________________________________________ -->
+
+                                        <!-- Threads -->
+                                        <div
+                                        class="flex flex-col flex-auto shrink-0 lg:shrink p-3 lg:overflow-y-auto bg-gray-100 dark:bg-transparent"
+                                        fuseScrollReset>
+
+                                        <!-- Thread -->
+                                        <div class="flex flex-col flex-0 w-full shadow rounded-2xl overflow-hidden bg-card dark:bg-black dark:bg-opacity-10">
+
+                                            <div class="flex flex-col py-8 px-6">
+
+                                                <!-- Content -->
+                                                <div
+                                                    class="flex mt-8 whitespace-pre-line leading-relaxed"
+                                                    [innerHTML]="selectedItem.booking.service.description">
+                                                </div>
+
+
+                                                <!-- Attachments -->
+                                                <ng-container>
+                                                    <div class="flex flex-col w-full">
+
+                                                        <div class="grid sm:grid-cols-6 gap-6 w-full">
+                                                            <div class="sm:col-span-2">
+                                                                <mat-form-field  class="fuse-mat-dense flex-auto w-full">
+                                                                    <mat-label>Date début </mat-label>
+                                                                    <input matInput [matDatepicker]="bookingDate" disabled [value]="convertDate(selectedItem.booking.startDate)">
+                                                                    <mat-datepicker-toggle matSuffix [for]="bookingDate"></mat-datepicker-toggle>
+                                                                    <mat-datepicker #bookingDate></mat-datepicker>
+                                                    
+                                                                </mat-form-field>
+                                                            </div>
+                                                
+                                                            <div class="sm:col-span-2">
+                                                                <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                                                                    <mat-label>Heure</mat-label>
+                                                                    <mat-icon
+                                                                        class="icon-size-5"
+                                                                        [svgIcon]="'heroicons_solid:clock'"
+                                                                        matPrefix
+                                                                    ></mat-icon>
+                                                                    <input disabled type="time" [value]="getTime(selectedItem.booking.startDate,0)" matInput />
+                                                
+                                                                </mat-form-field>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="grid sm:grid-cols-6 gap-6 w-full">
+                                                            <div class="sm:col-span-2">
+                                                                <mat-form-field  class="fuse-mat-dense flex-auto w-full">
+                                                                    <mat-label>Date fin </mat-label>
+                                                                    <input matInput [matDatepicker]="bookingEndDate" disabled [value]="convertDate(selectedItem.booking.endDate)">
+                                                                    <mat-datepicker-toggle matSuffix [for]="bookingEndDate"></mat-datepicker-toggle>
+                                                                    <mat-datepicker #bookingEndDate></mat-datepicker>
+                                                    
+                                                                </mat-form-field>
+                                                            </div>
+                                                
+                                                            <div class="sm:col-span-2">
+                                                                <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                                                                    <mat-label>Heure</mat-label>
+                                                                    <mat-icon
+                                                                        class="icon-size-5"
+                                                                        [svgIcon]="'heroicons_solid:clock'"
+                                                                        matPrefix
+                                                                    ></mat-icon>
+                                                                    <input disabled type="time" [value]="getTime(selectedItem.booking.endDate,0)" matInput />
+                                                
+                                                                </mat-form-field>
+                                                            </div>
+
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+
+                                            <!-- Footer -->
+                                            <div class="flex w-full p-6 border-t bg-gray-50 dark:bg-transparent">
+
+                                                
+                                                <!-- Payment status -->
+                                                <ng-container>
+                                                    <div class="flex flex-wrap items-center pl-4 pr-6 py-3 md:pl-6 border-b">
+
+
+                                                        <div class="sm:flex items-center my-3">
+                                                            <div class="p-4 leading-none rounded-l-xl border border-r-0">
+                                                                <div class="text-sm font-medium text-secondary">Prix</div>
+                                                                <div class="mt-2 font-mono text-xl">{{selectedItem.booking.price | mlgCurrency}}</div>
+                                                            </div>
+                                                            <div *ngIf="selectedItem.booking.isDone" class="p-4 leading-none border border-r-0">
+                                                                <div class="text-sm font-medium text-secondary">Montant payé</div>
+                                                                <div class="mt-2 font-mono text-xl">{{selectedItem.totalPayedAmount | mlgCurrency}}</div>
+                                                            </div>
+                                                            <div *ngIf="selectedItem.booking.isDone" class="p-4 leading-none border border-r-0">
+                                                                <div class="text-sm font-medium text-secondary">Reste à payer</div>
+                                                                <div class="mt-2 font-mono text-xl">{{selectedItem.booking.price - selectedItem.totalPayedAmount | mlgCurrency}}</div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </ng-container>
+
+                                            </div>
+
+                                        </div>
+
+                                        </div>
+
+                <!-- _________________________________________ -->
+                <!-- _________________________________________ -->
+                <!-- _________________________________________ -->
+                <!-- _________________________________________ -->
+
+                                        
+                                        
+                                        
+
+
+
+
+
+
+
+
+
+
+
+                            
+                                </ng-container>
+                            
+                                <ng-template #selectitemToDisplay>
+                            
+                                    <div class="flex flex-col flex-auto items-center justify-center bg-gray-100 dark:bg-transparent">
+                                        <mat-icon
+                                            class="icon-size-24"
+                                            [svgIcon]="'heroicons_outline:selector'"></mat-icon>
+                                        <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">Choisir une réservation</div>
+                                    </div>
+                            
+                                </ng-template>
+                            
+                            </div>
+                        
+
+                         
+
+
+                        </div>
+                    </ng-container>
+                
+                </div>
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>

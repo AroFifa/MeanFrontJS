@@ -32,7 +32,8 @@
                             "crypto-js/hmac-sha256",
                             "crypto-js/enc-base64",
                             "flat",
-                            "quill"
+                            "quill",
+                            "moment"
                         ],
                         "assets": [
                             "src/favicon-logo.png",

@@ -34,6 +34,7 @@
         "moment": "^2.30.1",
         "moment-timezone": "^0.5.45",
         "ng-apexcharts": "1.7.4",
+        "ngx-bar-rating": "^6.0.0",
         "ngx-material-timepicker": "^13.1.1",
         "ngx-quill": "20.0.1",
         "perfect-scrollbar": "1.5.5",

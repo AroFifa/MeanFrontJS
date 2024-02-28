@@ -10,6 +10,8 @@ import { ServiceService } from '../modules/admin/Management/service.service';
 import { RdvService } from '../modules/customer/RDV-mng/rdv.service';
 import { WorkHourService } from '../modules/admin/Management/workhour/workHour.service';
 
+import { BookingService } from "app/modules/customer/RDV-history/booking.service";
+
 @Injectable({
     providedIn: 'root',
 })
@@ -25,4 +27,19 @@ export class BookingResolver implements Resolve<any> {
             this._bookingService.getUserBookings(),
         ]);
     }
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class BookingHistoryResolver implements Resolve<any>{
+    constructor( private staffService: StaffService, private serviceService: ServiceService, private bookingService: BookingService){}
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        return forkJoin([
+            this.bookingService.getHistory(1,10),
+            this.serviceService.getAll(),
+            this.staffService.getAll()
+            
+        ])    }
+    
 }
