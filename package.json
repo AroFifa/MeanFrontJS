@@ -31,6 +31,8 @@
         "jwt-decode": "^4.0.0",
         "lodash-es": "4.17.21",
         "luxon": "3.2.1",
+        "moment": "^2.30.1",
+        "moment-timezone": "^0.5.45",
         "ng-apexcharts": "1.7.4",
         "ngx-bar-rating": "^6.0.0",
         "ngx-material-timepicker": "^13.1.1",

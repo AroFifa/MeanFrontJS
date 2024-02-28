@@ -28,7 +28,6 @@ export class ConfirmationComponent implements OnInit {
         this.message = this.data.message;
         if (this.data.type == 'delete') this.usedData = this.deleteData;
         else this.usedData = this.confirmationData;
-        console.log(this.usedData);
     }
 
     closeModal(response: boolean) {
