@@ -93,10 +93,10 @@ export class PaymentComponent extends ShareComponent {
             expirationDate: ['',[Validators.required,this.minDateValidator(new Date())]],
             expirationYear: ['',Validators.required],
             expirationMonth: ['',Validators.required],
-            amount: [this.booking.price-this.booking.payed_amount,[Validators.required,Validators.min(1)]],
+            amount: [this.booking.booking.price-this.booking.totalPayedAmount,[Validators.required,Validators.min(1)]],
             payDate: [new Date(),Validators.required],
-            customerId: [this.booking.customerId,Validators.required],
-            bookingId: [this.booking.id,Validators.required],
+            customerId: [this.booking.booking.user._id,Validators.required],
+            bookingId: [this.booking.booking._id,Validators.required],
         })
     }
 
