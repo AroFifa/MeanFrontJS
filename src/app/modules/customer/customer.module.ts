@@ -10,12 +10,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RdvCalendarComponent } from './RDV-mng/rdv-calendar/rdv-calendar.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { BryntumCalendarModule } from '@bryntum/calendar-angular';
 import { MatChipsModule } from '@angular/material/chips';
 import { BookingResolver } from '../../resolvers/BookingResolver';
+import { RdvEditComponent } from './RDV-mng/rdv-edit/rdv-edit.component';
+import { FuseAlertModule } from '../../../@fuse/components/alert';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const customerRoutes: Route[] = [
     {
@@ -28,7 +30,7 @@ const customerRoutes: Route[] = [
 ];
 
 @NgModule({
-    declarations: [RdvMngComponent, RdvCalendarComponent],
+    declarations: [RdvMngComponent, RdvEditComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(customerRoutes),
@@ -44,6 +46,8 @@ const customerRoutes: Route[] = [
         MatTableModule,
         BryntumCalendarModule,
         MatChipsModule,
+        FuseAlertModule,
+        MatProgressSpinnerModule,
     ],
 })
 export class CustomerModule {}
