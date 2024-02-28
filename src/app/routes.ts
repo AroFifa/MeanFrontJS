@@ -93,7 +93,7 @@ function getCustomerNavigations() {
             id: 'rdv-history',
             title: 'Historique des rendez-vous',
             type: 'basic',
-            icon: 'heroicons_outline:booking-calendar',
+            icon: 'heroicons_outline:calendar',
             link: '/customer/rdvHistory',
         },
         {
