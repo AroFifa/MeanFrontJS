@@ -18,6 +18,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { PaymentComponent } from '../payment/payment.component';
 import { BookingService } from '../booking.service';
 import { ConfirmationComponent } from 'app/modules/Common/confirmation/confirmation.component';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
     selector: 'app-booking-history',
@@ -34,6 +35,12 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
 
     filterBody = {};
     filterOptions : any;
+
+
+    services: any[];
+    serviceFilterData: any[] = [];
+    staff: any[];
+    staffFilterData: any[] = [];
 
     URL_API = environment.URL_API;
 
@@ -78,6 +85,29 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+        
+        this.handleFilterChange();
+    }
+
+
+    handleFilterChange() {
+        this.form.valueChanges.subscribe((value) => {
+            this.filterBody = {
+                price_interval: {
+                    min: value.min_price,
+                    max: value.max_price,
+                },
+
+                date_interval: {
+                    min: value.min_date,
+                    max: value.max_date,
+                },
+                services: value.services_choice.map((s: any) => s._id),
+                employees: value.staff_choice.map((emp: any) => emp._id),
+            };
+            this.syncData();
+        });
     }
 
     convertDate(date : any){
@@ -87,51 +117,19 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
         
         this.selectedItem = null;
     }
-    getItemData() {
-        this.items = [
-            {
-                id: '1',
-                name: "Manucure",
-                date: new Date(),
-                employee: {
-                    id: 1,
-                    name: 'Rakoto Ramiarimanana',
-                    email: 'rakotoramari@gmail.com'
-                },
-                icon: 'heroicons_outline:user-circle',
-                description: 'Manucure simple',
-                achievedDate: null,
-                duration: 45,
-                price: 80000,
-                customerId: 1,
-            },
-            {
-                id: '2',
-                name: "Pédicure",
-                date: new Date(),
-                employee: {
-                    id: 1,
-                    name: 'Rakoto Ramiarimanana',
-                    email: 'rakotoramari@gmail.com'
-                },
-                achievedDate: new Date(),
-                duration: 150,
-                icon: 'heroicons_outline:lock-closed',
-                price: 150000,
-                payed_amount: 30000,
-                customerId: 1
-                // description: 'Gerer votre mot de passe',
-            },
-        ];
-    }
 
     ngOnInit(): void {
         const data = this.route.snapshot.data['history'][0].data;
         this.items = data.items;
 
+        this.services = this.route.snapshot.data.history[1].data.services;
+        this.staff = this.route.snapshot.data.history[2].data;
+
         
         this.pagination = data.pagination;
         this.filterOptions = data.options;
+        this.initForm();
+
         this.detectChanges();
     }
 
@@ -163,7 +161,7 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
 
     syncData( data = this.filterBody) {
         this._bookingService
-            .search(this.pagination.currentPage, 10, data)
+            .getHistory(this.pagination.currentPage, 10, data)
             .subscribe((response) => {
                 this.items = response.data.items;
                 this.filterOptions = response.data.options;
@@ -216,7 +214,7 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
         });
 }
 
-
+// set to the update component
 updateBooking() {
     this._matDialog
         .open(ConfirmationComponent, {
@@ -250,4 +248,48 @@ doneBooking() {
             }
         });
 }
+
+
+initForm() {
+    this.form = this._formBuilder.group({
+        min_date: [''],
+        max_date: [new Date()],
+        min_price: [this.filterOptions.price.min],
+        max_price: [this.filterOptions.price.max],
+        services_choice: [this.serviceFilterData],
+        staff_choice: [this.staffFilterData],
+    });
+}
+
+removeFilterList(
+    id: string,
+    filterData: any[],
+    formControlName: 'services' | 'staff',
+) {
+    const updatedFilterData = filterData.filter((c) => c._id !== id);
+    this.form.get(formControlName + '_choice').setValue(updatedFilterData);
+    return updatedFilterData;
+}
+
+updateFilterList(
+    event: MatSelectChange,
+    filterData: any[],
+    data: any[],
+    formControlName: 'services' | 'staff',
+) {
+    if (filterData.filter((item) => item._id == event.value).length != 0)
+        return filterData;
+    const updatedFilterData = [
+        ...filterData,
+        data.find((item) => item._id === event.value),
+    ];
+    this.form.get(formControlName + '_choice').setValue(updatedFilterData);
+
+    return updatedFilterData;
+}
+
+displayPrice(price: number) {
+    return price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+}
+
 }

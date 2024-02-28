@@ -13,85 +13,235 @@
                 <div class="mt-10 mb-8 mx-6 text-2xl font-extrabold tracking-tight leading-none">Filtrer</div>
             
                 <!-- FORM ADVANCED SEARCH -->
-                <form class="flex flex-col mt-8 p-8 pb-4 bg-card rounded-2xl shadow overflow-hidden">
+                <form
+                [formGroup]="form"
+                class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto"
+            >
+
+                <div class="flex">
+                    <mat-form-field
+                        class="flex-auto"
+                    >
+                        <mat-label
+                            >Entrer une intervalle de
+                            date</mat-label
+                        >
+                        <mat-date-range-input
+                            [rangePicker]="picker"
+                        >
+                            <input
+                                matStartDate
+                                placeholder="Date début"
+                                [formControlName]="'min_date'"
+                            />
+                            <input
+                                matEndDate
+                                placeholder="Date fin"
+                                [formControlName]="'max_date'"
+                            />
+                        </mat-date-range-input>
+                        <mat-hint
+                            >MM/DD/YYYY – MM/DD/YYYY</mat-hint
+                        >
+                        <mat-datepicker-toggle
+                            matIconSuffix
+                            [for]="picker"
+                        ></mat-datepicker-toggle>
+                        <mat-date-range-picker
+                            #picker
+                        ></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
                     <div class="flex flex-col gt-xs:flex-row">
                         <mat-form-field
-                            [ngClass]="formFieldHelpers"
-                            class="flex-auto gt-xs:pr-3">
-                            <mat-label>First name</mat-label>
-                            <input matInput>
+                        class="flex-auto gt-xs:pr-3"
+                        >
+                            <mat-label>Services</mat-label>
                             <mat-icon
                                 class="icon-size-5"
-                                matSuffix
-                                [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                [svgIcon]="
+                                    'heroicons_outline:identification'
+                                "
+                                matPrefix
+                            ></mat-icon>
+                            <mat-select
+                                (selectionChange)="
+                                    serviceFilterData =
+                                        updateFilterList(
+                                            $event,
+                                            serviceFilterData,
+                                            services,
+                                            'services'
+                                        )
+                                "
+                            >
+                                <ng-container
+                                    *ngFor="let s of services"
+                                >
+                                    <mat-option
+                                        value="{{ s._id }}"
+                                        >{{ s.name }}</mat-option
+                                    >
+                                </ng-container>
+                            </mat-select>
                         </mat-form-field>
-                        <mat-form-field
-                            [ngClass]="formFieldHelpers"
-                            class="flex-auto gt-xs:pl-3">
-                            <mat-label>Last name</mat-label>
-                            <input matInput>
-                            <mat-icon
-                                class="icon-size-5"
-                                matSuffix
-                                [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                        <mat-form-field *ngIf="serviceFilterData && serviceFilterData.length > 0" class="flex-auto gt-xs:pr-3">
+                            <mat-label
+                                >Service(s) choisie(s)</mat-label
+                            >
+                            <mat-chip-grid #serviceChipGrid>
+                                <ng-container
+                                    *ngFor="
+                                        let s of serviceFilterData
+                                    "
+                                >
+                                    <mat-chip-row>
+                                        {{ s.name }}
+                                        <mat-icon
+                                            (click)="
+                                                serviceFilterData =
+                                                    removeFilterList(
+                                                        s._id,
+                                                        serviceFilterData,
+                                                        'services'
+                                                    )
+                                            "
+                                            class="icon-size-5"
+                                            matChipRemove
+                                            [svgIcon]="
+                                                'heroicons_solid:minus-circle'
+                                            "
+                                        ></mat-icon>
+                                    </mat-chip-row>
+                                </ng-container>
+                                <input
+                                    style="display: none"
+                                    placeholder="New chip..."
+                                    [matChipInputFor]="serviceChipGrid"
+                                />
+                            </mat-chip-grid>
                         </mat-form-field>
                     </div>
+                    <div class="flex flex-col gt-xs:flex-row">
+                        <mat-form-field
+                        class="flex-auto gt-xs:pr-3"
+                        >
+                            <mat-label>Employés</mat-label>
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="
+                                    'heroicons_outline:user'
+                                "
+                                matPrefix
+                            ></mat-icon>
+                            <mat-select
+                                (selectionChange)="
+                                    staffFilterData =
+                                        updateFilterList(
+                                            $event,
+                                            staffFilterData,
+                                            staff,
+                                            'staff'
+                                        )
+                                "
+                            >
+                                <ng-container
+                                    *ngFor="let i of staff"
+                                >
+                                    <mat-option
+                                        value="{{ i._id }}"
+                                        >{{i.name}} {{i.firstName}}</mat-option
+                                    >
+                                </ng-container>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field 
+                        class="flex-auto gt-xs:pr-3"
+                        *ngIf="staffFilterData && staffFilterData.length > 0">
+                            <mat-label
+                                >Employé(s) choisi(s)</mat-label
+                            >
+                            <mat-chip-grid #staffChipGrid>
+                                <ng-container
+                                    *ngFor="
+                                        let i of staffFilterData
+                                    "
+                                >
+                                    <mat-chip-row>
+                                        {{i.name}} {{i.firstName}}
+                                        <mat-icon
+                                            (click)="
+                                                staffFilterData =
+                                                    removeFilterList(
+                                                        i._id,
+                                                        staffFilterData,
+                                                        'staff'
+                                                    )
+                                            "
+                                            class="icon-size-5"
+                                            matChipRemove
+                                            [svgIcon]="
+                                                'heroicons_solid:minus-circle'
+                                            "
+                                        ></mat-icon>
+                                    </mat-chip-row>
+                                </ng-container>
+                                <input
+                                    style="display: none"
+                                    placeholder="New chip..."
+                                    [matChipInputFor]="staffChipGrid"
+                                />
+                            </mat-chip-grid>
+                        </mat-form-field>
+                    </div>
+
                     <div class="flex">
-                        <mat-form-field
-                            [ngClass]="formFieldHelpers"
-                            class="flex-auto">
-                            <mat-label>Address</mat-label>
-                            <textarea
-                                matInput
-                                cdkTextareaAutosize
-                                [cdkAutosizeMinRows]="3"></textarea>
-                            <mat-icon
-                                class="icon-size-5"
-                                matSuffix
-                                [svgIcon]="'heroicons_solid:location-marker'"></mat-icon>
-                        </mat-form-field>
+                        <mat-card
+                            class="flex-auto"
+                        >
+                            <mat-card-header>
+                                <mat-card-title>
+                                    <mat-label
+                                        >Prix (Ar)</mat-label
+                                    >
+                                </mat-card-title>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <mat-slider
+                                    [displayWith]="displayPrice"
+                                    [min]="
+                                        filterOptions.price
+                                            .min
+                                    "
+                                    [max]="
+                                        filterOptions.price
+                                            .max
+                                    "
+                                    discrete
+                                >
+                                    <input
+                                        matInput
+                                        [formControlName]="
+                                            'min_price'
+                                        "
+                                        matSliderStartThumb
+                                    />
+                                    <input
+                                        matInput
+                                        [formControlName]="
+                                            'max_price'
+                                        "
+                                        matSliderEndThumb
+                                    />
+                                </mat-slider>
+                            </mat-card-content>
+                        </mat-card>
                     </div>
-                    <div class="flex flex-col gt-md:flex-row">
-                        <mat-form-field
-                            [ngClass]="formFieldHelpers"
-                            class="flex-auto gt-md:pr-3">
-                            <mat-label>City</mat-label>
-                            <input matInput>
-                            <mat-icon
-                                class="icon-size-5"
-                                matSuffix
-                                [svgIcon]="'heroicons_solid:location-marker'"></mat-icon>
-                        </mat-form-field>
-                        <mat-form-field
-                            [ngClass]="formFieldHelpers"
-                            class="flex-auto gt-md:pl-3">
-                            <mat-label>State</mat-label>
-                            <input matInput>
-                            <mat-icon
-                                class="icon-size-5"
-                                matSuffix
-                                [svgIcon]="'heroicons_solid:location-marker'"></mat-icon>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field
-                            [ngClass]="formFieldHelpers"
-                            class="flex-auto">
-                            <mat-label>Postal code</mat-label>
-                            <input
-                                matInput
-                                maxlength="5"
-                                #postalCode>
-                            <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
-                            <mat-icon
-                                class="icon-size-5"
-                                matSuffix
-                                [svgIcon]="'heroicons_solid:mail'"></mat-icon>
-                        </mat-form-field>
-                    </div>
-                </form>
+
+            </form>
             
             
+
             </div>
             
         </mat-drawer>
@@ -116,15 +266,15 @@
                             <!-- Header -->
                             <div class="relative flex flex-0 items-center justify-between h-16 px-4 border-b bg-gray-50 dark:bg-transparent">
                 
-                                <!-- <div class="flex items-center">
-                                    Sidebar toggle button
+                                <div class="flex items-center">
+                                    <!-- Sidebar toggle button -->
                                     <button
                                         mat-icon-button
                                         (click)="drawer.toggle()">
                                         <mat-icon [svgIcon]="'heroicons_outline:filter'"></mat-icon>
                                     </button>
                                     <div class="ml-2 font-semibold uppercase">Historique des réservations</div>
-                                </div> -->
+                                </div>
                            
                                 <!-- Pagination -->
                                 <div class="flex items-center">
@@ -249,7 +399,7 @@
                             <mat-icon
                                 class="icon-size-24"
                                 [svgIcon]="'heroicons_outline:x'"></mat-icon>
-                            <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">Aucune réservation effectuée</div>
+                            <div class="mt-4 text-2xl font-semibold tracking-tight text-secondary">Aucune réservation</div>
                         </div>
                     </ng-template>
                 

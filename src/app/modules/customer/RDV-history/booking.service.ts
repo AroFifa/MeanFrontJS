@@ -19,10 +19,10 @@ export class BookingService extends CRUDService {
 
     }
 
-    search(
+    getHistory(
         page: number = null,
         itemsPerPage: number = null,
-        data = {},
+        data : any = {startDate_interval: {max: new Date()}},
     ) {
         let params = [
             page ? `page=${page}` : '',
