@@ -133,15 +133,15 @@
                                         <span>{{pagination.startIndex + 1}}</span>
                                         <span class="mx-1 text-secondary">-</span>
                                         <span>{{pagination.endIndex + 1}}</span>
-                                        <span class="mx-1 text-secondary">of</span>
+                                        <span class="mx-1 text-secondary">sur</span>
                                         <span>{{pagination.totalResults}}</span>
                                     </div>
                                     <!-- Previous page button -->
                                     <a
                                         class="w-8 h-8 min-h-8"
                                         mat-icon-button
-                                        [disabled]="pagination.currentPage === 1"
-                                        [routerLink]="['../' + (pagination.currentPage > 1 ? pagination.currentPage - 1 : 1 )]">
+                                        [disabled]="pagination.currentPage == 1"
+                                        (click)="onPageChange(-1)">
                                         <mat-icon
                                             class="icon-size-5"
                                             [svgIcon]="'heroicons_solid:chevron-left'"></mat-icon>
@@ -150,8 +150,9 @@
                                     <a
                                         class="w-8 h-8 min-h-8"
                                         mat-icon-button
-                                        [disabled]="pagination.currentPage === pagination.lastPage"
-                                        [routerLink]="['../' + (pagination.currentPage < pagination.lastPage ? pagination.currentPage + 1 : pagination.lastPage )]">
+                                        [disabled]="pagination.currentPage == pagination.lastPage"
+                                       (click)="onPageChange(1)"
+                                        >
                                         <mat-icon
                                             class="icon-size-5"
                                             [svgIcon]="'heroicons_solid:chevron-right'"></mat-icon>
@@ -173,9 +174,9 @@
                                     class="flex px-8 py-5 cursor-pointer"
                                     [ngClass]="{
                                         'hover:bg-gray-100 dark:hover:bg-hover':
-                                            !selectedItem || selectedItem.id !== item.id,
+                                            !selectedItem || selectedItem.booking._id !== item.id,
                                         'bg-primary-50 dark:bg-hover':
-                                            selectedItem && selectedItem.id === item.id
+                                            selectedItem && selectedItem.booking._id === item.id
                                     }"
                                     (click)="onSelectedItem(item)"
                                     >
@@ -194,34 +195,34 @@
                                         <!-- Item content -->
                                         <div
                                         class="flex flex-col items-start justify-start w-full py-6 pr-4 pl-5 border-l-4 border-transparent"
-                                        [ngClass]="{'bg-primary-50 dark:bg-black dark:bg-opacity-5': selectedItem && selectedItem.id === item.id}">
+                                        [ngClass]="{'bg-primary-50 dark:bg-black dark:bg-opacity-5': selectedItem && selectedItem.booking._id === item.id}">
 
                                         <!-- Info -->
                                         <div class="flex items-center w-full">
                                             <!-- Service name -->
                                             <div class="mr-2 font-semibold truncate">
-                                                {{item.name.split('<')[0].trim()}}
+                                                {{item.booking.service.name.split('<')[0].trim()}}
                                                 </div>
                                                 <!-- Status indicator -->
                                                 <mat-icon
                                                     class="mr-3 icon-size-4"
-                                                    *ngIf="item.achievedDate || item.isCanceled || item.isPayed"
-                                                    [svgIcon]="item.isPayed ? 'heroicons_solid:check-circle' : (item.isCanceled ? 'heroicons_solid:x-circle' : 'heroicons_solid:check-circle')"
+                                                    *ngIf="item.booking.isDone || item.booking.isDeleted || item.isFullyPaid"
+                                                    [svgIcon]="item.isFullyPaid ? 'heroicons_solid:check-circle' : (item.booking.isDeleted ? 'heroicons_solid:x-circle' : 'heroicons_solid:check-circle')"
                                                     [ngStyle]="{
-                                                        'color': item.isPayed ? 'green' : (item.isCanceled ? 'red' : 'yellow')
+                                                        'color': item.isFullyPaid ? 'green' : (item.booking.isDeleted ? 'red' : 'yellow')
                                                     }"
-                                                    [matTooltip]="item.isPayed?'payée':(item.isCanceled?'annullée':'effectuée')">
+                                                    [matTooltip]="item.isFullyPaid?'payée':(item.booking.isDeleted?'annullée':'effectuée')">
                                                 </mat-icon>
                                                 <!-- Date -->
                                                 <div class="ml-auto text-md text-right whitespace-nowrap text-hint">
-                                                    {{item.date | date:'LLL dd YYYY, HH:mm'}}
+                                                    {{item.booking.startDate | date:'LLL dd YYYY, HH:mm'}}
                                                 </div>
                                             </div>
 
 
                                             <!-- Excerpt -->
                                             <div class="mt-2 leading-normal line-clamp-2 text-secondary">
-                                                {{ item.description?.length > 50 ? item.description?.slice(0, 50) + '...' : item.description }}
+                                                {{ item.booking.service.description?.length > 50 ? item.booking.service.description?.slice(0, 50) + '...' : item.booking.service.description }}
                                             </div>
 
                                         </div>
@@ -256,13 +257,13 @@
                     <ng-container *ngIf="items && items.length > 0">
                         <div
                             class="flex-auto"
-                            [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': selectedItem && selectedItem.id,
-                                        'hidden lg:flex': !selectedItem || !selectedItem.id}"
+                            [ngClass]="{'z-20 absolute inset-0 lg:static lg:inset-auto flex': selectedItem && selectedItem.booking._id,
+                                        'hidden lg:flex': !selectedItem || !selectedItem.booking._id}"
                         >
 
                             <div class="flex flex-col flex-auto overflow-y-auto lg:overflow-hidden bg-card dark:bg-default">
 
-                                <ng-container *ngIf="selectedItem && selectedItem.id; else selectitemToDisplay">
+                                <ng-container *ngIf="selectedItem && selectedItem.booking._id; else selectitemToDisplay">
                                     <!-- Header -->
                                     <div class="z-10 relative flex flex-col flex-0 w-full border-b">
                                         
@@ -284,8 +285,10 @@
                                             <!-- cancel button -->
                                             <button
                                                 class="ml-2"
-                                                *ngIf="!selectedItem.achievedDate && !selectedItem.isCanceled && !selectedItem.isPayed"
+                                                *ngIf="!selectedItem.booking.isDone && !selectedItem.booking.isDeleted && !selectedItem.isFullyPaid"
                                                 [matTooltip]="'Annuler la réservation'"
+
+                                                (click)="cancelBooking()"
                                                 mat-icon-button>
                                                 <mat-icon
                                                     [ngClass]="'text-red-600 dark:text-red-500'"
@@ -295,8 +298,10 @@
                                             <!-- edit button -->
                                             <button
                                                 class="ml-2"
-                                                *ngIf="!selectedItem.achievedDate && !selectedItem.isCanceled && !selectedItem.isPayed"
+                                                *ngIf="!selectedItem.booking.isDone && !selectedItem.booking.isDeleted"
                                                 [matTooltip]="'Modifier la réservation'"
+
+                                                (click)="updateBooking()"
                                                 mat-icon-button>
                                                 <mat-icon
                                                     [ngClass]="'text-yellow-600 dark:text-yellow-500'"
@@ -307,7 +312,8 @@
                                             <!-- done button -->
                                             <button
                                                 class="ml-2"
-                                                *ngIf="!selectedItem.achievedDate && !selectedItem.isCanceled && !selectedItem.isPayed"
+                                                (click)="doneBooking()"
+                                                *ngIf="!selectedItem.booking.isDone && !selectedItem.booking.isDeleted && !selectedItem.isPayed"
                                                 [matTooltip]="'Terminer'"
                                                 mat-icon-button>
                                                 <mat-icon
@@ -315,12 +321,14 @@
                                                     [svgIcon]="'heroicons_outline:check'"></mat-icon>
                                             </button>
 
+
                                             <!-- pay button -->
                                             <button
                                                 class="ml-2"
                                                 [matTooltip]="'Payer'"
-                                                *ngIf="selectedItem.achievedDate"
+                                                *ngIf="selectedItem.booking.isDone"
                                                 (click)="savePayment()"
+                                                disabled ="selectedItem.booking.isFullyPaid"
                                                 mat-icon-button>
                                                 <mat-icon
                                                     [ngClass]="'text-green-500 dark:text-green-400'"
@@ -332,7 +340,7 @@
 
                                         <!-- Subject -->
                                         <div class="flex flex-wrap items-center py-5 px-6">
-                                            <div class="flex flex-auto my-1 mr-4 text-2xl"> {{ selectedItem.name }}</div>
+                                            <div class="flex flex-auto my-1 mr-4 text-2xl"> {{ selectedItem.booking.service.name }}</div>
                                             <!-- employee -->
                                             <ng-container >
                                                 <div class="flex flex-wrap items-center justify-start -mx-1">
@@ -340,8 +348,9 @@
                                                         <div
                                                             class="m-1 py-0.5 px-2.5 rounded-full text-sm font-medium whitespace-nowrap"
                                                             [ngClass]="'text-teal-800 bg-teal-100'"
-                                                            [matTooltip]="selectedItem.employee.mail">
-                                                            {{selectedItem.employee.name}}
+                                                            [matTooltip]="selectedItem.booking.staff.email"
+                                                            >
+                                                            {{selectedItem.booking.staff.name}} {{selectedItem.booking.staff.firstName}}
                                                         </div>
                                                     </ng-container>
                                                 </div>
@@ -374,7 +383,7 @@
                                                 <!-- Content -->
                                                 <div
                                                     class="flex mt-8 whitespace-pre-line leading-relaxed"
-                                                    [innerHTML]="selectedItem.description">
+                                                    [innerHTML]="selectedItem.booking.service.description">
                                                 </div>
 
 
@@ -385,8 +394,8 @@
                                                         <div class="grid sm:grid-cols-6 gap-6 w-full">
                                                             <div class="sm:col-span-2">
                                                                 <mat-form-field  class="fuse-mat-dense flex-auto w-full">
-                                                                    <mat-label>Date </mat-label>
-                                                                    <input matInput [matDatepicker]="bookingDate" disabled [value]="selectedItem.date">
+                                                                    <mat-label>Date début </mat-label>
+                                                                    <input matInput [matDatepicker]="bookingDate" disabled [value]="convertDate(selectedItem.booking.startDate)">
                                                                     <mat-datepicker-toggle matSuffix [for]="bookingDate"></mat-datepicker-toggle>
                                                                     <mat-datepicker #bookingDate></mat-datepicker>
                                                     
@@ -395,29 +404,42 @@
                                                 
                                                             <div class="sm:col-span-2">
                                                                 <mat-form-field class="fuse-mat-dense flex-auto w-full">
-                                                                    <mat-label>Début</mat-label>
+                                                                    <mat-label>Heure</mat-label>
                                                                     <mat-icon
                                                                         class="icon-size-5"
                                                                         [svgIcon]="'heroicons_solid:clock'"
                                                                         matPrefix
                                                                     ></mat-icon>
-                                                                    <input disabled type="time" [value]="getTime(selectedItem.date,0)" matInput />
+                                                                    <input disabled type="time" [value]="getTime(selectedItem.booking.startDate,0)" matInput />
                                                 
                                                                 </mat-form-field>
                                                             </div>
 
+                                                        </div>
+                                                        <div class="grid sm:grid-cols-6 gap-6 w-full">
+                                                            <div class="sm:col-span-2">
+                                                                <mat-form-field  class="fuse-mat-dense flex-auto w-full">
+                                                                    <mat-label>Date fin </mat-label>
+                                                                    <input matInput [matDatepicker]="bookingEndDate" disabled [value]="convertDate(selectedItem.booking.endDate)">
+                                                                    <mat-datepicker-toggle matSuffix [for]="bookingEndDate"></mat-datepicker-toggle>
+                                                                    <mat-datepicker #bookingEndDate></mat-datepicker>
+                                                    
+                                                                </mat-form-field>
+                                                            </div>
+                                                
                                                             <div class="sm:col-span-2">
                                                                 <mat-form-field class="fuse-mat-dense flex-auto w-full">
-                                                                    <mat-label>Fin</mat-label>
+                                                                    <mat-label>Heure</mat-label>
                                                                     <mat-icon
                                                                         class="icon-size-5"
                                                                         [svgIcon]="'heroicons_solid:clock'"
                                                                         matPrefix
                                                                     ></mat-icon>
-                                                                    <input disabled type="time" [value]="getTime(selectedItem.date,selectedItem.duration)" matInput />
+                                                                    <input disabled type="time" [value]="getTime(selectedItem.booking.endDate,0)" matInput />
                                                 
                                                                 </mat-form-field>
                                                             </div>
+
                                                         </div>
 
 
@@ -438,15 +460,15 @@
                                                         <div class="sm:flex items-center my-3">
                                                             <div class="p-4 leading-none rounded-l-xl border border-r-0">
                                                                 <div class="text-sm font-medium text-secondary">Prix</div>
-                                                                <div class="mt-2 font-mono text-xl">{{selectedItem.price | mlgCurrency}}</div>
+                                                                <div class="mt-2 font-mono text-xl">{{selectedItem.booking.price | mlgCurrency}}</div>
                                                             </div>
-                                                            <div *ngIf="selectedItem.achievedDate" class="p-4 leading-none border border-r-0">
+                                                            <div *ngIf="selectedItem.booking.isDone" class="p-4 leading-none border border-r-0">
                                                                 <div class="text-sm font-medium text-secondary">Montant payé</div>
-                                                                <div class="mt-2 font-mono text-xl">{{selectedItem.payed_amount | mlgCurrency}}</div>
+                                                                <div class="mt-2 font-mono text-xl">{{selectedItem.totalPayedAmount | mlgCurrency}}</div>
                                                             </div>
-                                                            <div *ngIf="selectedItem.achievedDate" class="p-4 leading-none border border-r-0">
+                                                            <div *ngIf="selectedItem.booking.isDone" class="p-4 leading-none border border-r-0">
                                                                 <div class="text-sm font-medium text-secondary">Reste à payer</div>
-                                                                <div class="mt-2 font-mono text-xl">{{selectedItem.price - selectedItem.payed_amount | mlgCurrency}}</div>
+                                                                <div class="mt-2 font-mono text-xl">{{selectedItem.booking.price - selectedItem.totalPayedAmount | mlgCurrency}}</div>
                                                             </div>
                                                         </div>
 

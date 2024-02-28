@@ -16,6 +16,8 @@ import { environment } from 'app/environments/environment';
 import { ShareComponent } from 'app/shared/Component/ShareComponent';
 import { Subject, takeUntil } from 'rxjs';
 import { PaymentComponent } from '../payment/payment.component';
+import { BookingService } from '../booking.service';
+import { ConfirmationComponent } from 'app/modules/Common/confirmation/confirmation.component';
 
 @Component({
     selector: 'app-booking-history',
@@ -30,20 +32,17 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
     @ViewChild('itemList') itemList: ElementRef;
     formFieldHelpers: string[] = [''];
 
-
-    totalItems = 0;
-    itemsPerPage = 10;
-    page = 1;
-
+    filterBody = {};
+    filterOptions : any;
 
     URL_API = environment.URL_API;
 
     pagination = {
         startIndex: 0,
-        endIndex: 9,
-        totalResults: 20,
+        endIndex: 0,
+        totalResults: 0,
         currentPage: 1,
-        lastPage: 3,
+        lastPage: 0,
     };
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -51,6 +50,7 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _matDialog: MatDialog,
+        private _bookingService: BookingService,
         private _formBuilder: FormBuilder,
         private route: ActivatedRoute
     ) {
@@ -80,6 +80,9 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
             });
     }
 
+    convertDate(date : any){
+        return new Date(date);
+    }
     removeSeleteditem(){
         
         this.selectedItem = null;
@@ -123,12 +126,20 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
     }
 
     ngOnInit(): void {
-        this.getItemData();
+        const data = this.route.snapshot.data['history'][0].data;
+        this.items = data.items;
+
+        
+        this.pagination = data.pagination;
+        this.filterOptions = data.options;
         this.detectChanges();
     }
 
     onSelectedItem(item: any): void {
         this.selectedItem = item;
+
+        
+        
 
         // Close the drawer on 'over' mode
         if (this.drawerMode === 'over') {
@@ -150,14 +161,22 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
 
 
 
-    syncData(query= null,data = {}) {
+    syncData( data = this.filterBody) {
+        this._bookingService
+            .search(this.pagination.currentPage, 10, data)
+            .subscribe((response) => {
+                this.items = response.data.items;
+                this.filterOptions = response.data.options;
+                this.pagination = response.data.pagination;
+                this.selectedItem = this.items.find((item) => item.booking._id === this.selectedItem.booking._id);
+            });
 
+        
     }
 
-
-  pageChanged(event: PageEvent) {
-    this.page = event.pageIndex + 1;
-    this.itemsPerPage = event.pageSize;
+  onPageChange(step: number ) {
+    
+    this.pagination.currentPage +=step;
     this.syncData();
   }
 
@@ -177,4 +196,58 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
             this.syncData();
         });
   }
+
+
+  cancelBooking() {
+    this._matDialog
+        .open(ConfirmationComponent, {
+            data: {
+                type: 'delete',
+                message: `Voulez vous annuller cette réservation? `,
+            },
+        })
+        .afterClosed()
+        .subscribe((response) => {
+            if (response) {
+                this._bookingService
+                    .delete(this.selectedItem.booking._id)
+                    .subscribe(() => this.syncData());
+            }
+        });
+}
+
+
+updateBooking() {
+    this._matDialog
+        .open(ConfirmationComponent, {
+            data: {
+                type: 'modifier',
+                message: `Voulez vous modifier cette réservation? `,
+            },
+        })
+        .afterClosed()
+        .subscribe((response) => {
+            if (response) {
+                this.syncData();
+            }
+        });
+}
+
+doneBooking() {
+    this._matDialog
+        .open(ConfirmationComponent, {
+            data: {
+                type: 'Info',
+                message: `Terminer cette réservation. `,
+            },
+        })
+        .afterClosed()
+        .subscribe((response) => {
+            if (response) {
+                this._bookingService
+                    .update(this.selectedItem.booking._id,{isDone: true})
+                    .subscribe(() => this.syncData());
+            }
+        });
+}
 }
