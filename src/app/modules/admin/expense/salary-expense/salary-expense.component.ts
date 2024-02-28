@@ -103,7 +103,7 @@ export class SalaryExpenseComponent extends ShareComponent {
     handleFilterChange() {
         this.searchForm.valueChanges.subscribe((value) => {
             this.filterQuery = `q=${value}`;
-            this.syncData(this.filterQuery, this.filterBody);
+            this.syncData();
         });
 
         this.form.valueChanges.subscribe((value) => {
@@ -119,11 +119,11 @@ export class SalaryExpenseComponent extends ShareComponent {
                 posts: value.posts_choice.map((p: any) => p._id),
                 frequencies: value.frequencies_choice.map((f: any) => f._id),
             };
-            this.syncData(this.filterQuery, this.filterBody);
+            this.syncData();
         });
     }
 
-    syncData(query = null, data = {}) {
+    syncData(query = this.filterQuery, data = this.filterBody) {
         this._salaryService
             .search(this.page, this.itemsPerPage, query, data)
             .subscribe((response) => {
@@ -140,8 +140,8 @@ export class SalaryExpenseComponent extends ShareComponent {
     pageChanged(event: PageEvent) {
         this.page = event.pageIndex + 1;
         this.itemsPerPage = event.pageSize;
-        this.syncData();
-    }
+
+        this.syncData();    }
 
     updateSalary() {
         this._matDialog
@@ -154,7 +154,7 @@ export class SalaryExpenseComponent extends ShareComponent {
             })
             .afterClosed()
             .subscribe(() => {
-                this.syncData();
+                this.syncData();                  
                 this.staffSelected.clear();
             });
     }

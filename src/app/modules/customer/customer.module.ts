@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
+
 import { Route, RouterModule } from '@angular/router';
 import { RdvMngComponent } from './RDV-mng/rdv-mng/rdv-mng.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -15,7 +16,26 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { BryntumCalendarModule } from '@bryntum/calendar-angular';
 import { MatChipsModule } from '@angular/material/chips';
-import { BookingResolver } from '../../resolvers/BookingResolver';
+import { BookingHistoryResolver, BookingResolver } from '../../resolvers/BookingResolver';
+import { BookingHistoryComponent } from './RDV-history/booking-history/booking-history.component';
+import { PaymentComponent } from './RDV-history/payment/payment.component';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorIntlFrench } from 'app/custom/intl/MatpaginatorIntlFrench';
+import localeFr from '@angular/common/locales/fr';
+import { FuseAlertModule } from '@fuse/components/alert';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatOptionModule } from '@angular/material/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SharedModule } from 'app/shared/module/shared.module';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatRadioModule } from '@angular/material/radio';
+
+
+registerLocaleData(localeFr, 'fr');
 
 const customerRoutes: Route[] = [
     {
@@ -25,10 +45,23 @@ const customerRoutes: Route[] = [
             data: BookingResolver,
         },
     },
+    {
+      path: 'rdvHistory',
+      component: BookingHistoryComponent,
+      resolve: {
+        initialData: BookingHistoryResolver
+      }
+    },
+    {
+      path: 'preferences',
+      loadChildren: () => import('app/modules/customer/Preferences/user-preferences.module').then(m => m.UserPreferencesModule)
+    
+    }
 ];
 
 @NgModule({
-    declarations: [RdvMngComponent, RdvCalendarComponent],
+    declarations: [RdvMngComponent, RdvCalendarComponent,BookingHistoryComponent,PaymentComponent],
+
     imports: [
         CommonModule,
         RouterModule.forChild(customerRoutes),
@@ -44,6 +77,23 @@ const customerRoutes: Route[] = [
         MatTableModule,
         BryntumCalendarModule,
         MatChipsModule,
+        FuseAlertModule,
+        MatProgressSpinnerModule,
+        MatOptionModule,
+        MatCardModule,
+        MatPaginatorModule,
+        MatTooltipModule,
+        MatExpansionModule,
+        MatSliderModule,
+        MatCheckboxModule,
+        SharedModule,
+        MatMenuModule,
+        MatRadioModule
     ],
+    providers: [
+      {provide: LOCALE_ID, useValue: 'fr'},
+      { provide: MatPaginatorIntl, useClass: MatPaginatorIntlFrench }
+  
+    ]
 })
 export class CustomerModule {}
