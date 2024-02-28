@@ -28,7 +28,8 @@ export class BookingHistoryResolver implements Resolve<any>{
     constructor( private staffService: StaffService, private serviceService: ServiceService, private bookingService: BookingService){}
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         return forkJoin([
-            this.bookingService.getAll(1,10),
+            // this.bookingService.getAll(1,10),
+            [],
             this.serviceService.getAll(),
             this.staffService.getAll()
             
