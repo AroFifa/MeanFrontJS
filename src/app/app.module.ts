@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { TokenInterceptor } from './shared/utils/TokenInterceptor';
 import { MatNativeDateModule } from '@angular/material/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
@@ -50,6 +51,7 @@ const routerConfig: ExtraOptions = {
         MatNativeDateModule,
         MatIconModule,
         MatButtonModule,
+        NgbModule,
     ],
     providers: [
         {

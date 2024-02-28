@@ -19,8 +19,38 @@ export class UserPreferencesService {
     }
 
 
-    getRatings(
-        entity : 'services' | 'employees',page: number = null, itemsPerPage: number = null,query: string = null,data= {}) {
+    // getRatings(
+    //     entity : 'services' | 'employees',page: number = null, itemsPerPage: number = null,query: string = null,data= {}) {
+    //         let params = [
+    //             page ? `page=${page}` : '',
+    //             itemsPerPage ? `size=${itemsPerPage}` : '',
+    //             query,
+    //         ]
+    //             .filter(Boolean)
+    //             .join('&');
+    
+    //         let url = `${environment.URL_API}/${this.baseUrl}/${entity}${
+    //             params ? '?' + params : ''
+    //         }`;
+
+            
+
+            
+    //         const body = {...data,userId:this.userId};
+    
+    //         return this._http.post<any>(url, body);
+    // }
+    // setRating(data:any,entity : 'services' | 'employees') {
+    //     const body = {...data,userId:this.userId};
+    //     return this._http.put<any>(
+    //         `${environment.URL_API}/${this.baseUrl}/${entity}`,
+    //         body,
+    //     );
+    // }
+
+
+
+    getRatings(page: number = null, itemsPerPage: number = null,query: string = null,data= {}) {
             let params = [
                 page ? `page=${page}` : '',
                 itemsPerPage ? `size=${itemsPerPage}` : '',
@@ -29,7 +59,7 @@ export class UserPreferencesService {
                 .filter(Boolean)
                 .join('&');
     
-            let url = `${environment.URL_API}/${this.baseUrl}/${entity}${
+            let url = `${environment.URL_API}/${this.baseUrl}${
                 params ? '?' + params : ''
             }`;
 
@@ -40,10 +70,10 @@ export class UserPreferencesService {
     
             return this._http.post<any>(url, body);
     }
-    setRating(data:any,entity : 'services' | 'employees') {
+    setRating(data:any) {
         const body = {...data,userId:this.userId};
         return this._http.put<any>(
-            `${environment.URL_API}/${this.baseUrl}/${entity}`,
+            `${environment.URL_API}/${this.baseUrl}`,
             body,
         );
     }
