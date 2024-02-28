@@ -1,5 +1,6 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule, registerLocaleData } from '@angular/common';
+
 import { Route, RouterModule } from '@angular/router';
 import { RdvMngComponent } from './RDV-mng/rdv-mng/rdv-mng.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -60,6 +61,7 @@ const customerRoutes: Route[] = [
 
 @NgModule({
     declarations: [RdvMngComponent, RdvCalendarComponent,BookingHistoryComponent,PaymentComponent],
+
     imports: [
         CommonModule,
         RouterModule.forChild(customerRoutes),

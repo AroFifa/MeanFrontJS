@@ -28,19 +28,24 @@ export class CRUDService {
         let params = [
             page ? `page=${page}` : '',
             itemsPerPage ? `size=${itemsPerPage}` : '',
-            query 
-          ].filter(Boolean).join('&');
-          
-          
-          let url = `${environment.URL_API}/${this.baseUrl}${params ? '?' + params : ''}`;
-          
-          
-          return this._http.get<any>(url);
-          
+            query,
+        ]
+            .filter(Boolean)
+            .join('&');
+
+        let url = `${environment.URL_API}/${this.baseUrl}${
+            params ? '?' + params : ''
+        }`;
+
+        return this._http.get<any>(url);
     }
 
-
-    search(page: number = null, itemsPerPage: number = null,query: string = null,data= {}) {
+    search(
+        page: number = null,
+        itemsPerPage: number = null,
+        query: string = null,
+        data = {},
+    ) {
         let params = [
             page ? `page=${page}` : '',
             itemsPerPage ? `size=${itemsPerPage}` : '',

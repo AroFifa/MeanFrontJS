@@ -27,7 +27,6 @@ const adminRoutes: Route[] = [
                 (m) => m.ExpenseModule,
             ),
     },
-
 ];
 
 @NgModule({
