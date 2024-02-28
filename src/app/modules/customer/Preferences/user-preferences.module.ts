@@ -23,6 +23,7 @@ import {MatSliderModule} from '@angular/material/slider';
 import { SharedModule } from 'app/shared/module/shared.module';
 import { MatCardModule } from '@angular/material/card';
 import { ServicePreferencesComponent } from './service/service-preferences.component';
+import { EmployeePreferencesComponent } from './employee/employee-preferences.component';
 import { EmployeePreferencesResolver, ServicePreferencesResolver } from 'app/resolvers/UserPreferencesResolver';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BarRatingModule } from 'ngx-bar-rating';
@@ -38,8 +39,8 @@ const userPreferencesRoutes: Route[] = [
       }
   },
   {
-      path: 'employees',
-      component: ServicePreferencesComponent,
+      path: 'staff',
+      component: EmployeePreferencesComponent,
       resolve: {
         staff: EmployeePreferencesResolver
       }
@@ -48,7 +49,7 @@ const userPreferencesRoutes: Route[] = [
 
 @NgModule({
   declarations: [
-    ServicePreferencesComponent  ],
+    ServicePreferencesComponent,EmployeePreferencesComponent  ],
   imports: [
     CommonModule,
     RouterModule.forChild(userPreferencesRoutes),
