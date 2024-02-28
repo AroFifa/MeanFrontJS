@@ -51,6 +51,11 @@ const customerRoutes: Route[] = [
         initialData: BookingHistoryResolver
       }
     },
+    {
+      path: 'preferences',
+      loadChildren: () => import('app/modules/customer/Preferences/user-preferences.module').then(m => m.UserPreferencesModule)
+    
+    }
 ];
 
 @NgModule({

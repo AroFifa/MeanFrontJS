@@ -1,8 +1,6 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Route, RouterModule } from '@angular/router';
-import { ServiceComponent } from './service/service.component';
-import { CommissionComponent } from './commission/commission.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FuseAlertModule } from '@fuse/components/alert';
@@ -14,7 +12,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
-import { ServiceResolver } from 'app/resolvers/ServiceResolver';
 import {MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
 
 
@@ -22,40 +19,39 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { MatPaginatorIntlFrench } from 'app/custom/intl/MatpaginatorIntlFrench';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ServiceCreationComponent } from './service/service-creation/service-creation.component';
-import { ServiceEditComponent } from './service/service-edit/service-edit.component';
 import {MatSliderModule} from '@angular/material/slider';
 import { SharedModule } from 'app/shared/module/shared.module';
 import { MatCardModule } from '@angular/material/card';
+import { ServicePreferencesComponent } from './service/service-preferences.component';
+import { EmployeePreferencesResolver, ServicePreferencesResolver } from 'app/resolvers/UserPreferencesResolver';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { BarRatingModule } from 'ngx-bar-rating';
 registerLocaleData(localeFr, 'fr');
 
 
-const serviceRoutes: Route[] = [
+const userPreferencesRoutes: Route[] = [
   {
       path: 'services',
-      component: ServiceComponent,
+      component: ServicePreferencesComponent,
       resolve: {
-        initialData: ServiceResolver
+        services: ServicePreferencesResolver
       }
   },
   {
-      path: 'commissions',
-      component: CommissionComponent,
+      path: 'employees',
+      component: ServicePreferencesComponent,
       resolve: {
-        initialData: ServiceResolver
+        staff: EmployeePreferencesResolver
       }
   }
 ];
 
 @NgModule({
   declarations: [
-    ServiceComponent,
-    ServiceCreationComponent,
-    ServiceEditComponent,
-    CommissionComponent  ],
+    ServicePreferencesComponent  ],
   imports: [
     CommonModule,
-    RouterModule.forChild(serviceRoutes),
+    RouterModule.forChild(userPreferencesRoutes),
     MatInputModule,
     MatButtonModule,
     FuseAlertModule,
@@ -71,7 +67,9 @@ const serviceRoutes: Route[] = [
     MatPaginatorModule,
     MatSliderModule,
     MatCardModule,
-    SharedModule
+    SharedModule,
+    MatFormFieldModule,
+    BarRatingModule
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'fr'},
@@ -79,4 +77,4 @@ const serviceRoutes: Route[] = [
 
   ]
 })
-export class ServiceModule { }
+export class UserPreferencesModule { }
