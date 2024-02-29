@@ -82,7 +82,7 @@ export class RdvService extends CRUDService {
             this._workHourService
                 .search(null, null, null, filter)
                 .subscribe((data) => {
-                    res(data.data?.items ?? []);
+                    res(data.data ?? []);
                 });
         });
     }
