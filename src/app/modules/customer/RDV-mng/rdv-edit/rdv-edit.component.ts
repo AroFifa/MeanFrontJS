@@ -94,7 +94,7 @@ export class RdvEditComponent extends ShareComponent implements OnInit {
 
     updateBooking() {
         if (this.form.invalid || !this.dateTimeField) return;
-        this.manageBooking();
+        if (this.userType !== 'Staff') this.manageBooking();
         let updatedField = { ...this.booking };
         if (this.userType === 'Staff') {
             updatedField = { isDone: true };

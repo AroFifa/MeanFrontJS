@@ -173,6 +173,8 @@ export class RdvMngComponent extends ShareComponent implements OnInit {
                 this.callback = () => {
                     this.form.reset();
                     this.addNewEvent(data.data, service);
+                    this.removeEvent(this.staffWorkHours);
+                    this.staffWorkHours = [];
                 };
             }
             this.alert.message = data.message;
@@ -207,7 +209,11 @@ export class RdvMngComponent extends ShareComponent implements OnInit {
         this.calendarComponent.instance.refresh();
 
         this._bookingService
-            .search(null, null, null, { staff: event.value, isDone: false })
+            .search(null, null, null, {
+                staff: event.value,
+                isDone: false,
+                isDeleted: false,
+            })
             .subscribe((data) => {
                 this.staffBookings = data.data;
                 this.addStaffEvents();
