@@ -16,10 +16,11 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
 {
     chartWorkHour: ApexOptions = {};
     chartDailyMonthlyBooking: ApexOptions = {};
+    chartDailyMonthlyCA: ApexOptions = {};
 
     workHourData: any;
     dailyMonthlyBookingData: any;
-
+    caData: any;
     workHourDate : any;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     filterBody = {};
@@ -96,19 +97,19 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
         const series = {daily : [],monthly : []};
         
         const totalCountDaily = [];
-        const priceCountDaily = [];
+        // const priceCountDaily = [];
 
         const totalCountMonthly = [];
-        const priceCountMonthly = [];
+        // const priceCountMonthly = [];
 
-
+        
 
         this.dailyMonthlyBookingData.dailyBookings.forEach((item:any) => {
             // Extracting labels (staff names)
             labels.daily.push(item.label);
         
             totalCountDaily.push(item.totalBookingCount);
-            priceCountDaily.push(item.totalBookingPrice);
+            // priceCountDaily.push(item.totalBookingPrice);
 
         });
 
@@ -116,17 +117,17 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
             name: 'Nombre de réservations',
             data: totalCountDaily
         });
-        series.daily.push({
-            name: 'Prix total',
-            data: priceCountDaily
-        });
+        // series.daily.push({
+        //     name: 'Prix total',
+        //     data: priceCountDaily
+        // });
 
         this.dailyMonthlyBookingData.monthlyBookings.forEach((item:any) => {
             // Extracting labels (staff names)
             labels.monthly.push(item.label);
         
             totalCountMonthly.push(item.totalBookingCount);
-            priceCountMonthly.push(item.totalBookingPrice);
+            // priceCountMonthly.push(item.totalBookingPrice);
 
         });
 
@@ -134,14 +135,53 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
             name: 'Nombre de réservations',
             data: totalCountMonthly
         });
-        series.monthly.push({
-            name: 'Prix total',
-            data: priceCountMonthly
-        });
+        // series.monthly.push({
+        //     name: 'Prix total',
+        //     data: priceCountMonthly
+        // });
         this.dailyMonthlyBookingData = {
             labels,series
         }
-        console.log(this.dailyMonthlyBookingData);
+        
+    }
+
+    initCaData() {
+        const labels = {daily : [],monthly : []};
+        const series = {daily : [],monthly : []};
+        
+        const priceDaily = [];
+        const priceMonthly = [];
+
+
+        
+
+        this.caData.dailyBookings.forEach((item:any) => {
+            // Extracting labels (staff names)
+            labels.daily.push(item.label);
+        
+            priceDaily.push(item.ca);
+
+        });
+
+        series.daily.push({
+            name: 'CA',
+            data: priceDaily
+        });
+
+        this.caData.monthlyBookings.forEach((item:any) => {
+            labels.monthly.push(item.label);
+        
+            priceMonthly.push(item.ca);
+
+        });
+
+        series.monthly.push({
+            name: 'CA',
+            data: priceMonthly
+        });
+        this.caData = {
+            labels,series
+        }
         
     }
     /**
@@ -154,11 +194,17 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
         this.workHourData = staffList.items;
         this.workHourDate = staffList.date_interval;
 
-        this.dailyMonthlyBookingData = this.route.snapshot.data['data'][1];
+
+        const bookingData = this.route.snapshot.data['data'][1];
+        this.dailyMonthlyBookingData = bookingData;
+        this.caData = bookingData;
+
 
 
         this.initWorkHourData();
         this.initDailyMonthlyBookingData();
+        this.initCaData();
+
         this._prepareChartData();
 
         // Attach SVG fill fixer to all ApexCharts
@@ -414,6 +460,90 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
                 }
             }
         };
+
+        // WOrkhour chart
+        this.chartDailyMonthlyCA = {
+            chart      : {
+                fontFamily: 'inherit',
+                foreColor : 'inherit',
+                height    : '100%',
+                type      : 'line',
+                toolbar   : {
+                    show: false
+                },
+                zoom      : {
+                    enabled: false
+                }
+            },
+            colors     : ['#64748B', '#94A3B8'],
+            dataLabels : {
+                enabled        : true,
+                enabledOnSeries: [0],
+                background     : {
+                    borderWidth: 0
+                },
+                formatter: this.displayPrice
+
+            },
+            grid       : {
+                borderColor: 'var(--fuse-border)'
+            },
+            labels     : this.caData.labels,
+            legend     : {
+                show: false
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%'
+                }
+            },
+            series     : this.caData.series,
+            states     : {
+                hover: {
+                    filter: {
+                        type : 'darken',
+                        value: 0.75
+                    }
+                }
+            },
+            stroke     : {
+                width: [3, 0]
+            },
+            tooltip    : {
+                followCursor: true,
+                theme       : 'dark',
+                y: {
+                    formatter: this.displayPrice
+
+                }
+            },
+            xaxis      : {
+                axisBorder: {
+                    show: false
+                },
+                axisTicks : {
+                    color: 'var(--fuse-border)'
+                },
+                labels    : {
+                    style: {
+                        colors: 'var(--fuse-text-secondary)'
+                    }
+                },
+                tooltip   : {
+                    enabled: false
+                }
+            },
+            yaxis      : {
+                labels: {
+                    offsetX: -16,
+                    formatter: this.displayPrice,
+                    style  : {
+                        colors: 'var(--fuse-text-secondary)'
+                    }
+                }
+            }
+        };
+
     }
 
 
@@ -423,5 +553,9 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
 
         return `${hours ? hours : '00'}:${minutes ? 
             minutes.toFixed(0) : '00'}`;
+    }
+
+    displayPrice(price: number) {
+        return price.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     }
 }
