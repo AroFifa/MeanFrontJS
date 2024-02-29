@@ -106,6 +106,8 @@ export class RdvMngComponent extends ShareComponent implements OnInit {
         this._staffService
             .getStaffFromService(event.value)
             .subscribe((data) => (this.staffsService = data.data));
+
+        
     }
 
     getService(serviceId: string) {
