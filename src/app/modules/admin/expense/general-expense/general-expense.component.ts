@@ -80,7 +80,9 @@ export class GeneralExpenseComponent extends ShareComponent {
     this.expenses = this.route.snapshot.data.initialData[0].data;
 
     this.categories = this.route.snapshot.data.initialData[1].data;
+    
     this.frequencies = this.route.snapshot.data.initialData[2].data;
+    console.log(this.frequencies);
 
     this.expensesFilterOptions = this.expenses.options;
     

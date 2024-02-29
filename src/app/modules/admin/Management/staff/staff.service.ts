@@ -22,11 +22,4 @@ export class StaffService extends CRUDService {
             `${environment.URL_API}/${this.baseUrl}/users/${userId}/services/${serviceId}`,
         );
     }
-
-    // set min to currentdate - 7 days and max current_date
-    getAverageWorkHour(data:any = {date_interval: {min: new Date(new Date().setDate(new Date().getDate() - 7)), max: new Date()}}) {
-        return this._http.post<any>(
-            `${environment.URL_API}/dashboard/staff-stats`,data
-        );
-    }
 }

@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { Route, RouterModule } from '@angular/router';
 import { StaffHomeComponent } from './home/staff-home/staff-home.component';
 import { StaffWorkhourComponent } from './staff-workhour/staff-workhour.component';
@@ -8,8 +8,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { DayCommissionComponent } from './commission/day-commission.component';
+import { SharedModule } from 'app/shared/module/shared.module';
+import localeFr from '@angular/common/locales/fr';
 import { BookingComponent } from './booking/booking.component';
 
+registerLocaleData(localeFr);
 const staffRoutes: Route[] = [
     {
         path: 'home',
@@ -30,10 +34,17 @@ const staffRoutes: Route[] = [
         path: 'workHour',
         component: StaffWorkhourComponent,
     },
+
     {
         path: 'booking',
         component: BookingComponent,
     },
+  
+    {
+        path: 'commission',
+        component: DayCommissionComponent,
+    },
+
 ];
 
 @NgModule({
@@ -41,6 +52,7 @@ const staffRoutes: Route[] = [
         StaffHomeComponent,
         StaffWorkhourComponent,
         BookingComponent,
+        DayCommissionComponent
     ],
     imports: [
         CommonModule,
@@ -50,6 +62,9 @@ const staffRoutes: Route[] = [
         MatIconModule,
         MatSortModule,
         MatTableModule,
-    ],
+        SharedModule
+    ],providers: [
+        {provide: LOCALE_ID, useValue: 'fr'},
+      ]
 })
 export class StaffModule {}

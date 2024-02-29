@@ -115,19 +115,26 @@ function getStaffNavigations() {
             link: '/staff/home',
         },
         {
-            id: 'home',
+            id: 'work',
             title: 'Heure de travail',
             type: 'basic',
             icon: 'heroicons_outline:calendar',
             link: '/staff/workHour',
         },
         {
-            id: 'home',
+            id: 'rdb',
             title: 'Suivi rendez-vous',
             type: 'basic',
             icon: 'heroicons_outline:book-open',
             link: '/staff/booking',
         },
+      {
+            id: 'commission',
+            title: 'Commission',
+            type: 'basic',
+            icon: 'heroicons_outline:receipt-percent',
+            link: '/staff/commission',
+      }
     ];
 }
 

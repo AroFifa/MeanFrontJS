@@ -65,16 +65,19 @@ export class ExpenseEditComponent extends ShareComponent {
         if (this.form.invalid) return;
         this.form.disable();
 
+        const ctg = this.category ? this.category : this.expenseData.expenseCategory;
+        const freq = this.frequency ? this.frequency : this.expenseData.frequency;
+
         let expense : any = {
             ...this.form.value,
             expenseCategory: {
-                id: this.category._id,
-                categoryName: this.category.categoryName
+                id: ctg._id,
+                categoryName: ctg.categoryName
             },
             frequency: {
-                id: this.frequency._id,
-                frequency: this.frequency.frequency,
-                level: this.frequency.level
+                id: freq._id,
+                frequency: freq.frequency,
+                level: freq.level
             },
         };
         
