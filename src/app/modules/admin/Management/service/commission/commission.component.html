@@ -11,55 +11,49 @@
                         Commission sur les services
                     </div>
                     <div
-                    class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4"
-                >
-                    <mat-form-field
-                        *ngIf="!isDisabled"
-                        class="fuse-mat-rounded fuse-mat-dense w-full"
-                        [subscriptSizing]="'dynamic'">
-                    <input
-                        matInput
-                        [placeholder]="'Taux de commission'"
-                        type="number"
-                        (blur)="updateCommission($event)"
-                        [formControl]="commissionRateInput"
-                    />
-                    <mat-error *ngIf="commissionRateInput.errors && !isDisabled">
-                        Valeur du taux de commission non valide
-                      </mat-error></mat-form-field>
-                    <mat-icon style="cursor: pointer;" *ngIf="!isDisabled" svgIcon="mat_outline:cancel" (click)="cancelEditCommissionRate()">
-
-                    </mat-icon>
-
-                    <button
-                        class="ml-4"
-                        mat-flat-button
-                        [color]="'primary'"
-                        (click)="editCommissionRate()"
-                        *ngIf="isDisabled"
+                        class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4"
                     >
-                        {{commission.commissionRate}}%
-                        <mat-icon svgIcon="mat_outline:edit"></mat-icon>
-                    </button>
-                </div>
-                </div>
-                <div class="flex grid-cols-2">
-                    <!-- *INTERVALLE DE DATE -->
-                    <!-- <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-                        <mat-form-field class="fuse-mat-rounded fuse-mat-dense w-full" [subscriptSizing]="'dynamic'">
-                            <mat-icon matPrefix class="icon-size-5" [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
-                            <input matInput [placeholder]="'Du'" type="date" />
-                            <span matPrefix class="label">Du </span>
-                        </mat-form-field>
+                        <mat-form-field
+                            *ngIf="!isDisabled"
+                            class="fuse-mat-rounded fuse-mat-dense w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <input
+                                matInput
+                                [placeholder]="'Taux de commission'"
+                                type="number"
+                                (blur)="updateCommission($event)"
+                                [formControl]="commissionRateInput"
+                            />
+                            <mat-error
+                                *ngIf="
+                                    commissionRateInput.errors && !isDisabled
+                                "
+                            >
+                                Valeur du taux de commission non valide
+                            </mat-error></mat-form-field
+                        >
+                        <mat-icon
+                            style="cursor: pointer"
+                            *ngIf="!isDisabled"
+                            svgIcon="mat_outline:cancel"
+                            (click)="cancelEditCommissionRate()"
+                        >
+                        </mat-icon>
+
+                        <button
+                            class="ml-4"
+                            mat-flat-button
+                            [color]="'primary'"
+                            (click)="editCommissionRate()"
+                            *ngIf="isDisabled"
+                        >
+                            {{ commission.commissionRate }}%
+                            <mat-icon svgIcon="mat_outline:edit"></mat-icon>
+                        </button>
                     </div>
-                    <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-                        <mat-form-field class="fuse-mat-rounded fuse-mat-dense w-full" [subscriptSizing]="'dynamic'">
-                            <mat-icon matPrefix class="icon-size-5" [svgIcon]="'heroicons_solid:calendar'"></mat-icon>
-                            <input matInput [autocomplete]="'off'" [placeholder]="'Au'" type="date" />
-                            <span matPrefix class="label">Au </span>
-                        </mat-form-field>
-                    </div> -->
                 </div>
+                <div class="flex grid-cols-2"></div>
 
                 <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
                     <table
@@ -68,7 +62,6 @@
                         class="mat-elevation-z8"
                         matSort
                     >
-                       
                         <ng-container matColumnDef="commissionRate">
                             <th
                                 mat-header-cell
@@ -76,7 +69,7 @@
                                 class="text-black uppercase"
                                 mat-sort-header
                             >
-                                Taux de commission 
+                                Taux de commission
                             </th>
                             <td mat-cell *matCellDef="let commission">
                                 {{ commission.commissionRate }} %
@@ -93,7 +86,10 @@
                                 Date de modification
                             </th>
                             <td mat-cell *matCellDef="let commission">
-                                {{ commission.creationDate | date: 'EEE, dd MMM yyyy HH\'h\'mm\'m\'ss\'s\'' }}
+                                {{
+                                    commission.creationDate
+                                        | date: "EEE, dd MMM yyyy "
+                                }}
                             </td>
                         </ng-container>
                         <tr
@@ -105,8 +101,14 @@
                             *matRowDef="let row; columns: displayedColumns"
                         ></tr>
                     </table>
-                    <mat-paginator aria-label="éléments par page" [length]="totalItems" [pageSize]="itemsPerPage" [pageSizeOptions]="itemsPerPageOptions" showFirstLastButtons (page)="pageChanged($event)"></mat-paginator>
-
+                    <mat-paginator
+                        aria-label="éléments par page"
+                        [length]="totalItems"
+                        [pageSize]="itemsPerPage"
+                        [pageSizeOptions]="itemsPerPageOptions"
+                        showFirstLastButtons
+                        (page)="pageChanged($event)"
+                    ></mat-paginator>
                 </div>
             </div>
         </div>
