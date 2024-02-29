@@ -33,7 +33,8 @@
                             "crypto-js/enc-base64",
                             "flat",
                             "quill",
-                            "moment"
+                            "moment",
+                            "moment-timezone"
                         ],
                         "assets": [
                             "src/favicon-logo.png",

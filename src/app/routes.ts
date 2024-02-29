@@ -99,26 +99,9 @@ function getCustomerNavigations() {
         {
             id: 'preferences',
             title: 'Préferences',
-            type: 'aside',
+            type: 'basic',
             icon: 'heroicons_outline:star',
-            link: '',
-            children: [
-                {
-                    id: 'preferences.services',
-                    title: 'Services',
-                    type: 'basic',
-                    icon: 'heroicons_outline:service',
-                    link: '/customer/preferences/services',
-                },
-
-                {
-                    id: 'preferences.staff',
-                    title: 'Employés',
-                    type: 'basic',
-                    icon: 'heroicons_outline:user',
-                    link: '/customer/preferences/staff',
-                },
-            ],
+            link: '/customer/preferences',
         },
     ];
 }

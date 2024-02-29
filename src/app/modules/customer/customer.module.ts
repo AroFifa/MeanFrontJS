@@ -15,10 +15,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { BryntumCalendarModule } from '@bryntum/calendar-angular';
 import { MatChipsModule } from '@angular/material/chips';
-import { BookingResolver } from '../../resolvers/BookingResolver';
-import { RdvEditComponent } from './RDV-mng/rdv-edit/rdv-edit.component';
-import { FuseAlertModule } from '../../../@fuse/components/alert';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BookingHistoryResolver, BookingResolver } from '../../resolvers/BookingResolver';
 import { BookingHistoryComponent } from './RDV-history/booking-history/booking-history.component';
 import { PaymentComponent } from './RDV-history/payment/payment.component';
@@ -36,6 +32,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SharedModule } from 'app/shared/module/shared.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
+import { UserPreferencesResolver } from 'app/resolvers/UserPreferencesResolver';
+import { UserPreferencesComponent } from './Preferences/user-preferences.component';
+import { RatingComponent } from './Preferences/Rating/rating.component';
+import { RdvEditComponent } from './RDV-mng/rdv-edit/rdv-edit.component';
 
 
 registerLocaleData(localeFr, 'fr');
@@ -58,14 +58,17 @@ const customerRoutes: Route[] = [
     },
     {
       path: 'preferences',
-      loadChildren: () => import('app/modules/customer/Preferences/user-preferences.module').then(m => m.UserPreferencesModule)
-    
+
+      component: UserPreferencesComponent,
+      resolve: {
+        staff: UserPreferencesResolver
+      }    
     }
 ];
 
 @NgModule({
+    declarations: [RdvMngComponent,RdvEditComponent,BookingHistoryComponent,PaymentComponent,UserPreferencesComponent,RatingComponent],
 
-    declarations: [RdvMngComponent,  RdvEditComponent,BookingHistoryComponent,PaymentComponent],
 
     imports: [
         CommonModule,
