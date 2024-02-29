@@ -23,3 +23,18 @@ export class WorkHourResolver implements Resolve<any> {
         ]);
     }
 }
+
+
+@Injectable({
+    providedIn: 'root',
+})
+export class StaffWorkHourResolver implements Resolve<any> {
+    constructor(
+        private _staffService: StaffService,
+    ) {}
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
+        return forkJoin([
+            this._staffService.getAverageWorkHour(),
+        ]);
+    }
+}

@@ -10,10 +10,10 @@ function getAdminNavigations() {
     return [
         {
             id: 'home',
-            title: 'Dashboard',
+            title: 'Analyse',
             type: 'basic',
             icon: 'heroicons_outline:chart-pie',
-            link: '/admin/dashboard',
+            link: "/admin/dashboard",
         },
         {
             id: 'management',
