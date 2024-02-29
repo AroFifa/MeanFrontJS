@@ -36,6 +36,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SharedModule } from 'app/shared/module/shared.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
+import { UserPreferencesResolver } from 'app/resolvers/UserPreferencesResolver';
+import { UserPreferencesComponent } from './Preferences/user-preferences.component';
+import { RatingComponent } from './Preferences/Rating/rating.component';
 
 
 registerLocaleData(localeFr, 'fr');
@@ -58,14 +61,17 @@ const customerRoutes: Route[] = [
     },
     {
       path: 'preferences',
-      loadChildren: () => import('app/modules/customer/Preferences/user-preferences.module').then(m => m.UserPreferencesModule)
-    
+
+      component: UserPreferencesComponent,
+      resolve: {
+        staff: UserPreferencesResolver
+      }    
     }
 ];
 
 @NgModule({
+    declarations: [RdvMngComponent, RdvCalendarComponent,BookingHistoryComponent,PaymentComponent,UserPreferencesComponent,RatingComponent],
 
-    declarations: [RdvMngComponent,  RdvEditComponent,BookingHistoryComponent,PaymentComponent],
 
     imports: [
         CommonModule,
