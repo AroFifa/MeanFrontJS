@@ -44,7 +44,9 @@
                                 "glob": "_redirects",
                                 "input": "src",
                                 "output": "/"
-                            }
+                            },
+                            "src/_redirects"
+
                         ],
                         "stylePreprocessorOptions": {
                             "includePaths": [
@@ -67,7 +69,7 @@
                                 {
                                     "type": "initial",
                                     "maximumWarning": "4mb",
-                                    "maximumError": "5mb"
+                                    "maximumError": "6mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",
@@ -117,8 +119,7 @@
                         "inlineStyleLanguage": "scss",
                         "assets": [
                             "src/favicon-16x16.png",
-                            "src/favicon-32x32.png",
-                            "src/assets"
+                            "src/favicon-32x32.png"
                         ],
                         "styles": [
                             "src/styles/styles.scss"
