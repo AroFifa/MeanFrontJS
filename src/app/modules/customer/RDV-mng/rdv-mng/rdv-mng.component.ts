@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ServiceService } from '../../../admin/Management/service.service';
 import { User } from '../../../../models/User';
 import { ShareComponent } from '../../../../shared/Component/ShareComponent';
@@ -16,7 +16,7 @@ import {
 import { MatSelectChange } from '@angular/material/select';
 import { StaffService } from '../../../admin/Management/staff/staff.service';
 import { ActivatedRoute } from '@angular/router';
-import { CalendarConfig, EventStore } from '@bryntum/calendar';
+import { EventStore } from '@bryntum/calendar';
 import { RdvService } from '../rdv.service';
 import { CommonService } from '../../../../shared/service/common.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -207,10 +207,12 @@ export class RdvMngComponent extends ShareComponent implements OnInit {
         eventStore.add(this.staffWorkHours);
         this.calendarComponent.instance.refresh();
 
-        this._bookingService.getStaffBookings(event.value).subscribe((data) => {
-            this.staffBookings = data.data;
-            this.addStaffEvents();
-        });
+        this._bookingService
+            .search(null, null, null, { staff: event.value, isDone: false })
+            .subscribe((data) => {
+                this.staffBookings = data.data;
+                this.addStaffEvents();
+            });
     }
 
     showMessage(type: 'error' | 'success', message: string) {
