@@ -69,8 +69,7 @@ export class RdvMngComponent extends ShareComponent implements OnInit {
 
     ngOnInit(): void {
         this.buildForm();
-        this.services =
-            this.route.snapshot.data['data'][0].data?.services.items;
+        this.services = this.route.snapshot.data['data'][0].data?.services;
         this.buildEvents(this.route.snapshot.data['data'][1].data);
     }
 
