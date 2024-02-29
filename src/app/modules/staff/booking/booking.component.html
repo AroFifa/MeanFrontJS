@@ -1,0 +1,15 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <bryntum-calendar-project-model
+        #project
+        [eventModelClass]="projectConfig.eventModelClass"
+        [resources]="resources"
+    ></bryntum-calendar-project-model>
+
+    <bryntum-calendar
+        #calendar
+        [date]="calendarConfig?.date!"
+        [autoCreate]="false"
+        [project]="project"
+        [listeners]="calendarConfig?.listeners!"
+    ></bryntum-calendar>
+</div>

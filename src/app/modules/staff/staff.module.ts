@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { BookingComponent } from './booking/booking.component';
 
 const staffRoutes: Route[] = [
     {
@@ -29,10 +30,18 @@ const staffRoutes: Route[] = [
         path: 'workHour',
         component: StaffWorkhourComponent,
     },
+    {
+        path: 'booking',
+        component: BookingComponent,
+    },
 ];
 
 @NgModule({
-    declarations: [StaffHomeComponent, StaffWorkhourComponent],
+    declarations: [
+        StaffHomeComponent,
+        StaffWorkhourComponent,
+        BookingComponent,
+    ],
     imports: [
         CommonModule,
         RouterModule.forChild(staffRoutes),
