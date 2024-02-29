@@ -83,22 +83,26 @@ export class RdvService extends CRUDService {
         return date;
     }
 
+    async getStaffWorkHour(filter: any) {
+        return await new Promise((res, rej) => {
+            this._workHourService
+                .search(null, null, null, filter)
+                .subscribe((data) => {
+                    res(data.data?.items ?? []);
+                });
+        });
+    }
+
     async insideWorkHour(booking: any) {
         let date = this.parseDateString(booking.startDate);
         let dow = date.getDay();
 
         if (dow === 7) return false;
 
-        let workHours: any[] = await new Promise((res, rej) => {
-            this._workHourService
-                .search(null, null, null, {
-                    employees: [booking.staff],
-                    isDeleted: false,
-                    dow: dow,
-                })
-                .subscribe((data) => {
-                    res(data.data.items);
-                });
+        let workHours: any = await this.getStaffWorkHour({
+            employees: [booking.staff],
+            isDeleted: false,
+            dow: dow,
         });
 
         if (workHours.length == 0) return false;
@@ -117,5 +121,44 @@ export class RdvService extends CRUDService {
         );
 
         return this.isBetween(workStart, workEnd, bookingStart, bookingEnd);
+    }
+
+    async buildStaffWorkHour(staffId: string, startDate: Date, endDate: Date) {
+        let dateArray = [];
+
+        let workHours: any = await this.getStaffWorkHour({
+            employees: [staffId],
+            isDeleted: false,
+        });
+
+        if (workHours.length === 0) return [];
+
+        let currentDate = this.parseDateString(startDate.toLocaleString());
+
+        while (currentDate <= endDate) {
+            let dow = currentDate.getDay();
+            let workHour = workHours.find(
+                (workHour: any) => workHour.dow === dow,
+            );
+            if (workHour) {
+                let event = {
+                    id: workHour._id,
+                    name: 'Heure de travail',
+                    startDate: this.buildDateWithHour(
+                        new Date(currentDate),
+                        workHour.start,
+                    ),
+                    endDate: this.buildDateWithHour(
+                        new Date(currentDate),
+                        workHour.end,
+                    ),
+                    resourceId: 3,
+                };
+
+                dateArray.push(event);
+            }
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        return dateArray;
     }
 }

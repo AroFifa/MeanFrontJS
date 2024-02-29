@@ -33,6 +33,7 @@ export class RdvMngComponent extends ShareComponent implements OnInit {
     staffBookings: any[];
     userBookings: any[];
     staffEvents: any[] = [];
+    staffWorkHours: any[] = [];
     resources = ressources;
     events = [];
     calendarConfig: any;
@@ -98,10 +99,11 @@ export class RdvMngComponent extends ShareComponent implements OnInit {
         this.dateTimeField = event.value;
     }
 
-    getStaffs(event: MatSelectChange) {
+    async getStaffs(event: MatSelectChange) {
         let service = this.getService(event.value);
         this.price = service.price;
         this.staffsService = [];
+
         this._staffService
             .getStaffFromService(event.value)
             .subscribe((data) => (this.staffsService = data.data));
@@ -111,13 +113,10 @@ export class RdvMngComponent extends ShareComponent implements OnInit {
         return this.services.find((service) => service._id === serviceId);
     }
 
-    removeEvent() {
+    removeEvent(data: any[]) {
         let eventStore: EventStore = this.calendarComponent.instance.eventStore;
-        this.staffEvents.forEach((staffEvent) =>
-            eventStore.remove(staffEvent.id),
-        );
+        data.forEach((staffEvent) => eventStore.remove(staffEvent.id));
         this.calendarComponent.instance.refresh();
-        this.staffEvents = [];
     }
 
     addStaffEvents() {
@@ -128,7 +127,8 @@ export class RdvMngComponent extends ShareComponent implements OnInit {
             return !result;
         });
 
-        this.removeEvent();
+        this.removeEvent(this.staffEvents);
+        this.staffEvents = [];
         staffBookings.map((staffBooking) => {
             this.staffEvents.push({
                 id: staffBooking._id,
@@ -192,7 +192,21 @@ export class RdvMngComponent extends ShareComponent implements OnInit {
         });
     }
 
-    getStaffBookings(event: MatSelectChange) {
+    async getStaffBookings(event: MatSelectChange) {
+        this.removeEvent(this.staffWorkHours);
+        this.staffWorkHours = [];
+
+        let view: any = this.calendarComponent.instance.views[1];
+
+        this.staffWorkHours = await this._bookingService.buildStaffWorkHour(
+            event.value,
+            view.lastRangeAnnounced.startDate,
+            view.lastRangeAnnounced.endDate,
+        );
+        let eventStore: EventStore = this.calendarComponent.instance.eventStore;
+        eventStore.add(this.staffWorkHours);
+        this.calendarComponent.instance.refresh();
+
         this._bookingService.getStaffBookings(event.value).subscribe((data) => {
             this.staffBookings = data.data;
             this.addStaffEvents();
