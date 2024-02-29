@@ -21,7 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { TokenInterceptor } from './shared/utils/TokenInterceptor';
 import { MatNativeDateModule } from '@angular/material/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { LocalService } from './shared/service/local.service';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
@@ -51,9 +51,9 @@ const routerConfig: ExtraOptions = {
         MatNativeDateModule,
         MatIconModule,
         MatButtonModule,
-        NgbModule,
     ],
     providers: [
+        LocalService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: TokenInterceptor,

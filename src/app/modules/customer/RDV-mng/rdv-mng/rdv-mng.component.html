@@ -27,17 +27,14 @@
                         <div class="flex flex-col px-6 pb-2">
                             <div class="p-4 leading-none rounded-xl border">
                                 <div class="text-sm font-medium text-secondary">
-                                    Total
+                                    Prix
                                 </div>
-                                <div class="mt-2 font-mono text-xl">0 Ar</div>
+                                <div
+                                    class="mt-2 font-mono text-xl text-primary"
+                                >
+                                    {{ price }} Ar
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="flex flex-col px-6 py-2">
-                            <mat-label>Date</mat-label>
-                            <bryntum-date-time-field
-                                (onChange)="addValue($event)"
-                            ></bryntum-date-time-field>
                         </div>
 
                         <div class="flex flex-col px-6 pb-2">
@@ -61,7 +58,10 @@
                         <div class="flex flex-col px-6 pb-1">
                             <mat-form-field class="w-full">
                                 <mat-label>Employés</mat-label>
-                                <mat-select [formControlName]="'staff'">
+                                <mat-select
+                                    [formControlName]="'staff'"
+                                    (selectionChange)="getStaffBookings($event)"
+                                >
                                     <ng-container
                                         *ngFor="let staff of staffsService"
                                     >
@@ -73,7 +73,14 @@
                             </mat-form-field>
                         </div>
 
-                        <div class="flex flex-col px-6 pb-2">
+                        <div class="flex flex-col px-6 py-2">
+                            <mat-label>Date</mat-label>
+                            <bryntum-date-time-field
+                                (onChange)="addValue($event)"
+                            ></bryntum-date-time-field>
+                        </div>
+
+                        <div class="flex flex-col px-6 pt-4 pb-2">
                             <mat-form-field class="w-full">
                                 <mat-label>Rappel</mat-label>
                                 <mat-select [formControlName]="'remainder'">
@@ -86,6 +93,17 @@
                                     </ng-container>
                                 </mat-select>
                             </mat-form-field>
+                        </div>
+                        <div class="flex flex-col px-6 pb-2">
+                            <fuse-alert
+                                class="mt-4"
+                                *ngIf="showAlert"
+                                [appearance]="'outline'"
+                                [showIcon]="true"
+                                [type]="alert.type"
+                            >
+                                {{ alert.message }}
+                            </fuse-alert>
                         </div>
 
                         <div class="flex flex-col px-6 pb-2">
@@ -112,14 +130,17 @@
                 >
                     <bryntum-calendar-project-model
                         #project
+                        [eventModelClass]="projectConfig.eventModelClass"
                         [events]="events"
                         [resources]="resources"
                     ></bryntum-calendar-project-model>
 
                     <bryntum-calendar
                         #calendar
-                        [date]="calendarConfig.date!"
+                        [date]="calendarConfig?.date!"
+                        [autoCreate]="false"
                         [project]="project"
+                        [listeners]="calendarConfig?.listeners!"
                     ></bryntum-calendar>
                 </div>
             </div>

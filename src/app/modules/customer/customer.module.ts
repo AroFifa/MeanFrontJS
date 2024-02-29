@@ -11,11 +11,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RdvCalendarComponent } from './RDV-mng/rdv-calendar/rdv-calendar.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { BryntumCalendarModule } from '@bryntum/calendar-angular';
 import { MatChipsModule } from '@angular/material/chips';
+import { BookingResolver } from '../../resolvers/BookingResolver';
+import { RdvEditComponent } from './RDV-mng/rdv-edit/rdv-edit.component';
+import { FuseAlertModule } from '../../../@fuse/components/alert';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BookingHistoryResolver, BookingResolver } from '../../resolvers/BookingResolver';
 import { BookingHistoryComponent } from './RDV-history/booking-history/booking-history.component';
 import { PaymentComponent } from './RDV-history/payment/payment.component';
@@ -39,6 +42,7 @@ import { RatingComponent } from './Preferences/Rating/rating.component';
 
 
 registerLocaleData(localeFr, 'fr');
+
 
 const customerRoutes: Route[] = [
     {
@@ -68,6 +72,7 @@ const customerRoutes: Route[] = [
 @NgModule({
     declarations: [RdvMngComponent, RdvCalendarComponent,BookingHistoryComponent,PaymentComponent,UserPreferencesComponent,RatingComponent],
 
+
     imports: [
         CommonModule,
         RouterModule.forChild(customerRoutes),
@@ -85,6 +90,7 @@ const customerRoutes: Route[] = [
         MatChipsModule,
         FuseAlertModule,
         MatProgressSpinnerModule,
+
         MatOptionModule,
         MatCardModule,
         MatPaginatorModule,
@@ -95,6 +101,7 @@ const customerRoutes: Route[] = [
         SharedModule,
         MatMenuModule,
         MatRadioModule
+
     ],
     providers: [
       {provide: LOCALE_ID, useValue: 'fr'},
