@@ -165,7 +165,7 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
                 this.items = response.data.items;
                 this.filterOptions = response.data.options;
                 this.pagination = response.data.pagination;
-                this.selectedItem = this.items.find((item) => item.booking._id === this.selectedItem.booking._id);
+                this.selectedItem = this.items.find((item) => item?.booking._id === this.selectedItem?.booking._id);
             });
 
         
