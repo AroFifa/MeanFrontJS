@@ -159,33 +159,24 @@
                                                 [yaxis]="chartDailyMonthlyCA.yaxis"></apx-chart>
                                         </div>
                                     </div>
-                                     <!-- Balance -->
-                                    <div class="flex flex-col">
-                                        <div class="font-medium text-secondary">{{actualMonth | date: 'MMMM':'fr'}}</div>
-                                        <div class="flex-auto grid  grid-cols-4 gap-4 mt-6">
-                                            <!-- Bénéfice -->
-                                            <div class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-indigo-50 text-indigo-800 dark:bg-white dark:bg-opacity-5 dark:text-indigo-400">
-                                                <div class="text-2xl sm:text-2xl font-semibold leading-none tracking-tight">
-                                                    Bénéfices
-                                                </div>
-                                                <div class="mt-1 text-sm sm:text-lg font-medium">{{monthBalance.benefices | mlgCurrency}}</div>
-                                            </div>
-                                            <!-- Dépense -->
-                                            <div class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-indigo-50 text-indigo-800 dark:bg-white dark:bg-opacity-5 dark:text-indigo-400">
-                                                <div class="text-2xl sm:text-2xl font-semibold leading-none tracking-tight">
-                                                    Dépenses
-                                                </div>
-                                                <div class="mt-1 text-sm sm:text-lg font-medium">{{monthBalance.depenses | mlgCurrency}}</div>
-                                            </div><!-- Revenu -->
-                                            <div class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-indigo-50 text-indigo-800 dark:bg-white dark:bg-opacity-5 dark:text-indigo-400">
-                                                <div class="text-2xl sm:text-2xl font-semibold leading-none tracking-tight">
-                                                    Revenus
-                                                </div>
-                                                <div class="mt-1 text-sm sm:text-lg font-medium">{{monthBalance.revenus | mlgCurrency}}</div>
-                                            </div>
-                                        
+                                    
+                                    <!-- Budget distribution -->
+                                   <div class="flex flex-col flex-auto">
+                                        <div class="flex flex-col flex-auto">
+                                            <apx-chart
+                                                class="flex-auto w-full h-80"
+                                                [chart]="chartBudgetDistribution.chart"
+                                                [colors]="chartBudgetDistribution.colors"
+                                                [dataLabels]="chartBudgetDistribution.dataLabels"
+                                                [plotOptions]="chartBudgetDistribution.plotOptions"
+                                                [series]="chartBudgetDistribution.series"
+                                                [stroke]="chartBudgetDistribution.stroke"
+                                                [tooltip]="chartBudgetDistribution.tooltip"
+                                                [xaxis]="chartBudgetDistribution.xaxis"
+                                                [yaxis]="chartBudgetDistribution.yaxis"></apx-chart>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                             

@@ -17,6 +17,8 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
     chartWorkHour: ApexOptions = {};
     chartDailyMonthlyBooking: ApexOptions = {};
     chartDailyMonthlyCA: ApexOptions = {};
+    chartBudgetDistribution: ApexOptions = {};
+
 
     actualMonth = new Date();
     monthBalance : any;
@@ -82,14 +84,18 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
 
         });
 
+
         series.push({
             name: 'Durée moyenne',
-            data: averageHour
+            data: averageHour,
+            type: "line"
         });
         series.push({
             name: 'Durée totale',
-            data: totalHour
+            data: totalHour,
+            type: "column"
         });
+
         this.workHourData = {
             labels,series
         }
@@ -468,7 +474,7 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
             }
         };
 
-        // WOrkhour chart
+        // CA chart
         this.chartDailyMonthlyCA = {
             chart      : {
                 fontFamily: 'inherit',
@@ -551,6 +557,72 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
             }
         };
 
+
+        // Budget distribution
+        this.chartBudgetDistribution = {
+            chart      : {
+                fontFamily: 'inherit',
+                foreColor : 'inherit',
+                height    : '100%',
+                type      : 'radar',
+                sparkline : {
+                    enabled: true
+                }
+            },
+            colors     : ['#818CF8'],
+            dataLabels : {
+                enabled   : true,
+                textAnchor: 'start',
+                formatter: this.displayPrice,
+                style     : {
+                    fontSize  : '13px',
+                    fontWeight: 500
+                },
+                background: {
+                    borderWidth: 0,
+                    padding    : 4
+                },
+                offsetY   : -15
+            },
+            markers    : {
+                strokeColors: '#818CF8',
+                strokeWidth : 4
+            },
+            plotOptions: {
+                radar: {
+                    polygons: {
+                        strokeColors   : 'var(--fuse-border)',
+                        connectorColors: 'var(--fuse-border)'
+                    }
+                }
+            },
+            series     : [{name: 'Montant', data: [this.monthBalance.benefices,this.monthBalance.depenses,this.monthBalance.revenus]}],
+            stroke     : {
+                width: 2
+            },
+            tooltip    : {
+                theme: 'dark',
+                y    : {
+                    formatter: this.displayPrice
+                }
+            },
+            xaxis      : {
+                labels    : {
+                    show : true,
+                    style: {
+                        fontSize  : '12px',
+                        fontWeight: '500'
+                    }
+                },
+                categories: ['Bénéfices', 'Dépenses', 'Revenus']
+            },
+            yaxis      : {
+                labels: {
+                    formatter: this.displayPrice
+                }
+            }
+        };
+
     }
 
 
@@ -558,8 +630,8 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
         const hours = Math.floor(duration / 60);
         const minutes = duration % 60;
 
-        return `${hours ? hours : '00'}:${minutes ? 
-            minutes.toFixed(0) : '00'}`;
+        return `${hours ? hours : '00'}h${minutes ? 
+            minutes.toFixed(0) : '00'}m`;
     }
 
     displayPrice(price: number) {
