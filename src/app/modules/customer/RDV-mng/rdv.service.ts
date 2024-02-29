@@ -25,12 +25,6 @@ export class RdvService extends CRUDService {
         );
     }
 
-    getStaffBookings(staffId: string) {
-        return this._http.get<any>(
-            `${environment.URL_API}/${this.baseUrl}/staffs/${staffId}`,
-        );
-    }
-
     getServiceDateEnd(date: string, duration: number) {
         let end = new Date(date);
         end.setMinutes(end.getMinutes() + duration);

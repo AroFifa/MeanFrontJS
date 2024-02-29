@@ -7,6 +7,7 @@ import { User } from '../../../../models/User';
 import { MatSelectChange } from '@angular/material/select';
 import { StaffService } from '../../../admin/Management/staff/staff.service';
 import { remainders } from '../rdv-mng/config';
+import { CommonService } from '../../../../shared/service/common.service';
 
 @Component({
     selector: 'app-rdv-edit',
@@ -18,6 +19,7 @@ export class RdvEditComponent extends ShareComponent implements OnInit {
     dateTimeField: any;
     remainders = remainders;
     booking: any;
+    userType: string;
 
     constructor(
         public matDialogRef: MatDialogRef<RdvEditComponent>,
@@ -25,11 +27,13 @@ export class RdvEditComponent extends ShareComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private bookingService: RdvService,
         private _staffService: StaffService,
+        private _commonService: CommonService,
     ) {
         super();
     }
 
     ngOnInit(): void {
+        this.userType = this._commonService.getValue_FromToken('userType');
         this.services = this.data.services;
         this.booking = this.data.booking;
         this.dateTimeField = this.bookingService.parseDateString(
@@ -62,8 +66,8 @@ export class RdvEditComponent extends ShareComponent implements OnInit {
         this.dateTimeField = event.value;
     }
 
-    closeModal() {
-        this.matDialogRef.close();
+    closeModal(value: boolean) {
+        this.matDialogRef.close(value);
     }
 
     manageBooking() {
@@ -91,16 +95,20 @@ export class RdvEditComponent extends ShareComponent implements OnInit {
     updateBooking() {
         if (this.form.invalid || !this.dateTimeField) return;
         this.manageBooking();
+        let updatedField = { ...this.booking };
+        if (this.userType === 'Staff') {
+            updatedField = { isDone: true };
+        }
 
         this.bookingService
-            .update(this.booking._id, this.booking)
+            .update(this.booking._id, updatedField)
             .subscribe((data) => {
                 if (data.state == 'error') this.alert.type = 'error';
                 else {
                     this.alert.type = 'success';
                     this.callback = () => {
                         this.form.reset();
-                        this.closeModal();
+                        this.closeModal(true);
                     };
                 }
                 this.alert.message = data.message;

@@ -24,7 +24,7 @@ export class StaffWorkhourComponent implements OnInit {
             .subscribe(
                 (data) =>
                     (this.dataSource = new MatTableDataSource<WorkHour>(
-                        data.data,
+                        data.data.items,
                     )),
             );
     }

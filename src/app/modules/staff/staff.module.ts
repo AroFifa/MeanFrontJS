@@ -11,10 +11,9 @@ import { MatTableModule } from '@angular/material/table';
 import { DayCommissionComponent } from './commission/day-commission.component';
 import { SharedModule } from 'app/shared/module/shared.module';
 import localeFr from '@angular/common/locales/fr';
+import { BookingComponent } from './booking/booking.component';
 
 registerLocaleData(localeFr);
-
-
 const staffRoutes: Route[] = [
     {
         path: 'home',
@@ -37,13 +36,24 @@ const staffRoutes: Route[] = [
     },
 
     {
+        path: 'booking',
+        component: BookingComponent,
+    },
+  
+    {
         path: 'commission',
         component: DayCommissionComponent,
     },
+
 ];
 
 @NgModule({
-    declarations: [StaffHomeComponent, StaffWorkhourComponent,DayCommissionComponent],
+    declarations: [
+        StaffHomeComponent,
+        StaffWorkhourComponent,
+        BookingComponent,
+        DayCommissionComponent
+    ],
     imports: [
         CommonModule,
         RouterModule.forChild(staffRoutes),
