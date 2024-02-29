@@ -39,4 +39,7 @@ export class BookingService extends CRUDService {
         return this._http.post<any>(url, body);
     }
 
+    getDayCommission(){
+        return this._http.get<any>(`${environment.URL_API}/${this.baseUrl}/commission`);
+    }
 }

@@ -122,6 +122,13 @@ function getStaffNavigations() {
             icon: 'heroicons_outline:calendar',
             link: '/staff/workHour',
         },
+        {
+            id: 'commission',
+            title: 'Commission',
+            type: 'basic',
+            icon: 'heroicons_outline:receipt-percent',
+            link: '/staff/commission',
+        },
     ];
 }
 
