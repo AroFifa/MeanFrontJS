@@ -11,7 +11,7 @@ import {
 } from '@angular/router';
 import { Observable, of, switchMap } from 'rxjs';
 import { AuthService } from 'app/core/auth/auth.service';
-import { CommonService } from '../../../shared/common.service';
+import { CommonService } from '../../../shared/service/common.service';
 
 @Injectable({
     providedIn: 'root',

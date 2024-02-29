@@ -1,0 +1,103 @@
+<div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6">
+        <div
+            class="flex text-4xl flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8"
+        >
+        <div class="text-lg font-medium">Nouvelle heure de travail</div>
+        <button mat-icon-button [tabIndex]="-1" (click)="closeModal()">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"
+            ></mat-icon>
+        </button>
+    </div>
+
+    <form
+        [formGroup]="form"
+        class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto"
+    >
+        <div class="gap-6 w-full">
+            <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                <mat-label>Jour</mat-label>
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:user-circle'"
+                    matPrefix
+                ></mat-icon>
+                <input [formControlName]="'dow'" type="number" matInput />
+                <mat-error *ngIf="form.get('dow').hasError('required')">
+                    Le jour est obligatoire
+                </mat-error>
+                <mat-error *ngIf="form.get('dow').hasError('pattern')">
+                    Le jour doit être un nombre entre 1 et 7
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="grid sm:grid-cols-4 gap-6 w-full">
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                    <mat-label>Début</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:calendar'"
+                        matPrefix
+                    ></mat-icon>
+                    <input [formControlName]="'start'" type="time" matInput />
+
+                    <mat-error *ngIf="form.get('start').hasError('required')">
+                        L'heure de début est obligatoire
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                    <mat-label>Fin</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:calendar'"
+                        matPrefix
+                    ></mat-icon>
+                    <input [formControlName]="'end'" type="time" matInput />
+
+                    <mat-error *ngIf="form.get('end').hasError('required')">
+                        L'heure de fin est obligatoire
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <fuse-alert
+            class="mt-4"
+            *ngIf="showAlert"
+            [appearance]="'outline'"
+            [showIcon]="true"
+            [type]="alert.type"
+        >
+            {{ alert.message }}
+        </fuse-alert>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end mt-4">
+            <button mat-stroked-button type="button" (click)="closeModal()">
+                Annuler
+            </button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                [color]="'primary'"
+                [disabled]="form.invalid"
+                (click)="addWorkHour()"
+            >
+                <span *ngIf="!form.disabled">Enregistrer</span>
+                <mat-progress-spinner
+                    *ngIf="form.disabled"
+                    [diameter]="24"
+                    [mode]="'indeterminate'"
+                >
+                </mat-progress-spinner>
+            </button>
+        </div>
+    </form>
+</div>

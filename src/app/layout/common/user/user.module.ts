@@ -4,8 +4,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { UserComponent } from 'app/layout/common/user/user.component';
-import { SharedModule } from 'app/shared/shared.module';
-import { TranslocoModule } from '@ngneat/transloco';
+import { SharedModule } from 'app/shared/module/shared.module';
 
 @NgModule({
     declarations: [UserComponent],
@@ -15,7 +14,6 @@ import { TranslocoModule } from '@ngneat/transloco';
         MatIconModule,
         MatMenuModule,
         SharedModule,
-        TranslocoModule,
     ],
     exports: [UserComponent],
 })

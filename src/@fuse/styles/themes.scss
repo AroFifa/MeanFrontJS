@@ -1,6 +1,11 @@
 @use "sass:map";
 @use '@angular/material' as mat;
 @use "user-themes" as userThemes;
+ngb-rating {
+    color: #FFC107;
+    font-size: 80px;
+}
+
 
 /* Set the base colors for light themes */
 $light-base: (

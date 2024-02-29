@@ -1,0 +1,233 @@
+<div class="flex flex-col max-w-240 md:min-w-160 max-h-screen -m-6">
+    <div
+        class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8"
+    >
+        <div class="text-lg font-medium">Nouveau employé</div>
+        <button mat-icon-button [tabIndex]="-1" (click)="closeModal()">
+            <mat-icon
+                class="text-current"
+                [svgIcon]="'heroicons_outline:x'"
+            ></mat-icon>
+        </button>
+    </div>
+
+    <form
+        [formGroup]="form"
+        class="flex flex-col flex-auto p-6 sm:p-8 overflow-y-auto"
+    >
+        <div class="flex flex-col items-center w-full p-4">
+            <div class="relative w-24 h-24">
+                <img
+                    class="w-full h-full rounded-full"
+                    *ngIf="img"
+                    [src]="img"
+                    alt="User avatar"
+                />
+                <mat-icon
+                    class="icon-size-24"
+                    *ngIf="!img"
+                    [svgIcon]="'heroicons_outline:user-circle'"
+                ></mat-icon>
+            </div>
+            <div class="flex flex-col items-center justify-center w-full mt-6">
+                <div
+                    class="w-full whitespace-nowrap text-ellipsis overflow-hidden text-center leading-normal font-medium"
+                >
+                    <input
+                        type="file"
+                        (change)="onFileSelected($event)"
+                        #fileInput
+                        accept="image/*"
+                        style="display: none"
+                    />
+                    <button
+                        class="ml-4"
+                        mat-flat-button
+                        [color]="'accent'"
+                        (click)="fileInput.click()"
+                    >
+                        <mat-icon
+                            [svgIcon]="'heroicons_outline:plus'"
+                        ></mat-icon>
+                        <span class="ml-2 mr-1">Ajouter une photo</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                    <mat-label>Nom </mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:user-circle'"
+                        matPrefix
+                    ></mat-icon>
+                    <input [formControlName]="'name'" matInput />
+
+                    <mat-error *ngIf="form.get('name').hasError('required')">
+                        Le nom est obligatoire
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                    <mat-label>Prénom</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:user-circle'"
+                        matPrefix
+                    ></mat-icon>
+                    <input [formControlName]="'firstName'" matInput />
+                    <mat-error
+                        *ngIf="form.get('firstName').hasError('required')"
+                    >
+                        Le prénom est obligatoire
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="grid sm:grid-cols-4 gap-6 w-full">
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                    <mat-label>Email</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:user'"
+                        matPrefix
+                    ></mat-icon>
+                    <input [formControlName]="'email'" matInput />
+
+                    <mat-error *ngIf="form.get('email').hasError('required')">
+                        L'email est obligatoire
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                    <mat-label>Mot de passe </mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:lock-closed'"
+                        matPrefix
+                    ></mat-icon>
+                    <input
+                        [formControlName]="'password'"
+                        matInput
+                        [type]="hidePassword ? 'password' : 'text'"
+                    />
+                    <mat-icon matSuffix (click)="togglePasswordVisibility()"
+                        >{{ hidePassword ? "visibility_off" : "visibility" }}
+                    </mat-icon>
+                    <mat-error
+                        *ngIf="form.get('password').hasError('required')"
+                    >
+                        Le mot de passe est obligatoire
+                    </mat-error>
+                    <mat-error *ngIf="form.get('password').hasError('pattern')">
+                        Minimum 8 caractères. Doit contenir des chiffres, des
+                        lettres et des caractères spéciaux, lettre en majuscule
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="grid sm:grid-cols-4 gap-6 w-full">
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                    <mat-label>Postes</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:identification'"
+                        matPrefix
+                    ></mat-icon>
+                    <mat-select
+                        required
+                        [formControlName]="'posts'"
+                        (selectionChange)="updatePostsList($event)"
+                    >
+                        <ng-container *ngFor="let service of services">
+                            <mat-option value="{{ service._id }}">{{
+                                service.name
+                            }}</mat-option>
+                        </ng-container>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('posts').hasError('required')">
+                        Le poste est obligatoire
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="flex">
+                    <mat-label>Poste(s) occupée(s)</mat-label>
+                    <mat-chip-grid #chipGrid>
+                        <ng-container *ngFor="let post of posts">
+                            <mat-chip-row>
+                                {{ post.name }}
+                                <mat-icon
+                                    (click)="deletePost(post._id)"
+                                    class="icon-size-5"
+                                    matChipRemove
+                                    [svgIcon]="'heroicons_solid:minus-circle'"
+                                ></mat-icon>
+                            </mat-chip-row>
+                        </ng-container>
+                        <input
+                            style="display: none"
+                            placeholder="New chip..."
+                            [matChipInputFor]="chipGrid"
+                        />
+                    </mat-chip-grid>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="grid gap-6 w-full">
+            <mat-form-field class="fuse-mat-dense flex-auto w-full">
+                <mat-label>Information</mat-label>
+                <textarea
+                    matInput
+                    [formControlName]="'information'"
+                    class="w-full"
+                ></textarea>
+            </mat-form-field>
+        </div>
+
+        <fuse-alert
+            class="mt-4"
+            *ngIf="showAlert"
+            [appearance]="'outline'"
+            [showIcon]="true"
+            [type]="alert.type"
+        >
+            {{ alert.message }}
+        </fuse-alert>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end mt-4">
+            <button mat-stroked-button type="button" (click)="closeModal()">
+                Annuler
+            </button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                [color]="'primary'"
+                [disabled]="form.invalid"
+                (click)="addStaff()"
+            >
+                <span *ngIf="!form.disabled">Enregistrer</span>
+                <mat-progress-spinner
+                    *ngIf="form.disabled"
+                    [diameter]="24"
+                    [mode]="'indeterminate'"
+                >
+                </mat-progress-spinner>
+            </button>
+        </div>
+    </form>
+</div>

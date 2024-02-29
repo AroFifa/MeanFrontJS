@@ -12,8 +12,16 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
+import { ConfirmationComponent } from './modules/Common/confirmation/confirmation.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { TokenInterceptor } from './shared/utils/TokenInterceptor';
+import { MatNativeDateModule } from '@angular/material/core';
+import { LocalService } from './shared/service/local.service';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
@@ -21,7 +29,7 @@ const routerConfig: ExtraOptions = {
 };
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, ConfirmationComponent],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -31,16 +39,26 @@ const routerConfig: ExtraOptions = {
         FuseModule,
         FuseConfigModule.forRoot(appConfig),
         FuseMockApiModule.forRoot(mockApiServices),
-
-        // Core module of your application
+        MatSelectModule, // Core module of your application
         CoreModule,
-
+        MatChipsModule,
         // Layout module of your application
         LayoutModule,
 
         FormsModule,
         HttpClientModule,
         MatDatepickerModule,
+        MatNativeDateModule,
+        MatIconModule,
+        MatButtonModule,
+    ],
+    providers: [
+        LocalService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true,
+        },
     ],
     bootstrap: [AppComponent],
 })

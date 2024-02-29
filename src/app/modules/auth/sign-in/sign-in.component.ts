@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, NgForm, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
+import { ShareComponent } from '../../../shared/Component/ShareComponent';
 import { AuthService } from '../auth.service';
-import { ShareComponent } from '../../../shared/ShareComponent';
-import { TranslocoService } from '@ngneat/transloco';
+import { CommonService } from '../../../shared/service/common.service';
 
 @Component({
     selector: 'auth-sign-in',
@@ -18,7 +17,11 @@ export class AuthSignInComponent extends ShareComponent implements OnInit {
     /**
      * Constructor
      */
-    constructor(private _formBuilder: UntypedFormBuilder) {
+    constructor(
+        private _formBuilder: UntypedFormBuilder,
+        private _authService: AuthService,
+        private _commonService: CommonService,
+    ) {
         super();
     }
 
@@ -31,9 +34,11 @@ export class AuthSignInComponent extends ShareComponent implements OnInit {
      */
     ngOnInit(): void {
         this.form = this._formBuilder.group({
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', Validators.required],
-            rememberMe: [''],
+            email: [
+                'beautysalon354@gmail.com',
+                [Validators.required, Validators.email],
+            ],
+            password: ['Admin007#', Validators.required],
         });
     }
 
@@ -44,5 +49,25 @@ export class AuthSignInComponent extends ShareComponent implements OnInit {
     /**
      * Sign in
      */
-    signIn(): void {}
+    signIn(): void {
+        if (this.form.invalid) return;
+        this.form.disable();
+        this.showAlert = false;
+
+        this._authService.signIn(this.form.value).subscribe((data) => {
+            if (data.state == 'error') {
+                this.alert = {
+                    type: 'error',
+                    message: data.message,
+                };
+                this.handleMessage();
+            } else {
+                this.form.enable();
+                this.signInNgForm.resetForm();
+                
+                localStorage.setItem('accessToken', data.data.accessToken);
+                this._commonService.handleRedirection();
+            }
+        });
+    }
 }

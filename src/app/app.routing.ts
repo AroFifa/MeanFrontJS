@@ -2,12 +2,13 @@ import { Route } from '@angular/router';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { NoAuthGuard } from './core/auth/guards/noAuth.guard';
+import { AuthGuard } from './core/auth/guards/auth.guard';
 
 export const appRoutes: Route[] = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'sign-in',
+        redirectTo: 'admin',
     },
     {
         path: '',
@@ -32,30 +33,52 @@ export const appRoutes: Route[] = [
                     ),
             },
             {
-                path: 'forgot-password',
+                path: 'auth-confirmed',
                 loadChildren: () =>
                     import(
-                        'app/modules/auth/forgot-password/forgot-password.module'
-                    ).then((m) => m.AuthForgotPasswordModule),
+                        'app/modules/auth/confirmation-required/confirmation-required.module'
+                    ).then((m) => m.AuthConfirmationRequiredModule),
             },
         ],
     },
-
     {
         path: '',
-        canActivate: [NoAuthGuard],
+        canActivate: [AuthGuard],
         component: LayoutComponent,
         resolve: {
             initialData: InitialDataResolver,
         },
         children: [
             {
-                path: 'home',
+                path: 'admin',
                 loadChildren: () =>
-                    import('app/modules/admin/home/home.module').then(
-                        (m) => m.HomeModule,
+                    import('app/modules/admin/admin.module').then(
+                        (m) => m.AdminModule,
+                    ),
+            },
+            {
+                path: 'staff',
+                loadChildren: () =>
+                    import('app/modules/staff/staff.module').then(
+                        (m) => m.StaffModule,
+                    ),
+            },
+            {
+                path: 'customer',
+                loadChildren: () =>
+                    import('app/modules/customer/customer.module').then(
+                        (m) => m.CustomerModule,
                     ),
             },
         ],
+    },
+
+    {
+        path: '**',
+        loadChildren: () =>
+            import('app/modules/Common/error-404/error-404.module').then(
+                (module) => module.Error404Module,
+            ),
+        data: { title: 'Error', layout: 'compact' },
     },
 ];
