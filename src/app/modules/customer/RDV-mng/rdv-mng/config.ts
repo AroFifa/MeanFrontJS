@@ -74,4 +74,9 @@ export const ressources = [
         name: 'indisponible',
         eventColor: 'gray',
     },
+    {
+        id: 3,
+        name: "Heure de travail de l'employé",
+        eventColor: 'blue',
+    },
 ];
