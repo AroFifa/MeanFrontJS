@@ -17,7 +17,8 @@ export class DashboardResolver implements Resolve<any> {
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
         return forkJoin([
             this._dashboardService.getAverageWorkHour(),
-            this._dashboardService.getDailyMonthlyBooking()
+            this._dashboardService.getDailyMonthlyBooking(),
+            this._dashboardService.getMonthBalance()
         ]);
     }
 }

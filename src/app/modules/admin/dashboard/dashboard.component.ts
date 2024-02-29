@@ -18,6 +18,9 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
     chartDailyMonthlyBooking: ApexOptions = {};
     chartDailyMonthlyCA: ApexOptions = {};
 
+    actualMonth = new Date();
+    monthBalance : any;
+
     workHourData: any;
     dailyMonthlyBookingData: any;
     caData: any;
@@ -200,7 +203,11 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
         this.caData = bookingData;
 
 
+        this.monthBalance = this.route.snapshot.data['data'][2];
 
+
+        console.log(this.monthBalance);
+        
         this.initWorkHourData();
         this.initDailyMonthlyBookingData();
         this.initCaData();

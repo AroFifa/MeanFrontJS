@@ -27,5 +27,13 @@ export class DashBoardService {
         return this._http.get<any>(
             `${environment.URL_API}/${this.baseUrl}/daily-monthly-booking`
         );
+        
+    }
+
+    // get month balance
+    getMonthBalance() {
+        return this._http.get<any>(
+            `${environment.URL_API}/${this.baseUrl}/month-balance`
+        );
     }
 }

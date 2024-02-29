@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { Route, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -11,7 +11,9 @@ import { SharedModule } from 'app/shared/module/shared.module';
 import { DashboardResolver } from 'app/resolvers/DashboardResolver';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import localeFr from '@angular/common/locales/fr';
 
+registerLocaleData(localeFr);
 
 const adminRoutes: Route[] = [
     {
@@ -44,5 +46,8 @@ const adminRoutes: Route[] = [
         MatTabsModule,
         NgApexchartsModule,MatFormFieldModule,
         MatDatepickerModule,SharedModule,MatButtonModule,MatButtonToggleModule],
+        providers: [
+          {provide: LOCALE_ID, useValue: 'fr'},
+        ]
 })
 export class AdminModule {}
