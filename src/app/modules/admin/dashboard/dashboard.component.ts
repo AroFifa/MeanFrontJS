@@ -3,9 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { ApexOptions } from 'ng-apexcharts';
 import { ShareComponent } from 'app/shared/Component/ShareComponent';
-import { StaffService } from '../Management/staff/staff.service';
-import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, Validators } from '@angular/forms';
+import { DashBoardService } from './dashboard.service';
 
 @Component({
     selector       : 'app-dashboard',
@@ -16,7 +15,11 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class DashboardComponent extends ShareComponent implements OnInit, OnDestroy
 {
     chartWorkHour: ApexOptions = {};
+    chartDailyMonthlyBooking: ApexOptions = {};
+
     workHourData: any;
+    dailyMonthlyBookingData: any;
+
     workHourDate : any;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     filterBody = {};
@@ -26,7 +29,7 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
      */
     constructor(
         private _router: Router,
-        private _staffService: StaffService,
+        private _dashboardService: DashBoardService,
         private _formBuilder: FormBuilder,
         private route: ActivatedRoute,
     )
@@ -87,17 +90,75 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
             labels,series
         }
     }
+
+    initDailyMonthlyBookingData() {
+        const labels = {daily : [],monthly : []};
+        const series = {daily : [],monthly : []};
+        
+        const totalCountDaily = [];
+        const priceCountDaily = [];
+
+        const totalCountMonthly = [];
+        const priceCountMonthly = [];
+
+
+
+        this.dailyMonthlyBookingData.dailyBookings.forEach((item:any) => {
+            // Extracting labels (staff names)
+            labels.daily.push(item.label);
+        
+            totalCountDaily.push(item.totalBookingCount);
+            priceCountDaily.push(item.totalBookingPrice);
+
+        });
+
+        series.daily.push({
+            name: 'Nombre de réservations',
+            data: totalCountDaily
+        });
+        series.daily.push({
+            name: 'Prix total',
+            data: priceCountDaily
+        });
+
+        this.dailyMonthlyBookingData.monthlyBookings.forEach((item:any) => {
+            // Extracting labels (staff names)
+            labels.monthly.push(item.label);
+        
+            totalCountMonthly.push(item.totalBookingCount);
+            priceCountMonthly.push(item.totalBookingPrice);
+
+        });
+
+        series.monthly.push({
+            name: 'Nombre de réservations',
+            data: totalCountMonthly
+        });
+        series.monthly.push({
+            name: 'Prix total',
+            data: priceCountMonthly
+        });
+        this.dailyMonthlyBookingData = {
+            labels,series
+        }
+        console.log(this.dailyMonthlyBookingData);
+        
+    }
     /**
      * On init
      */
     ngOnInit(): void
     {
         // Get the data
-        const staffList =  this.route.snapshot.data.staff[0];
+        const staffList =  this.route.snapshot.data['data'][0];
         this.workHourData = staffList.items;
         this.workHourDate = staffList.date_interval;
 
+        this.dailyMonthlyBookingData = this.route.snapshot.data['data'][1];
+
+
         this.initWorkHourData();
+        this.initDailyMonthlyBookingData();
         this._prepareChartData();
 
         // Attach SVG fill fixer to all ApexCharts
@@ -122,7 +183,7 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
 
 
     syncData(data = this.filterBody) {
-        this._staffService
+        this._dashboardService
             .getAverageWorkHour( data)
             .subscribe((response) => {
                 this.workHourData = response.items;
@@ -130,6 +191,7 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
                 this.initWorkHourData();
                 this._prepareChartData();
             });
+
     }
 
 
@@ -269,6 +331,83 @@ export class DashboardComponent extends ShareComponent implements OnInit, OnDest
                 labels: {
                     offsetX: -16,
                     formatter: this.displayDuration,
+                    style  : {
+                        colors: 'var(--fuse-text-secondary)'
+                    }
+                }
+            }
+        };
+
+
+        // WOrkhour chart
+        this.chartDailyMonthlyBooking = {
+            chart      : {
+                fontFamily: 'inherit',
+                foreColor : 'inherit',
+                height    : '100%',
+                type      : 'line',
+                toolbar   : {
+                    show: false
+                },
+                zoom      : {
+                    enabled: false
+                }
+            },
+            colors     : ['#64748B', '#94A3B8'],
+            dataLabels : {
+                enabled        : true,
+                enabledOnSeries: [0],
+                background     : {
+                    borderWidth: 0
+                },
+            },
+            grid       : {
+                borderColor: 'var(--fuse-border)'
+            },
+            labels     : this.dailyMonthlyBookingData.labels,
+            legend     : {
+                show: false
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%'
+                }
+            },
+            series     : this.dailyMonthlyBookingData.series,
+            states     : {
+                hover: {
+                    filter: {
+                        type : 'darken',
+                        value: 0.75
+                    }
+                }
+            },
+            stroke     : {
+                width: [3, 0]
+            },
+            tooltip    : {
+                followCursor: true,
+                theme       : 'dark',
+            },
+            xaxis      : {
+                axisBorder: {
+                    show: false
+                },
+                axisTicks : {
+                    color: 'var(--fuse-border)'
+                },
+                labels    : {
+                    style: {
+                        colors: 'var(--fuse-text-secondary)'
+                    }
+                },
+                tooltip   : {
+                    enabled: false
+                }
+            },
+            yaxis      : {
+                labels: {
+                    offsetX: -16,
                     style  : {
                         colors: 'var(--fuse-text-secondary)'
                     }
