@@ -215,21 +215,21 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
 }
 
 // set to the update component
-updateBooking() {
-    this._matDialog
-        .open(ConfirmationComponent, {
-            data: {
-                type: 'modifier',
-                message: `Voulez vous modifier cette réservation? `,
-            },
-        })
-        .afterClosed()
-        .subscribe((response) => {
-            if (response) {
-                this.syncData();
-            }
-        });
-}
+// updateBooking() {
+//     this._matDialog
+//         .open(ConfirmationComponent, {
+//             data: {
+//                 type: 'modifier',
+//                 message: `Voulez vous modifier cette réservation? `,
+//             },
+//         })
+//         .afterClosed()
+//         .subscribe((response) => {
+//             if (response) {
+//                 this.syncData();
+//             }
+//         });
+// }
 
 doneBooking() {
     this._matDialog

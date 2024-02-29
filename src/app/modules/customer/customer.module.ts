@@ -15,10 +15,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { BryntumCalendarModule } from '@bryntum/calendar-angular';
 import { MatChipsModule } from '@angular/material/chips';
-import { BookingResolver } from '../../resolvers/BookingResolver';
-import { RdvEditComponent } from './RDV-mng/rdv-edit/rdv-edit.component';
-import { FuseAlertModule } from '../../../@fuse/components/alert';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BookingHistoryResolver, BookingResolver } from '../../resolvers/BookingResolver';
 import { BookingHistoryComponent } from './RDV-history/booking-history/booking-history.component';
 import { PaymentComponent } from './RDV-history/payment/payment.component';
@@ -39,6 +35,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { UserPreferencesResolver } from 'app/resolvers/UserPreferencesResolver';
 import { UserPreferencesComponent } from './Preferences/user-preferences.component';
 import { RatingComponent } from './Preferences/Rating/rating.component';
+import { RdvEditComponent } from './RDV-mng/rdv-edit/rdv-edit.component';
 
 
 registerLocaleData(localeFr, 'fr');
@@ -70,7 +67,7 @@ const customerRoutes: Route[] = [
 ];
 
 @NgModule({
-    declarations: [RdvMngComponent, RdvCalendarComponent,BookingHistoryComponent,PaymentComponent,UserPreferencesComponent,RatingComponent],
+    declarations: [RdvMngComponent,RdvEditComponent,BookingHistoryComponent,PaymentComponent,UserPreferencesComponent,RatingComponent],
 
 
     imports: [
