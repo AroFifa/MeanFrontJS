@@ -121,6 +121,9 @@ export class BookingHistoryComponent extends ShareComponent implements OnInit, O
         const data = this.route.snapshot.data['history'][0].data;
         this.items = data.items;
 
+        console.log(this.items);
+        
+
         this.services = this.route.snapshot.data.history[1].data.services;
         this.staff = this.route.snapshot.data.history[2].data;
 

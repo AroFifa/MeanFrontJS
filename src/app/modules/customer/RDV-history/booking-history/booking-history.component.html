@@ -476,9 +476,8 @@
                                             <button
                                                 class="ml-2"
                                                 [matTooltip]="'Payer'"
-                                                *ngIf="selectedItem.booking.isDone"
+                                                *ngIf="selectedItem.booking.isDone && !selectedItem.isFullyPaid"
                                                 (click)="savePayment()"
-                                                disabled ="selectedItem.booking.isFullyPaid"
                                                 mat-icon-button>
                                                 <mat-icon
                                                     [ngClass]="'text-green-500 dark:text-green-400'"
