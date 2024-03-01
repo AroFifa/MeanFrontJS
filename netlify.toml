@@ -1,3 +1,5 @@
+[build]
+  command = "npm config set @bryntum:registry=https://npm.bryntum.com && npm login --registry=https://npm.bryntum.com --username $NPM_USERNAME --password $NPM_PASSWORD && npm install"
 
 
 [[redirects]]
